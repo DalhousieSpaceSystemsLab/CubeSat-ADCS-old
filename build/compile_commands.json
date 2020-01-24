@@ -1,0 +1,17 @@
+[
+{
+  "directory": "/home/james/Documents/CubeSat-ADCS/build",
+  "command": "/usr/bin/g++-7   -I/home/james/Documents/CubeSat-ADCS/build -I/home/james/Documents/CubeSat-ADCS/Source/IGRF12 -I/home/james/Documents/CubeSat-ADCS/Source/Communications  -g   -std=gnu++11 -o CMakeFiles/ADCS.dir/main.cpp.o -c /home/james/Documents/CubeSat-ADCS/Source/main.cpp",
+  "file": "/home/james/Documents/CubeSat-ADCS/Source/main.cpp"
+},
+{
+  "directory": "/home/james/Documents/CubeSat-ADCS/build/IGRF12",
+  "command": "/usr/bin/g++-7    -g   -std=gnu++11 -o CMakeFiles/IGRF12.dir/igrf12.cpp.o -c /home/james/Documents/CubeSat-ADCS/Source/IGRF12/igrf12.cpp",
+  "file": "/home/james/Documents/CubeSat-ADCS/Source/IGRF12/igrf12.cpp"
+},
+{
+  "directory": "/home/james/Documents/CubeSat-ADCS/build/Communications",
+  "command": "/usr/bin/g++-7    -g   -std=gnu++11 -o CMakeFiles/Communications.dir/communications.cpp.o -c /home/james/Documents/CubeSat-ADCS/Source/Communications/communications.cpp",
+  "file": "/home/james/Documents/CubeSat-ADCS/Source/Communications/communications.cpp"
+}
+]

@@ -1,0 +1,3 @@
+//this is the configure version for the project
+#define CubeSat_ADCS_VERSION_MAJOR @CubeSat_ADCS_VERSION_MAJOR@
+#define CubeSat_ADCS_VERSION_MINOR @CubeSat_ADCS_VERSION_MINOR@
