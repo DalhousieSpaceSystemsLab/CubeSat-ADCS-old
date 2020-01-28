@@ -102,6 +102,7 @@ int Parse_IGRF(void) {
 	IGRFconstants.close();	// close the file
 #ifdef testparse
 	cout << "Done.";
+    cin >> userinput;
 #endif
 	return SUCCESS;
 }
