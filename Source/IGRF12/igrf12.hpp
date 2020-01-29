@@ -16,6 +16,9 @@ double cosTheta;
 //sine of geocentric latitude
 double sinTheta;
 
+//factorial function 
+int factorial(int n);
+
 //Class for the legendre function
 class legendre {
 private:
@@ -34,8 +37,7 @@ private:
 public:
 	legendre(int mDesired, int nDesired, double sinTheta, double cosTheta );
 	void setDelta(int mDesired);
-	void calcPMN();
-	void calcdPMN();
+	void calcdPmnPmn();
 	void calcdPMNDesired();
 };
 
