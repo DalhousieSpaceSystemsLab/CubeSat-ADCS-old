@@ -38,7 +38,6 @@ public:
 	legendre(int mDesired, int nDesired, double sinTheta, double cosTheta );
 	void setDelta(int mDesired);
 	void calcdPmnPmn();
-	void calcdPMNDesired();
 };
 
 /***************************************************************************/

@@ -25,7 +25,6 @@ legendre::legendre(int mDesired, int nDesired, double sinTheta, double cosTheta)
 	dp.resize(nDesired, mDesired);
 	//calculate values
 	calcdPmnPmn();
-	calcdPMNDesired();
 }
 
 void legendre::setDelta(int mDes) {
