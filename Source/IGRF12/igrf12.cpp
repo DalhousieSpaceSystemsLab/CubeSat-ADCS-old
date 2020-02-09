@@ -1,8 +1,6 @@
 //This file is the main file that runs the IGRF12 module
-#include "igrf12.hpp"
 
-#include "pch.h"
-#include "igrf12.h"
+#include "igrf12.hpp"
 
 using namespace std;
 
@@ -46,12 +44,84 @@ uint8_t IGRF(float lat_geodetic, float phi, float H, uint16_t year, uint8_t mont
 	double Y = (N + H)*(cos(DegToRad(lat_geodetic))*sin(DegToRad(phi)));
 	double Z = (N*(1 - e2) + H)*sin(DegToRad(lat_geodetic));
 
-#ifdef debugigrf
+#ifdef debugigrf	// print results
+	cout << '\n' << "Cartesian calculations:" << '\n';
 	cout << "N = " << N << '\n';
  	cout << "X = " << X << '\n';
 	cout << "Y = " << Y << '\n';
 	cout << "Z = " << Z << '\n';
 #endif
 
+	/* from Cartesian to spherical */
+	double r = sqrt(pow(X, 2) + pow(Y, 2) + pow(Z, 2));
+	double lat_geocentric = RadToDeg(asin(Z / r));
+
+#ifdef debugigrf	// print results
+	cout << '\n' << "Spherical calculations:" << '\n';
+	cout << "r = " << r << '\n';
+	cout << "lat_geocentric = " << lat_geocentric << '\n';
+#endif
+	/* from geocentric latitude to geocentric co-latitude */
+	double theta_geocentric = 90 - lat_geocentric; // geocentric co-latitude
+	/* need sin and cos of geocentric co-latitude for calculating Schmidt 
+	   semi/quasi-normalized Legendre polynomial function later */
+	double costheta = cos(DegToRad(theta_geocentric));
+	double sintheta = sin(DegToRad(theta_geocentric));
+	
+#ifdef debugigrf	// print results
+	cout << '\n' << "Co-latitude calculations:" << '\n';
+	cout << "theta_geocentric = " << theta_geocentric << '\n';
+	cout << "costheta = " << costheta << '\n';
+	cout << "sintheta = " << sintheta << '\n';
+#endif
+
+	/* initialize magnetic field */
+	double Btheta = 0, Bphi = 0, Br = 0;
+	double Btheta_sum, Bphi_sum, Br_sum;
+	double dPm_n = 0, Pm_n = 0;
+	/* initialize loop variables */
+	uint8_t n = 0, m = 0;
+	/* loop to calculate nested sum */
+	for (n = 0; n < MAX_MN_VALUE; n++) {
+		Btheta_sum = 0, Bphi_sum = 0, Br_sum = 0;
+		for (m = 0; m < n; m++) {
+			/* calculate Schmidt semi / quasi - normalized Legendre polynomial 
+			function of degree n and order m, along with its partial derivative */
+			dPm_n = 0; // gotten from legendre();
+			Pm_n = 0; // gotten from legendre();
+
+			/* calculate magnetic fields from equations from Ref A */
+			Btheta_sum = Btheta_sum - dPm_n * (g_nominal[n][m]*
+				cos(DegToRad(m*phi)) + h_nominal[n][m] * sin(DegToRad(m*phi)));
+			
+			Bphi_sum = Bphi_sum - m*Pm_n * (-g_nominal[n][m] *
+				sin(DegToRad(m*phi)) + h_nominal[n][m] * cos(DegToRad(m*phi)));
+			
+			Br_sum = Br_sum + Pm_n * (g_nominal[n][m] * 
+				cos(DegToRad(m*phi)) + h_nominal[n][m] * sin(DegToRad(m*phi)));
+		}
+
+		Btheta += pow(a_ref / r, n + 1)*Btheta_sum;	//Eq 3b Ref A
+
+		Bphi += 1 / sintheta * (pow(a_ref / r, n + 1)*Bphi_sum); //Eq 3c Ref A
+
+		Br += pow(a_ref / r, n + 1)*n*Br_sum; // Eq 3a Ref A
+	}
+
+	/* Convert back to geodetic coordinates based on Ref D p782 Eq H-13:
+		lat_geocentric = 90-theta_geocentric where lat_geocentric is delta
+		and theta_geocentric is the geocentric co-latitude which is 'theta' 
+		in Ref D p782 */
+	double cd = cos(DegToRad(lat_geodetic - lat_geocentric));
+	double sd = sin(DegToRad(lat_geodetic - lat_geocentric));
+	double Bphi_geodetic = Bphi;
+	double Btheta_geodetic = Btheta * cd + Br * sd;
+	double Br_geodetic = Br * cd - Btheta * sd;
+
+	/* Convert to NED: (North, East, Down) (Bx,By,Bz) */
+	double Bx = -Btheta_geodetic;	// North is opposite direction to co - latitude theta
+	double By = Bphi_geodetic;		// phi_geodetic is already East
+	double Bz = -Br_geodetic;		// Down is opposite direction to radial direction r
+	
 	return 0;
 }
