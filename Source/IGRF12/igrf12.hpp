@@ -1,7 +1,6 @@
 #ifndef IGRF12_H
 #define IGRF12_H
 #include <cmath>
-#include <cmath>
 #include <iostream>
 #include <fstream>
 #include <string>
@@ -9,6 +8,7 @@
 //This file contains the declarations for functions and variables used in the IGRF12 model
 //Authored By: James Smith
 using namespace Eigen;
+using namespace std;
 //legendre function variables
 //Inputs
 //desired degree to calculate
@@ -28,9 +28,9 @@ private:
 	double pMNBar;
 	//partial derivative of Schmidt semi-normalized legendre function
 	double dpMNBar;
-	//function arrays
-	MatrixXf p;//should be replaced with matrix from eigen
-	MatrixXf dp;//should be replaced with matrix from eigen
+	//function matrices
+	MatrixXf p;
+	MatrixXf dp;
 	double pMN;
 	double dpMN;
 	//other function variables

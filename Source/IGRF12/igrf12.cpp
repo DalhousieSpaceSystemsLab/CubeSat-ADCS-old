@@ -1,9 +1,6 @@
 //This file is the main file that runs the IGRF12 module
 #include "igrf12.hpp"
 
-#include "pch.h"
-#include "igrf12.h"
-
 using namespace std;
 
 uint16_t MonthDayIndex[12] = { 0,31,59,90,120,151,181,212,243,273,304,334 };
