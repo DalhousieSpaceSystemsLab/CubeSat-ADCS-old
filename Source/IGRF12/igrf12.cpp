@@ -27,7 +27,35 @@ int main()
 }
 
 uint8_t IGRF(float lat_geodetic, float phi, float H, uint16_t year, uint8_t month, uint8_t day) {
+	/************************************************************************
+	Description: This function parses the IGRF.txt file which contains the
+	gmn, hmn, and SVgmn, SVhmn values required for the IGRF algorithm.
 
+	Author: written by Cathy, originally developed by Dr.Bauer in MATLAB
+
+	Original can be found at the Dal Cubesat Sharepoint: 
+		10.ADCS > 08.Testing > IGRF12
+
+	Inputs:
+		- lat_geodetic: geodetic latitude (deg) of desired location 
+		  (geodetic coordinate) values range between -90 and +90 deg 
+		  (but not -90 or +90), phi, year, month, day
+
+		- phi: longitude (deg) of desired location Note: longitude is the 
+		  same for both geodetic and geocentric spherical coordinates values 
+		  range between -180 and +180 deg
+
+		- H: altitude above Earth's surface (km), which is perpendicular to 
+		  the surface of Earth (geodetic coordinate) values range between 
+		  -1km to 600km
+
+		- year, month, day: must be between the valid dates corresponding to 
+		  the IGRF constants being used. For example: using IGRF12 dates must 
+		  be between 2015 01 01 and 2019 12 31
+
+	output: SUCCESS|FAIL diagnostic
+	*************************************************************************/
+	
 	
 	/* the year can be evenly divided by 4 AND cannot be evenly divided by 100 */
 	bool leap_year = ((year % 400 == 0) || (year % 4 == 0) && (year % 100));
