@@ -16,6 +16,9 @@ double cosTheta;
 //sine of geocentric latitude
 double sinTheta;
 
+//factorial function 
+int factorial(int n);
+
 //Class for the legendre function
 class legendre {
 private:
@@ -34,20 +37,18 @@ private:
 public:
 	legendre(int mDesired, int nDesired, double sinTheta, double cosTheta );
 	void setDelta(int mDesired);
-	void calcPMN();
-	void calcdPMN();
-	void calcdPMNDesired();
+	void calcdPmnPmn();
 };
 
 /***************************************************************************/
 /* IGRF parser data structures, constants, and */
 /***************************************************************************/
+
 enum returnvals{FAIL, SUCCESS};
 #define IGRF_READLINES	104						// number of linesevery 5 years
 #define MAX_MN_VALUE	13+1					// max m and n values, (ignoring 0)
 
-
-int Parse_IGRF(void);
+extern int Parse_IGRF(void);
 extern float g_nominal[MAX_MN_VALUE][MAX_MN_VALUE];	// IGRF g coefficient nanoTesla (nT)
 extern float h_nominal[MAX_MN_VALUE][MAX_MN_VALUE];	// IGRF h coefficient nanoTesla (nT)
 extern float SV_g[MAX_MN_VALUE][MAX_MN_VALUE];		// secular variation of g (nT/year)
@@ -55,6 +56,7 @@ extern float SV_h[MAX_MN_VALUE][MAX_MN_VALUE];		// secular variation of h (nT/ye
 
 /* outputs to terminal: block out define to disable outputs */
 #define	testparse		// outputs to terminal for testing the parse function
-//#define debug			// was used to debug correct parsing of IGRF12 file
+
+enum returnvals{FAIL, SUCCESS};
 
 #endif

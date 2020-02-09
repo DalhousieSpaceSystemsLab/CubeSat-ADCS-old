@@ -63,8 +63,8 @@ CMAKE_BINARY_DIR = /home/james/Documents/CubeSat-ADCS/build
 # Target rules for target CMakeFiles/ADCS.dir
 
 # All Build rule for target.
-CMakeFiles/ADCS.dir/all: Communications/CMakeFiles/Communications.dir/all
 CMakeFiles/ADCS.dir/all: IGRF12/CMakeFiles/IGRF12.dir/all
+CMakeFiles/ADCS.dir/all: Communications/CMakeFiles/Communications.dir/all
 	$(MAKE) -f CMakeFiles/ADCS.dir/build.make CMakeFiles/ADCS.dir/depend
 	$(MAKE) -f CMakeFiles/ADCS.dir/build.make CMakeFiles/ADCS.dir/build
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/james/Documents/CubeSat-ADCS/build/CMakeFiles --progress-num=1,2 "Built target ADCS"
