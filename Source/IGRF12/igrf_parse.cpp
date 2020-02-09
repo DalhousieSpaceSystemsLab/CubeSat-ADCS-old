@@ -4,8 +4,6 @@
  * SubSystem: ADCS
  * Date:   2019-11-22
  *
- * This file contains the main function for the ADCS module. 
- *
  */
 
 
