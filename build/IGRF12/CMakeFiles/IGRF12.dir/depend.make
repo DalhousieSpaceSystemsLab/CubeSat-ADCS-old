@@ -4,3 +4,9 @@
 IGRF12/CMakeFiles/IGRF12.dir/igrf12.cpp.o: /home/james/Documents/CubeSat-ADCS/Source/IGRF12/igrf12.cpp
 IGRF12/CMakeFiles/IGRF12.dir/igrf12.cpp.o: /home/james/Documents/CubeSat-ADCS/Source/IGRF12/igrf12.hpp
 
+IGRF12/CMakeFiles/IGRF12.dir/igrf_parse.cpp.o: /home/james/Documents/CubeSat-ADCS/Source/IGRF12/igrf12.hpp
+IGRF12/CMakeFiles/IGRF12.dir/igrf_parse.cpp.o: /home/james/Documents/CubeSat-ADCS/Source/IGRF12/igrf_parse.cpp
+
+IGRF12/CMakeFiles/IGRF12.dir/legendre.cpp.o: /home/james/Documents/CubeSat-ADCS/Source/IGRF12/igrf12.hpp
+IGRF12/CMakeFiles/IGRF12.dir/legendre.cpp.o: /home/james/Documents/CubeSat-ADCS/Source/IGRF12/legendre.cpp
+

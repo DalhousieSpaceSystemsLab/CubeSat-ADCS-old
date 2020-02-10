@@ -12,22 +12,17 @@ using namespace std;
 //legendre function variables
 //Inputs
 //desired degree to calculate
-int mDesired;
+// int mDesired;
 //desired order to calculate
-int nDesired;
+// int nDesired;
 //cosine of geocentric latitude
-double cosTheta;
+// double cosTheta;
 //sine of geocentric latitude
-double sinTheta;
+// double sinTheta;
 
 //Class for the legendre function
 class legendre {
 private:
-	//Outputs
-	//Schmidt semi-normalized legendre function
-	double pMNBar;
-	//partial derivative of Schmidt semi-normalized legendre function
-	double dpMNBar;
 	//function matrices
 	MatrixXf p;
 	MatrixXf dp;
@@ -36,11 +31,13 @@ private:
 	//other function variables
 	char delta;
 public:
+	//Schmidt semi-normalized legendre function
+	double pMNBar;
+	//partial derivative of Schmidt semi-normalized legendre function
+	double dpMNBar;
 	legendre(int mDesired, int nDesired, double sinTheta, double cosTheta );
 	void setDelta(int mDesired);
-	void calcPMN();
-	void calcdPMN();
-	void calcdPMNDesired();
+	void calcdPmnPmn( int nDesired, int mDesired, double sinTheta, double cosTheta);
 };
 /***************************************************************************/
 /* IGRF parser data structures, constants, and */

@@ -14,6 +14,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 
 add_subdirectory(IGRF12)
 add_subdirectory(Communications)
+add_subdirectory(Test)
 
 add_executable(ADCS main.cpp)
 

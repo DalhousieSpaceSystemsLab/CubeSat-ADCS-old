@@ -80,14 +80,14 @@ edit_cache/fast: edit_cache
 
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/james/Documents/CubeSat-ADCS/build/CMakeFiles /home/james/Documents/CubeSat-ADCS/build/CMakeFiles/progress.marks
-	$(MAKE) -f CMakeFiles/Makefile2 all
+	cd /home/james/Documents/CubeSat-ADCS/build && $(CMAKE_COMMAND) -E cmake_progress_start /home/james/Documents/CubeSat-ADCS/build/CMakeFiles /home/james/Documents/CubeSat-ADCS/build/Test/CMakeFiles/progress.marks
+	cd /home/james/Documents/CubeSat-ADCS/build && $(MAKE) -f CMakeFiles/Makefile2 Test/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/james/Documents/CubeSat-ADCS/build/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
 clean:
-	$(MAKE) -f CMakeFiles/Makefile2 clean
+	cd /home/james/Documents/CubeSat-ADCS/build && $(MAKE) -f CMakeFiles/Makefile2 Test/clean
 .PHONY : clean
 
 # The main clean target
@@ -97,70 +97,60 @@ clean/fast: clean
 
 # Prepare targets for installation.
 preinstall: all
-	$(MAKE) -f CMakeFiles/Makefile2 preinstall
+	cd /home/james/Documents/CubeSat-ADCS/build && $(MAKE) -f CMakeFiles/Makefile2 Test/preinstall
 .PHONY : preinstall
 
 # Prepare targets for installation.
 preinstall/fast:
-	$(MAKE) -f CMakeFiles/Makefile2 preinstall
+	cd /home/james/Documents/CubeSat-ADCS/build && $(MAKE) -f CMakeFiles/Makefile2 Test/preinstall
 .PHONY : preinstall/fast
 
 # clear depends
 depend:
-	$(CMAKE_COMMAND) -H$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 1
+	cd /home/james/Documents/CubeSat-ADCS/build && $(CMAKE_COMMAND) -H$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 1
 .PHONY : depend
 
-#=============================================================================
-# Target rules for targets named ADCS
+# Convenience name for target.
+Test/CMakeFiles/CubeSat-ADCS_Test.dir/rule:
+	cd /home/james/Documents/CubeSat-ADCS/build && $(MAKE) -f CMakeFiles/Makefile2 Test/CMakeFiles/CubeSat-ADCS_Test.dir/rule
+.PHONY : Test/CMakeFiles/CubeSat-ADCS_Test.dir/rule
 
-# Build rule for target.
-ADCS: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 ADCS
-.PHONY : ADCS
+# Convenience name for target.
+CubeSat-ADCS_Test: Test/CMakeFiles/CubeSat-ADCS_Test.dir/rule
 
-# fast build rule for target.
-ADCS/fast:
-	$(MAKE) -f CMakeFiles/ADCS.dir/build.make CMakeFiles/ADCS.dir/build
-.PHONY : ADCS/fast
-
-#=============================================================================
-# Target rules for targets named IGRF12
-
-# Build rule for target.
-IGRF12: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 IGRF12
-.PHONY : IGRF12
-
-# fast build rule for target.
-IGRF12/fast:
-	$(MAKE) -f IGRF12/CMakeFiles/IGRF12.dir/build.make IGRF12/CMakeFiles/IGRF12.dir/build
-.PHONY : IGRF12/fast
-
-#=============================================================================
-# Target rules for targets named Communications
-
-# Build rule for target.
-Communications: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 Communications
-.PHONY : Communications
-
-# fast build rule for target.
-Communications/fast:
-	$(MAKE) -f Communications/CMakeFiles/Communications.dir/build.make Communications/CMakeFiles/Communications.dir/build
-.PHONY : Communications/fast
-
-#=============================================================================
-# Target rules for targets named CubeSat-ADCS_Test
-
-# Build rule for target.
-CubeSat-ADCS_Test: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 CubeSat-ADCS_Test
 .PHONY : CubeSat-ADCS_Test
 
 # fast build rule for target.
 CubeSat-ADCS_Test/fast:
-	$(MAKE) -f Test/CMakeFiles/CubeSat-ADCS_Test.dir/build.make Test/CMakeFiles/CubeSat-ADCS_Test.dir/build
+	cd /home/james/Documents/CubeSat-ADCS/build && $(MAKE) -f Test/CMakeFiles/CubeSat-ADCS_Test.dir/build.make Test/CMakeFiles/CubeSat-ADCS_Test.dir/build
 .PHONY : CubeSat-ADCS_Test/fast
+
+legendreTest.o: legendreTest.cpp.o
+
+.PHONY : legendreTest.o
+
+# target to build an object file
+legendreTest.cpp.o:
+	cd /home/james/Documents/CubeSat-ADCS/build && $(MAKE) -f Test/CMakeFiles/CubeSat-ADCS_Test.dir/build.make Test/CMakeFiles/CubeSat-ADCS_Test.dir/legendreTest.cpp.o
+.PHONY : legendreTest.cpp.o
+
+legendreTest.i: legendreTest.cpp.i
+
+.PHONY : legendreTest.i
+
+# target to preprocess a source file
+legendreTest.cpp.i:
+	cd /home/james/Documents/CubeSat-ADCS/build && $(MAKE) -f Test/CMakeFiles/CubeSat-ADCS_Test.dir/build.make Test/CMakeFiles/CubeSat-ADCS_Test.dir/legendreTest.cpp.i
+.PHONY : legendreTest.cpp.i
+
+legendreTest.s: legendreTest.cpp.s
+
+.PHONY : legendreTest.s
+
+# target to generate assembly for a file
+legendreTest.cpp.s:
+	cd /home/james/Documents/CubeSat-ADCS/build && $(MAKE) -f Test/CMakeFiles/CubeSat-ADCS_Test.dir/build.make Test/CMakeFiles/CubeSat-ADCS_Test.dir/legendreTest.cpp.s
+.PHONY : legendreTest.cpp.s
 
 main.o: main.cpp.o
 
@@ -168,7 +158,7 @@ main.o: main.cpp.o
 
 # target to build an object file
 main.cpp.o:
-	$(MAKE) -f CMakeFiles/ADCS.dir/build.make CMakeFiles/ADCS.dir/main.cpp.o
+	cd /home/james/Documents/CubeSat-ADCS/build && $(MAKE) -f Test/CMakeFiles/CubeSat-ADCS_Test.dir/build.make Test/CMakeFiles/CubeSat-ADCS_Test.dir/main.cpp.o
 .PHONY : main.cpp.o
 
 main.i: main.cpp.i
@@ -177,7 +167,7 @@ main.i: main.cpp.i
 
 # target to preprocess a source file
 main.cpp.i:
-	$(MAKE) -f CMakeFiles/ADCS.dir/build.make CMakeFiles/ADCS.dir/main.cpp.i
+	cd /home/james/Documents/CubeSat-ADCS/build && $(MAKE) -f Test/CMakeFiles/CubeSat-ADCS_Test.dir/build.make Test/CMakeFiles/CubeSat-ADCS_Test.dir/main.cpp.i
 .PHONY : main.cpp.i
 
 main.s: main.cpp.s
@@ -186,7 +176,7 @@ main.s: main.cpp.s
 
 # target to generate assembly for a file
 main.cpp.s:
-	$(MAKE) -f CMakeFiles/ADCS.dir/build.make CMakeFiles/ADCS.dir/main.cpp.s
+	cd /home/james/Documents/CubeSat-ADCS/build && $(MAKE) -f Test/CMakeFiles/CubeSat-ADCS_Test.dir/build.make Test/CMakeFiles/CubeSat-ADCS_Test.dir/main.cpp.s
 .PHONY : main.cpp.s
 
 # Help Target
@@ -196,11 +186,11 @@ help:
 	@echo "... clean"
 	@echo "... depend"
 	@echo "... rebuild_cache"
-	@echo "... ADCS"
-	@echo "... edit_cache"
-	@echo "... IGRF12"
-	@echo "... Communications"
 	@echo "... CubeSat-ADCS_Test"
+	@echo "... edit_cache"
+	@echo "... legendreTest.o"
+	@echo "... legendreTest.i"
+	@echo "... legendreTest.s"
 	@echo "... main.o"
 	@echo "... main.i"
 	@echo "... main.s"
@@ -215,6 +205,6 @@ help:
 # No rule that depends on this can have commands that come from listfiles
 # because they might be regenerated.
 cmake_check_build_system:
-	$(CMAKE_COMMAND) -H$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 0
+	cd /home/james/Documents/CubeSat-ADCS/build && $(CMAKE_COMMAND) -H$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 0
 .PHONY : cmake_check_build_system
 

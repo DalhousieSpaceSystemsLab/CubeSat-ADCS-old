@@ -19,5 +19,9 @@ This repository contains the attitude determination and control subsystem (ADCS)
 - [CMake](https://cmake.org/)
 - [Eigen](http://eigen.tuxfamily.org/index.php?title=Main_Page)
   - C++ library for vector and matrix operations
+  - Add to your system library by runnning _sudo apt install libeigen3-dev_
+- [googletest] (https://github.com/google/googletest/)
+  - Library used for running tests with cmake during build.
+  - Add to your system library by running _sudo apt-get install -y googletest_ 
 - [Dalhousie LORIS CubeSat GPS software](https://github.com/DalhousieSpaceSystemsLab/CubeSat-GPS)
   - To set initial states for and periodically update the onboard orbit, environment, and attitude models 

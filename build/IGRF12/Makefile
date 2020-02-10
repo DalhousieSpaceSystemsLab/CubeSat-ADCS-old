@@ -152,6 +152,60 @@ igrf12.cpp.s:
 	cd /home/james/Documents/CubeSat-ADCS/build && $(MAKE) -f IGRF12/CMakeFiles/IGRF12.dir/build.make IGRF12/CMakeFiles/IGRF12.dir/igrf12.cpp.s
 .PHONY : igrf12.cpp.s
 
+igrf_parse.o: igrf_parse.cpp.o
+
+.PHONY : igrf_parse.o
+
+# target to build an object file
+igrf_parse.cpp.o:
+	cd /home/james/Documents/CubeSat-ADCS/build && $(MAKE) -f IGRF12/CMakeFiles/IGRF12.dir/build.make IGRF12/CMakeFiles/IGRF12.dir/igrf_parse.cpp.o
+.PHONY : igrf_parse.cpp.o
+
+igrf_parse.i: igrf_parse.cpp.i
+
+.PHONY : igrf_parse.i
+
+# target to preprocess a source file
+igrf_parse.cpp.i:
+	cd /home/james/Documents/CubeSat-ADCS/build && $(MAKE) -f IGRF12/CMakeFiles/IGRF12.dir/build.make IGRF12/CMakeFiles/IGRF12.dir/igrf_parse.cpp.i
+.PHONY : igrf_parse.cpp.i
+
+igrf_parse.s: igrf_parse.cpp.s
+
+.PHONY : igrf_parse.s
+
+# target to generate assembly for a file
+igrf_parse.cpp.s:
+	cd /home/james/Documents/CubeSat-ADCS/build && $(MAKE) -f IGRF12/CMakeFiles/IGRF12.dir/build.make IGRF12/CMakeFiles/IGRF12.dir/igrf_parse.cpp.s
+.PHONY : igrf_parse.cpp.s
+
+legendre.o: legendre.cpp.o
+
+.PHONY : legendre.o
+
+# target to build an object file
+legendre.cpp.o:
+	cd /home/james/Documents/CubeSat-ADCS/build && $(MAKE) -f IGRF12/CMakeFiles/IGRF12.dir/build.make IGRF12/CMakeFiles/IGRF12.dir/legendre.cpp.o
+.PHONY : legendre.cpp.o
+
+legendre.i: legendre.cpp.i
+
+.PHONY : legendre.i
+
+# target to preprocess a source file
+legendre.cpp.i:
+	cd /home/james/Documents/CubeSat-ADCS/build && $(MAKE) -f IGRF12/CMakeFiles/IGRF12.dir/build.make IGRF12/CMakeFiles/IGRF12.dir/legendre.cpp.i
+.PHONY : legendre.cpp.i
+
+legendre.s: legendre.cpp.s
+
+.PHONY : legendre.s
+
+# target to generate assembly for a file
+legendre.cpp.s:
+	cd /home/james/Documents/CubeSat-ADCS/build && $(MAKE) -f IGRF12/CMakeFiles/IGRF12.dir/build.make IGRF12/CMakeFiles/IGRF12.dir/legendre.cpp.s
+.PHONY : legendre.cpp.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -164,6 +218,12 @@ help:
 	@echo "... igrf12.o"
 	@echo "... igrf12.i"
 	@echo "... igrf12.s"
+	@echo "... igrf_parse.o"
+	@echo "... igrf_parse.i"
+	@echo "... igrf_parse.s"
+	@echo "... legendre.o"
+	@echo "... legendre.i"
+	@echo "... legendre.s"
 .PHONY : help
 
 

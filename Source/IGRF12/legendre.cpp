@@ -24,10 +24,10 @@ legendre::legendre(int mDesired, int nDesired, double sinTheta, double cosTheta)
 	p.resize(nDesired,mDesired);
 	dp.resize(nDesired, mDesired);
 	//calculate values
-	calcdPmnPmn();
+	calcdPmnPmn(nDesired, mDesired, sinTheta, cosTheta);
 }
 
-void legendre::setDelta(int mDes) {
+void legendre::setDelta(int mDesired) {
 	if (mDesired == 0) {
 		delta = 1;
 	}
@@ -37,7 +37,7 @@ void legendre::setDelta(int mDes) {
 	return;
 }
 
-void legendre::calcdPmnPmn() {
+void legendre::calcdPmnPmn(int nDesired, int mDesired, double sinTheta, double cosTheta) {
 	//recursive formula based off of Schmidt semi/quasi-normalized Legendre polynomial function
 	//formulated by Anna Wailand
 	if (nDesired == 0 && mDesired == 0) {

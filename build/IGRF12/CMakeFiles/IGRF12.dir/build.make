@@ -57,9 +57,33 @@ include IGRF12/CMakeFiles/IGRF12.dir/progress.make
 # Include the compile flags for this target's objects.
 include IGRF12/CMakeFiles/IGRF12.dir/flags.make
 
+IGRF12/CMakeFiles/IGRF12.dir/igrf_parse.cpp.o: IGRF12/CMakeFiles/IGRF12.dir/flags.make
+IGRF12/CMakeFiles/IGRF12.dir/igrf_parse.cpp.o: /home/james/Documents/CubeSat-ADCS/Source/IGRF12/igrf_parse.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/james/Documents/CubeSat-ADCS/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object IGRF12/CMakeFiles/IGRF12.dir/igrf_parse.cpp.o"
+	cd /home/james/Documents/CubeSat-ADCS/build/IGRF12 && /usr/bin/g++-7  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/IGRF12.dir/igrf_parse.cpp.o -c /home/james/Documents/CubeSat-ADCS/Source/IGRF12/igrf_parse.cpp
+
+IGRF12/CMakeFiles/IGRF12.dir/igrf_parse.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/IGRF12.dir/igrf_parse.cpp.i"
+	cd /home/james/Documents/CubeSat-ADCS/build/IGRF12 && /usr/bin/g++-7 $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/james/Documents/CubeSat-ADCS/Source/IGRF12/igrf_parse.cpp > CMakeFiles/IGRF12.dir/igrf_parse.cpp.i
+
+IGRF12/CMakeFiles/IGRF12.dir/igrf_parse.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/IGRF12.dir/igrf_parse.cpp.s"
+	cd /home/james/Documents/CubeSat-ADCS/build/IGRF12 && /usr/bin/g++-7 $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/james/Documents/CubeSat-ADCS/Source/IGRF12/igrf_parse.cpp -o CMakeFiles/IGRF12.dir/igrf_parse.cpp.s
+
+IGRF12/CMakeFiles/IGRF12.dir/igrf_parse.cpp.o.requires:
+
+.PHONY : IGRF12/CMakeFiles/IGRF12.dir/igrf_parse.cpp.o.requires
+
+IGRF12/CMakeFiles/IGRF12.dir/igrf_parse.cpp.o.provides: IGRF12/CMakeFiles/IGRF12.dir/igrf_parse.cpp.o.requires
+	$(MAKE) -f IGRF12/CMakeFiles/IGRF12.dir/build.make IGRF12/CMakeFiles/IGRF12.dir/igrf_parse.cpp.o.provides.build
+.PHONY : IGRF12/CMakeFiles/IGRF12.dir/igrf_parse.cpp.o.provides
+
+IGRF12/CMakeFiles/IGRF12.dir/igrf_parse.cpp.o.provides.build: IGRF12/CMakeFiles/IGRF12.dir/igrf_parse.cpp.o
+
+
 IGRF12/CMakeFiles/IGRF12.dir/igrf12.cpp.o: IGRF12/CMakeFiles/IGRF12.dir/flags.make
 IGRF12/CMakeFiles/IGRF12.dir/igrf12.cpp.o: /home/james/Documents/CubeSat-ADCS/Source/IGRF12/igrf12.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/james/Documents/CubeSat-ADCS/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object IGRF12/CMakeFiles/IGRF12.dir/igrf12.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/james/Documents/CubeSat-ADCS/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object IGRF12/CMakeFiles/IGRF12.dir/igrf12.cpp.o"
 	cd /home/james/Documents/CubeSat-ADCS/build/IGRF12 && /usr/bin/g++-7  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/IGRF12.dir/igrf12.cpp.o -c /home/james/Documents/CubeSat-ADCS/Source/IGRF12/igrf12.cpp
 
 IGRF12/CMakeFiles/IGRF12.dir/igrf12.cpp.i: cmake_force
@@ -81,17 +105,45 @@ IGRF12/CMakeFiles/IGRF12.dir/igrf12.cpp.o.provides: IGRF12/CMakeFiles/IGRF12.dir
 IGRF12/CMakeFiles/IGRF12.dir/igrf12.cpp.o.provides.build: IGRF12/CMakeFiles/IGRF12.dir/igrf12.cpp.o
 
 
+IGRF12/CMakeFiles/IGRF12.dir/legendre.cpp.o: IGRF12/CMakeFiles/IGRF12.dir/flags.make
+IGRF12/CMakeFiles/IGRF12.dir/legendre.cpp.o: /home/james/Documents/CubeSat-ADCS/Source/IGRF12/legendre.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/james/Documents/CubeSat-ADCS/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object IGRF12/CMakeFiles/IGRF12.dir/legendre.cpp.o"
+	cd /home/james/Documents/CubeSat-ADCS/build/IGRF12 && /usr/bin/g++-7  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/IGRF12.dir/legendre.cpp.o -c /home/james/Documents/CubeSat-ADCS/Source/IGRF12/legendre.cpp
+
+IGRF12/CMakeFiles/IGRF12.dir/legendre.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/IGRF12.dir/legendre.cpp.i"
+	cd /home/james/Documents/CubeSat-ADCS/build/IGRF12 && /usr/bin/g++-7 $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/james/Documents/CubeSat-ADCS/Source/IGRF12/legendre.cpp > CMakeFiles/IGRF12.dir/legendre.cpp.i
+
+IGRF12/CMakeFiles/IGRF12.dir/legendre.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/IGRF12.dir/legendre.cpp.s"
+	cd /home/james/Documents/CubeSat-ADCS/build/IGRF12 && /usr/bin/g++-7 $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/james/Documents/CubeSat-ADCS/Source/IGRF12/legendre.cpp -o CMakeFiles/IGRF12.dir/legendre.cpp.s
+
+IGRF12/CMakeFiles/IGRF12.dir/legendre.cpp.o.requires:
+
+.PHONY : IGRF12/CMakeFiles/IGRF12.dir/legendre.cpp.o.requires
+
+IGRF12/CMakeFiles/IGRF12.dir/legendre.cpp.o.provides: IGRF12/CMakeFiles/IGRF12.dir/legendre.cpp.o.requires
+	$(MAKE) -f IGRF12/CMakeFiles/IGRF12.dir/build.make IGRF12/CMakeFiles/IGRF12.dir/legendre.cpp.o.provides.build
+.PHONY : IGRF12/CMakeFiles/IGRF12.dir/legendre.cpp.o.provides
+
+IGRF12/CMakeFiles/IGRF12.dir/legendre.cpp.o.provides.build: IGRF12/CMakeFiles/IGRF12.dir/legendre.cpp.o
+
+
 # Object files for target IGRF12
 IGRF12_OBJECTS = \
-"CMakeFiles/IGRF12.dir/igrf12.cpp.o"
+"CMakeFiles/IGRF12.dir/igrf_parse.cpp.o" \
+"CMakeFiles/IGRF12.dir/igrf12.cpp.o" \
+"CMakeFiles/IGRF12.dir/legendre.cpp.o"
 
 # External object files for target IGRF12
 IGRF12_EXTERNAL_OBJECTS =
 
+IGRF12/libIGRF12.a: IGRF12/CMakeFiles/IGRF12.dir/igrf_parse.cpp.o
 IGRF12/libIGRF12.a: IGRF12/CMakeFiles/IGRF12.dir/igrf12.cpp.o
+IGRF12/libIGRF12.a: IGRF12/CMakeFiles/IGRF12.dir/legendre.cpp.o
 IGRF12/libIGRF12.a: IGRF12/CMakeFiles/IGRF12.dir/build.make
 IGRF12/libIGRF12.a: IGRF12/CMakeFiles/IGRF12.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/james/Documents/CubeSat-ADCS/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Linking CXX static library libIGRF12.a"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/james/Documents/CubeSat-ADCS/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Linking CXX static library libIGRF12.a"
 	cd /home/james/Documents/CubeSat-ADCS/build/IGRF12 && $(CMAKE_COMMAND) -P CMakeFiles/IGRF12.dir/cmake_clean_target.cmake
 	cd /home/james/Documents/CubeSat-ADCS/build/IGRF12 && $(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/IGRF12.dir/link.txt --verbose=$(VERBOSE)
 
@@ -100,7 +152,9 @@ IGRF12/CMakeFiles/IGRF12.dir/build: IGRF12/libIGRF12.a
 
 .PHONY : IGRF12/CMakeFiles/IGRF12.dir/build
 
+IGRF12/CMakeFiles/IGRF12.dir/requires: IGRF12/CMakeFiles/IGRF12.dir/igrf_parse.cpp.o.requires
 IGRF12/CMakeFiles/IGRF12.dir/requires: IGRF12/CMakeFiles/IGRF12.dir/igrf12.cpp.o.requires
+IGRF12/CMakeFiles/IGRF12.dir/requires: IGRF12/CMakeFiles/IGRF12.dir/legendre.cpp.o.requires
 
 .PHONY : IGRF12/CMakeFiles/IGRF12.dir/requires
 

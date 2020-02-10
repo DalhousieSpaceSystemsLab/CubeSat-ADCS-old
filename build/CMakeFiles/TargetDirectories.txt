@@ -7,3 +7,6 @@
 /home/james/Documents/CubeSat-ADCS/build/Communications/CMakeFiles/rebuild_cache.dir
 /home/james/Documents/CubeSat-ADCS/build/Communications/CMakeFiles/Communications.dir
 /home/james/Documents/CubeSat-ADCS/build/Communications/CMakeFiles/edit_cache.dir
+/home/james/Documents/CubeSat-ADCS/build/Test/CMakeFiles/rebuild_cache.dir
+/home/james/Documents/CubeSat-ADCS/build/Test/CMakeFiles/CubeSat-ADCS_Test.dir
+/home/james/Documents/CubeSat-ADCS/build/Test/CMakeFiles/edit_cache.dir
