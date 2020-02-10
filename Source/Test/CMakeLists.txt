@@ -9,7 +9,8 @@ set(BINARY ${CMAKE_PROJECT_NAME}_Test)
 enable_testing()
 
 #make all files visible
-set(SOURCES legendreTest.cpp)
+set(SOURCES main.cpp
+            legendreTest.cpp)
 
 add_executable(${BINARY} ${SOURCES})
 add_test(NAME ${BINARY}, COMMAND ${BINARY})
@@ -18,7 +19,7 @@ find_package(GTest REQUIRED)
 include_directories(${GTEST_INCLUDE_DIRS})
 
 target_link_libraries(${BINARY} PUBLIC IGRF12
-                                ${GTEST_LIBRARIES} pthread)
+                                    ${GTEST_LIBRARIES} pthread)
 
 target_include_directories(${BINARY} PUBLIC 
                                     "${PROJECT_SOURCE_DIR}/IGRF12")

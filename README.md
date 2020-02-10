@@ -22,6 +22,11 @@ This repository contains the attitude determination and control subsystem (ADCS)
   - Add to your system library by runnning _sudo apt install libeigen3-dev_
 - [googletest] (https://github.com/google/googletest/)
   - Library used for running tests with cmake during build.
-  - Add to your system library by running _sudo apt-get install -y googletest_ 
+  - Add to your system library on linux by running 
+  - _sudo apt-get install libgtest-dev_ 
+  - _cd usr/src/gtest_
+  - _sudo cmake CMakeLists.txt_
+  - _sudo make_
+  - _sudo cp *.a /usr/lib_
 - [Dalhousie LORIS CubeSat GPS software](https://github.com/DalhousieSpaceSystemsLab/CubeSat-GPS)
   - To set initial states for and periodically update the onboard orbit, environment, and attitude models 

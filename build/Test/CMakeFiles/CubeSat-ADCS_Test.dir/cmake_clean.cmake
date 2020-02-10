@@ -1,4 +1,5 @@
 file(REMOVE_RECURSE
+  "CMakeFiles/CubeSat-ADCS_Test.dir/main.cpp.o"
   "CMakeFiles/CubeSat-ADCS_Test.dir/legendreTest.cpp.o"
   "CubeSat-ADCS_Test.pdb"
   "CubeSat-ADCS_Test"

@@ -24,8 +24,6 @@ float SV_h[MAX_MN_VALUE][MAX_MN_VALUE];		// secular variation of h (nT/year)
 
 using namespace std;
 
-int Parse_IGRF(void);
-
 int Parse_IGRF(void) {
 	/************************************************************************
 	Description: This function parses the IGRF.txt file which contains the
