@@ -5,7 +5,6 @@ set(CMAKE_DEPENDS_LANGUAGES
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_CXX
   "/home/james/Documents/CubeSat-ADCS/Source/Test/legendreTest.cpp" "/home/james/Documents/CubeSat-ADCS/build/Test/CMakeFiles/CubeSat-ADCS_Test.dir/legendreTest.cpp.o"
-  "/home/james/Documents/CubeSat-ADCS/Source/Test/main.cpp" "/home/james/Documents/CubeSat-ADCS/build/Test/CMakeFiles/CubeSat-ADCS_Test.dir/main.cpp.o"
   )
 set(CMAKE_CXX_COMPILER_ID "GNU")
 

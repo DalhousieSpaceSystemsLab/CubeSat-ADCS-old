@@ -122,7 +122,7 @@ IGRF12/preinstall:
 IGRF12/CMakeFiles/IGRF12.dir/all:
 	$(MAKE) -f IGRF12/CMakeFiles/IGRF12.dir/build.make IGRF12/CMakeFiles/IGRF12.dir/depend
 	$(MAKE) -f IGRF12/CMakeFiles/IGRF12.dir/build.make IGRF12/CMakeFiles/IGRF12.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/james/Documents/CubeSat-ADCS/build/CMakeFiles --progress-num=8,9,10,11 "Built target IGRF12"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/james/Documents/CubeSat-ADCS/build/CMakeFiles --progress-num=7,8,9,10 "Built target IGRF12"
 .PHONY : IGRF12/CMakeFiles/IGRF12.dir/all
 
 # Include target in all.
@@ -232,7 +232,7 @@ Test/preinstall:
 Test/CMakeFiles/CubeSat-ADCS_Test.dir/all: IGRF12/CMakeFiles/IGRF12.dir/all
 	$(MAKE) -f Test/CMakeFiles/CubeSat-ADCS_Test.dir/build.make Test/CMakeFiles/CubeSat-ADCS_Test.dir/depend
 	$(MAKE) -f Test/CMakeFiles/CubeSat-ADCS_Test.dir/build.make Test/CMakeFiles/CubeSat-ADCS_Test.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/james/Documents/CubeSat-ADCS/build/CMakeFiles --progress-num=5,6,7 "Built target CubeSat-ADCS_Test"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/james/Documents/CubeSat-ADCS/build/CMakeFiles --progress-num=5,6 "Built target CubeSat-ADCS_Test"
 .PHONY : Test/CMakeFiles/CubeSat-ADCS_Test.dir/all
 
 # Include target in all.
@@ -242,7 +242,7 @@ all: Test/CMakeFiles/CubeSat-ADCS_Test.dir/all
 
 # Build rule for subdir invocation for target.
 Test/CMakeFiles/CubeSat-ADCS_Test.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/james/Documents/CubeSat-ADCS/build/CMakeFiles 7
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/james/Documents/CubeSat-ADCS/build/CMakeFiles 6
 	$(MAKE) -f CMakeFiles/Makefile2 Test/CMakeFiles/CubeSat-ADCS_Test.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/james/Documents/CubeSat-ADCS/build/CMakeFiles 0
 .PHONY : Test/CMakeFiles/CubeSat-ADCS_Test.dir/rule

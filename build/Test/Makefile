@@ -152,33 +152,6 @@ legendreTest.cpp.s:
 	cd /home/james/Documents/CubeSat-ADCS/build && $(MAKE) -f Test/CMakeFiles/CubeSat-ADCS_Test.dir/build.make Test/CMakeFiles/CubeSat-ADCS_Test.dir/legendreTest.cpp.s
 .PHONY : legendreTest.cpp.s
 
-main.o: main.cpp.o
-
-.PHONY : main.o
-
-# target to build an object file
-main.cpp.o:
-	cd /home/james/Documents/CubeSat-ADCS/build && $(MAKE) -f Test/CMakeFiles/CubeSat-ADCS_Test.dir/build.make Test/CMakeFiles/CubeSat-ADCS_Test.dir/main.cpp.o
-.PHONY : main.cpp.o
-
-main.i: main.cpp.i
-
-.PHONY : main.i
-
-# target to preprocess a source file
-main.cpp.i:
-	cd /home/james/Documents/CubeSat-ADCS/build && $(MAKE) -f Test/CMakeFiles/CubeSat-ADCS_Test.dir/build.make Test/CMakeFiles/CubeSat-ADCS_Test.dir/main.cpp.i
-.PHONY : main.cpp.i
-
-main.s: main.cpp.s
-
-.PHONY : main.s
-
-# target to generate assembly for a file
-main.cpp.s:
-	cd /home/james/Documents/CubeSat-ADCS/build && $(MAKE) -f Test/CMakeFiles/CubeSat-ADCS_Test.dir/build.make Test/CMakeFiles/CubeSat-ADCS_Test.dir/main.cpp.s
-.PHONY : main.cpp.s
-
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -191,9 +164,6 @@ help:
 	@echo "... legendreTest.o"
 	@echo "... legendreTest.i"
 	@echo "... legendreTest.s"
-	@echo "... main.o"
-	@echo "... main.i"
-	@echo "... main.s"
 .PHONY : help
 
 

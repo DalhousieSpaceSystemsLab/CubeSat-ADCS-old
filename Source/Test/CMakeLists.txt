@@ -9,12 +9,16 @@ set(BINARY ${CMAKE_PROJECT_NAME}_Test)
 enable_testing()
 
 #make all files visible
-file(GLOB_RECURSE TEST_SOURCES LIST_DIRECTORIES false *.hpp *.cpp)
-set(SOURCES ${TEST_SOURCES})
+set(SOURCES legendreTest.cpp)
 
-add_executable(${BINARY} ${TEST_SOURCES})
+add_executable(${BINARY} ${SOURCES})
 add_test(NAME ${BINARY}, COMMAND ${BINARY})
 
-target_link_libraries(${BINARY} PUBLIC IGRF12)
+find_package(GTest REQUIRED)
+include_directories(${GTEST_INCLUDE_DIRS})
 
-target_include_directories(${BINARY} PUBLIC "${PROJECT_SOURCE_DIR}/IGRF12")
+target_link_libraries(${BINARY} PUBLIC IGRF12
+                                ${GTEST_LIBRARIES} pthread)
+
+target_include_directories(${BINARY} PUBLIC 
+                                    "${PROJECT_SOURCE_DIR}/IGRF12")

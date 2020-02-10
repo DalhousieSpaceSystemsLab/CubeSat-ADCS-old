@@ -4,5 +4,3 @@
 Test/CMakeFiles/CubeSat-ADCS_Test.dir/legendreTest.cpp.o: /home/james/Documents/CubeSat-ADCS/Source/IGRF12/igrf12.hpp
 Test/CMakeFiles/CubeSat-ADCS_Test.dir/legendreTest.cpp.o: /home/james/Documents/CubeSat-ADCS/Source/Test/legendreTest.cpp
 
-Test/CMakeFiles/CubeSat-ADCS_Test.dir/main.cpp.o: /home/james/Documents/CubeSat-ADCS/Source/Test/main.cpp
-

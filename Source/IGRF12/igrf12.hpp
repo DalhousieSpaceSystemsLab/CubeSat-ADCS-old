@@ -46,6 +46,7 @@ public:
 #define debugigrf					// outputs to terminal for testing igrf	
 #define PI 3.14159265
 #define DegToRad(X)	X*PI/180
+#define RadToDeg(X) X*180/PI
 constexpr auto a_ref = 6378.137;	// km, semimajor axis of reference model ellipsoide;
 constexpr auto f = 1/298.257223563;	// wgs84Ellipsoid reference ellipsoid for Earth flattening;
 const double e2 = 2*f-pow(f,2);       // eccentricity^2, Ref C, p6

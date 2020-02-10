@@ -24,7 +24,3 @@ gtest/gtest.h
 igrf12.hpp
 /home/james/Documents/CubeSat-ADCS/Source/Test/igrf12.hpp
 
-/home/james/Documents/CubeSat-ADCS/Source/Test/main.cpp
-gtest/gtest.h
--
-
