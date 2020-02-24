@@ -20,7 +20,7 @@ This repository contains the attitude determination and control subsystem (ADCS)
 - [Eigen](http://eigen.tuxfamily.org/index.php?title=Main_Page)
   - C++ library for vector and matrix operations
   - Add to your system library by runnning _sudo apt install libeigen3-dev_
-- [googletest] (https://github.com/google/googletest/)
+- [Google Test](https://github.com/google/googletest/)
   - Library used for running tests with cmake during build.
   - Add to your system library on linux by running 
   - _sudo apt-get install libgtest-dev_ 
