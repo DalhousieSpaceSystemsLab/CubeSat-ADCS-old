@@ -63,8 +63,9 @@ CMAKE_BINARY_DIR = /home/james/Documents/CubeSat-ADCS/build
 # Target rules for target CMakeFiles/ADCS.dir
 
 # All Build rule for target.
-CMakeFiles/ADCS.dir/all: Communications/CMakeFiles/Communications.dir/all
+CMakeFiles/ADCS.dir/all: sunVector/CMakeFiles/SunVector.dir/all
 CMakeFiles/ADCS.dir/all: IGRF12/CMakeFiles/IGRF12.dir/all
+CMakeFiles/ADCS.dir/all: Communications/CMakeFiles/Communications.dir/all
 	$(MAKE) -f CMakeFiles/ADCS.dir/build.make CMakeFiles/ADCS.dir/depend
 	$(MAKE) -f CMakeFiles/ADCS.dir/build.make CMakeFiles/ADCS.dir/build
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/james/Documents/CubeSat-ADCS/build/CMakeFiles --progress-num=1,2 "Built target ADCS"
@@ -77,7 +78,7 @@ all: CMakeFiles/ADCS.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/ADCS.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/james/Documents/CubeSat-ADCS/build/CMakeFiles 8
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/james/Documents/CubeSat-ADCS/build/CMakeFiles 10
 	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/ADCS.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/james/Documents/CubeSat-ADCS/build/CMakeFiles 0
 .PHONY : CMakeFiles/ADCS.dir/rule
@@ -259,6 +260,61 @@ Test/CMakeFiles/CubeSat-ADCS_Test.dir/clean:
 
 # clean rule for target.
 clean: Test/CMakeFiles/CubeSat-ADCS_Test.dir/clean
+
+.PHONY : clean
+
+#=============================================================================
+# Directory level rules for directory sunVector
+
+# Convenience name for "all" pass in the directory.
+sunVector/all: sunVector/CMakeFiles/SunVector.dir/all
+
+.PHONY : sunVector/all
+
+# Convenience name for "clean" pass in the directory.
+sunVector/clean: sunVector/CMakeFiles/SunVector.dir/clean
+
+.PHONY : sunVector/clean
+
+# Convenience name for "preinstall" pass in the directory.
+sunVector/preinstall:
+
+.PHONY : sunVector/preinstall
+
+#=============================================================================
+# Target rules for target sunVector/CMakeFiles/SunVector.dir
+
+# All Build rule for target.
+sunVector/CMakeFiles/SunVector.dir/all:
+	$(MAKE) -f sunVector/CMakeFiles/SunVector.dir/build.make sunVector/CMakeFiles/SunVector.dir/depend
+	$(MAKE) -f sunVector/CMakeFiles/SunVector.dir/build.make sunVector/CMakeFiles/SunVector.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/james/Documents/CubeSat-ADCS/build/CMakeFiles --progress-num=12,13 "Built target SunVector"
+.PHONY : sunVector/CMakeFiles/SunVector.dir/all
+
+# Include target in all.
+all: sunVector/CMakeFiles/SunVector.dir/all
+
+.PHONY : all
+
+# Build rule for subdir invocation for target.
+sunVector/CMakeFiles/SunVector.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/james/Documents/CubeSat-ADCS/build/CMakeFiles 2
+	$(MAKE) -f CMakeFiles/Makefile2 sunVector/CMakeFiles/SunVector.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/james/Documents/CubeSat-ADCS/build/CMakeFiles 0
+.PHONY : sunVector/CMakeFiles/SunVector.dir/rule
+
+# Convenience name for target.
+SunVector: sunVector/CMakeFiles/SunVector.dir/rule
+
+.PHONY : SunVector
+
+# clean rule for target.
+sunVector/CMakeFiles/SunVector.dir/clean:
+	$(MAKE) -f sunVector/CMakeFiles/SunVector.dir/build.make sunVector/CMakeFiles/SunVector.dir/clean
+.PHONY : sunVector/CMakeFiles/SunVector.dir/clean
+
+# clean rule for target.
+clean: sunVector/CMakeFiles/SunVector.dir/clean
 
 .PHONY : clean
 

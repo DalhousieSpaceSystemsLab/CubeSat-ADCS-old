@@ -2,8 +2,6 @@
 #include <gtest/gtest.h>
 #include "igrf12.hpp"
 
-using namespace std;
-
 TEST(igrf12_Test, Test1){
     //prepare legendre function
     legendre testLegendre(4,4,0.707,0.707);

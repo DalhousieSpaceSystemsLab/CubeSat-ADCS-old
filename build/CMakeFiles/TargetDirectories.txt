@@ -10,3 +10,6 @@
 /home/james/Documents/CubeSat-ADCS/build/Test/CMakeFiles/rebuild_cache.dir
 /home/james/Documents/CubeSat-ADCS/build/Test/CMakeFiles/CubeSat-ADCS_Test.dir
 /home/james/Documents/CubeSat-ADCS/build/Test/CMakeFiles/edit_cache.dir
+/home/james/Documents/CubeSat-ADCS/build/sunVector/CMakeFiles/rebuild_cache.dir
+/home/james/Documents/CubeSat-ADCS/build/sunVector/CMakeFiles/SunVector.dir
+/home/james/Documents/CubeSat-ADCS/build/sunVector/CMakeFiles/edit_cache.dir

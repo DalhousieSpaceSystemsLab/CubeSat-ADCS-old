@@ -24,7 +24,7 @@ legendre::legendre(int mDesired, int nDesired, double sinTheta, double cosTheta)
 	p.resize(nDesired,mDesired);
 	dp.resize(nDesired, mDesired);
 	//calculate values
-	calcdPmnPmn(nDesired, mDesired, sinTheta, cosTheta);
+	//calcdPmnPmn(nDesired, mDesired, sinTheta, cosTheta);
 }
 
 void legendre::setDelta(int mDesired) {
@@ -37,7 +37,7 @@ void legendre::setDelta(int mDesired) {
 	return;
 }
 
-void legendre::calcdPmnPmn(int nDesired, int mDesired, double sinTheta, double cosTheta) {
+/*void legendre::calcdPmnPmn(int nDesired, int mDesired, double sinTheta, double cosTheta) {
 	//recursive formula based off of Schmidt semi/quasi-normalized Legendre polynomial function
 	//formulated by Anna Wailand
 	if (nDesired == 0 && mDesired == 0) {
@@ -77,11 +77,11 @@ void legendre::calcdPmnPmn(int nDesired, int mDesired, double sinTheta, double c
 				}
             }
         }
-		pMN = p(nDesired,mDesired);
-		dpMN = dp(nDesired,mDesired);
+		pMN = p(nDesired-1,mDesired-1);
+		dpMN = dp(nDesired-1,mDesired-1);
     }
 	//calculate pMNBar
 	pMNBar = sqrt((2-delta)*factorial(nDesired-mDesired)/factorial(nDesired+mDesired))*pMN;
 	//calculate dPMNBar by division to save recursion
 	dpMNBar = pMNBar*dpMN/pMN;
-} 
+}*/ 

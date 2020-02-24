@@ -1,7 +1,7 @@
 [
 {
   "directory": "/home/james/Documents/CubeSat-ADCS/build",
-  "command": "/usr/bin/g++-7   -I/home/james/Documents/CubeSat-ADCS/build -I/home/james/Documents/CubeSat-ADCS/Source/IGRF12 -I/home/james/Documents/CubeSat-ADCS/Source/Communications  -g   -std=gnu++11 -o CMakeFiles/ADCS.dir/main.cpp.o -c /home/james/Documents/CubeSat-ADCS/Source/main.cpp",
+  "command": "/usr/bin/g++-7   -I/home/james/Documents/CubeSat-ADCS/build -I/home/james/Documents/CubeSat-ADCS/Source/IGRF12 -I/home/james/Documents/CubeSat-ADCS/Source/Communications -I/home/james/Documents/CubeSat-ADCS/Source/sunVector  -g   -std=gnu++11 -o CMakeFiles/ADCS.dir/main.cpp.o -c /home/james/Documents/CubeSat-ADCS/Source/main.cpp",
   "file": "/home/james/Documents/CubeSat-ADCS/Source/main.cpp"
 },
 {
@@ -33,5 +33,10 @@
   "directory": "/home/james/Documents/CubeSat-ADCS/build/Test",
   "command": "/usr/bin/g++-7   -I/home/james/Documents/CubeSat-ADCS/Source/IGRF12  -g   -std=gnu++11 -o CMakeFiles/CubeSat-ADCS_Test.dir/legendreTest.cpp.o -c /home/james/Documents/CubeSat-ADCS/Source/Test/legendreTest.cpp",
   "file": "/home/james/Documents/CubeSat-ADCS/Source/Test/legendreTest.cpp"
+},
+{
+  "directory": "/home/james/Documents/CubeSat-ADCS/build/sunVector",
+  "command": "/usr/bin/g++-7    -g   -std=gnu++11 -o CMakeFiles/SunVector.dir/Sun_Vector_Estimate.cpp.o -c /home/james/Documents/CubeSat-ADCS/Source/sunVector/Sun_Vector_Estimate.cpp",
+  "file": "/home/james/Documents/CubeSat-ADCS/Source/sunVector/Sun_Vector_Estimate.cpp"
 }
 ]

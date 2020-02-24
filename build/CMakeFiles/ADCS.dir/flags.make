@@ -6,5 +6,5 @@ CXX_FLAGS = -g   -std=gnu++11
 
 CXX_DEFINES = 
 
-CXX_INCLUDES = -I/home/james/Documents/CubeSat-ADCS/build -I/home/james/Documents/CubeSat-ADCS/Source/IGRF12 -I/home/james/Documents/CubeSat-ADCS/Source/Communications 
+CXX_INCLUDES = -I/home/james/Documents/CubeSat-ADCS/build -I/home/james/Documents/CubeSat-ADCS/Source/IGRF12 -I/home/james/Documents/CubeSat-ADCS/Source/Communications -I/home/james/Documents/CubeSat-ADCS/Source/sunVector 
 

@@ -12,6 +12,7 @@ set(CMAKE_MAKEFILE_DEPENDS
   "/home/james/Documents/CubeSat-ADCS/Source/CubeSat_ADCSConfig.h.in"
   "/home/james/Documents/CubeSat-ADCS/Source/IGRF12/CMakeLists.txt"
   "/home/james/Documents/CubeSat-ADCS/Source/Test/CMakeLists.txt"
+  "/home/james/Documents/CubeSat-ADCS/Source/sunVector/CMakeLists.txt"
   "CMakeFiles/3.10.2/CMakeCCompiler.cmake"
   "CMakeFiles/3.10.2/CMakeCXXCompiler.cmake"
   "CMakeFiles/3.10.2/CMakeSystem.cmake"
@@ -54,6 +55,7 @@ set(CMAKE_MAKEFILE_PRODUCTS
   "IGRF12/CMakeFiles/CMakeDirectoryInformation.cmake"
   "Communications/CMakeFiles/CMakeDirectoryInformation.cmake"
   "Test/CMakeFiles/CMakeDirectoryInformation.cmake"
+  "sunVector/CMakeFiles/CMakeDirectoryInformation.cmake"
   )
 
 # Dependency information for all targets:
@@ -62,4 +64,5 @@ set(CMAKE_DEPEND_INFO_FILES
   "IGRF12/CMakeFiles/IGRF12.dir/DependInfo.cmake"
   "Communications/CMakeFiles/Communications.dir/DependInfo.cmake"
   "Test/CMakeFiles/CubeSat-ADCS_Test.dir/DependInfo.cmake"
+  "sunVector/CMakeFiles/SunVector.dir/DependInfo.cmake"
   )

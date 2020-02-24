@@ -9,6 +9,7 @@ set(BINARY ${CMAKE_PROJECT_NAME}_Test)
 enable_testing()
 
 #make all files visible
+#add your test file here
 set(SOURCES main.cpp
             legendreTest.cpp)
 

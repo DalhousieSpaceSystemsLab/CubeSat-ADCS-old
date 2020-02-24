@@ -80,14 +80,14 @@ edit_cache/fast: edit_cache
 
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/james/Documents/CubeSat-ADCS/build/CMakeFiles /home/james/Documents/CubeSat-ADCS/build/CMakeFiles/progress.marks
-	$(MAKE) -f CMakeFiles/Makefile2 all
+	cd /home/james/Documents/CubeSat-ADCS/build && $(CMAKE_COMMAND) -E cmake_progress_start /home/james/Documents/CubeSat-ADCS/build/CMakeFiles /home/james/Documents/CubeSat-ADCS/build/sunVector/CMakeFiles/progress.marks
+	cd /home/james/Documents/CubeSat-ADCS/build && $(MAKE) -f CMakeFiles/Makefile2 sunVector/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/james/Documents/CubeSat-ADCS/build/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
 clean:
-	$(MAKE) -f CMakeFiles/Makefile2 clean
+	cd /home/james/Documents/CubeSat-ADCS/build && $(MAKE) -f CMakeFiles/Makefile2 sunVector/clean
 .PHONY : clean
 
 # The main clean target
@@ -97,110 +97,60 @@ clean/fast: clean
 
 # Prepare targets for installation.
 preinstall: all
-	$(MAKE) -f CMakeFiles/Makefile2 preinstall
+	cd /home/james/Documents/CubeSat-ADCS/build && $(MAKE) -f CMakeFiles/Makefile2 sunVector/preinstall
 .PHONY : preinstall
 
 # Prepare targets for installation.
 preinstall/fast:
-	$(MAKE) -f CMakeFiles/Makefile2 preinstall
+	cd /home/james/Documents/CubeSat-ADCS/build && $(MAKE) -f CMakeFiles/Makefile2 sunVector/preinstall
 .PHONY : preinstall/fast
 
 # clear depends
 depend:
-	$(CMAKE_COMMAND) -H$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 1
+	cd /home/james/Documents/CubeSat-ADCS/build && $(CMAKE_COMMAND) -H$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 1
 .PHONY : depend
 
-#=============================================================================
-# Target rules for targets named ADCS
+# Convenience name for target.
+sunVector/CMakeFiles/SunVector.dir/rule:
+	cd /home/james/Documents/CubeSat-ADCS/build && $(MAKE) -f CMakeFiles/Makefile2 sunVector/CMakeFiles/SunVector.dir/rule
+.PHONY : sunVector/CMakeFiles/SunVector.dir/rule
 
-# Build rule for target.
-ADCS: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 ADCS
-.PHONY : ADCS
+# Convenience name for target.
+SunVector: sunVector/CMakeFiles/SunVector.dir/rule
 
-# fast build rule for target.
-ADCS/fast:
-	$(MAKE) -f CMakeFiles/ADCS.dir/build.make CMakeFiles/ADCS.dir/build
-.PHONY : ADCS/fast
-
-#=============================================================================
-# Target rules for targets named IGRF12
-
-# Build rule for target.
-IGRF12: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 IGRF12
-.PHONY : IGRF12
-
-# fast build rule for target.
-IGRF12/fast:
-	$(MAKE) -f IGRF12/CMakeFiles/IGRF12.dir/build.make IGRF12/CMakeFiles/IGRF12.dir/build
-.PHONY : IGRF12/fast
-
-#=============================================================================
-# Target rules for targets named Communications
-
-# Build rule for target.
-Communications: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 Communications
-.PHONY : Communications
-
-# fast build rule for target.
-Communications/fast:
-	$(MAKE) -f Communications/CMakeFiles/Communications.dir/build.make Communications/CMakeFiles/Communications.dir/build
-.PHONY : Communications/fast
-
-#=============================================================================
-# Target rules for targets named CubeSat-ADCS_Test
-
-# Build rule for target.
-CubeSat-ADCS_Test: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 CubeSat-ADCS_Test
-.PHONY : CubeSat-ADCS_Test
-
-# fast build rule for target.
-CubeSat-ADCS_Test/fast:
-	$(MAKE) -f Test/CMakeFiles/CubeSat-ADCS_Test.dir/build.make Test/CMakeFiles/CubeSat-ADCS_Test.dir/build
-.PHONY : CubeSat-ADCS_Test/fast
-
-#=============================================================================
-# Target rules for targets named SunVector
-
-# Build rule for target.
-SunVector: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 SunVector
 .PHONY : SunVector
 
 # fast build rule for target.
 SunVector/fast:
-	$(MAKE) -f sunVector/CMakeFiles/SunVector.dir/build.make sunVector/CMakeFiles/SunVector.dir/build
+	cd /home/james/Documents/CubeSat-ADCS/build && $(MAKE) -f sunVector/CMakeFiles/SunVector.dir/build.make sunVector/CMakeFiles/SunVector.dir/build
 .PHONY : SunVector/fast
 
-main.o: main.cpp.o
+Sun_Vector_Estimate.o: Sun_Vector_Estimate.cpp.o
 
-.PHONY : main.o
+.PHONY : Sun_Vector_Estimate.o
 
 # target to build an object file
-main.cpp.o:
-	$(MAKE) -f CMakeFiles/ADCS.dir/build.make CMakeFiles/ADCS.dir/main.cpp.o
-.PHONY : main.cpp.o
+Sun_Vector_Estimate.cpp.o:
+	cd /home/james/Documents/CubeSat-ADCS/build && $(MAKE) -f sunVector/CMakeFiles/SunVector.dir/build.make sunVector/CMakeFiles/SunVector.dir/Sun_Vector_Estimate.cpp.o
+.PHONY : Sun_Vector_Estimate.cpp.o
 
-main.i: main.cpp.i
+Sun_Vector_Estimate.i: Sun_Vector_Estimate.cpp.i
 
-.PHONY : main.i
+.PHONY : Sun_Vector_Estimate.i
 
 # target to preprocess a source file
-main.cpp.i:
-	$(MAKE) -f CMakeFiles/ADCS.dir/build.make CMakeFiles/ADCS.dir/main.cpp.i
-.PHONY : main.cpp.i
+Sun_Vector_Estimate.cpp.i:
+	cd /home/james/Documents/CubeSat-ADCS/build && $(MAKE) -f sunVector/CMakeFiles/SunVector.dir/build.make sunVector/CMakeFiles/SunVector.dir/Sun_Vector_Estimate.cpp.i
+.PHONY : Sun_Vector_Estimate.cpp.i
 
-main.s: main.cpp.s
+Sun_Vector_Estimate.s: Sun_Vector_Estimate.cpp.s
 
-.PHONY : main.s
+.PHONY : Sun_Vector_Estimate.s
 
 # target to generate assembly for a file
-main.cpp.s:
-	$(MAKE) -f CMakeFiles/ADCS.dir/build.make CMakeFiles/ADCS.dir/main.cpp.s
-.PHONY : main.cpp.s
+Sun_Vector_Estimate.cpp.s:
+	cd /home/james/Documents/CubeSat-ADCS/build && $(MAKE) -f sunVector/CMakeFiles/SunVector.dir/build.make sunVector/CMakeFiles/SunVector.dir/Sun_Vector_Estimate.cpp.s
+.PHONY : Sun_Vector_Estimate.cpp.s
 
 # Help Target
 help:
@@ -209,15 +159,11 @@ help:
 	@echo "... clean"
 	@echo "... depend"
 	@echo "... rebuild_cache"
-	@echo "... ADCS"
-	@echo "... edit_cache"
-	@echo "... IGRF12"
-	@echo "... Communications"
-	@echo "... CubeSat-ADCS_Test"
 	@echo "... SunVector"
-	@echo "... main.o"
-	@echo "... main.i"
-	@echo "... main.s"
+	@echo "... edit_cache"
+	@echo "... Sun_Vector_Estimate.o"
+	@echo "... Sun_Vector_Estimate.i"
+	@echo "... Sun_Vector_Estimate.s"
 .PHONY : help
 
 
@@ -229,6 +175,6 @@ help:
 # No rule that depends on this can have commands that come from listfiles
 # because they might be regenerated.
 cmake_check_build_system:
-	$(CMAKE_COMMAND) -H$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 0
+	cd /home/james/Documents/CubeSat-ADCS/build && $(CMAKE_COMMAND) -H$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 0
 .PHONY : cmake_check_build_system
 

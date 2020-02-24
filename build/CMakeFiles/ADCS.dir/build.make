@@ -92,6 +92,7 @@ ADCS: CMakeFiles/ADCS.dir/main.cpp.o
 ADCS: CMakeFiles/ADCS.dir/build.make
 ADCS: IGRF12/libIGRF12.a
 ADCS: Communications/libCommunications.a
+ADCS: sunVector/libSunVector.a
 ADCS: CMakeFiles/ADCS.dir/link.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/james/Documents/CubeSat-ADCS/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Linking CXX executable ADCS"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/ADCS.dir/link.txt --verbose=$(VERBOSE)

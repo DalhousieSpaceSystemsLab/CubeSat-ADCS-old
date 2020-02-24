@@ -13,12 +13,14 @@ set(CMAKE_CXX_TARGET_INCLUDE_PATH
   "."
   "/home/james/Documents/CubeSat-ADCS/Source/IGRF12"
   "/home/james/Documents/CubeSat-ADCS/Source/Communications"
+  "/home/james/Documents/CubeSat-ADCS/Source/sunVector"
   )
 
 # Targets to which this target links.
 set(CMAKE_TARGET_LINKED_INFO_FILES
   "/home/james/Documents/CubeSat-ADCS/build/IGRF12/CMakeFiles/IGRF12.dir/DependInfo.cmake"
   "/home/james/Documents/CubeSat-ADCS/build/Communications/CMakeFiles/Communications.dir/DependInfo.cmake"
+  "/home/james/Documents/CubeSat-ADCS/build/sunVector/CMakeFiles/SunVector.dir/DependInfo.cmake"
   )
 
 # Fortran module output directory.

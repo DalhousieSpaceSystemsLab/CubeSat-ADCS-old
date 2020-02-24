@@ -15,14 +15,17 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 add_subdirectory(IGRF12)
 add_subdirectory(Communications)
 add_subdirectory(Test)
+add_subdirectory(sunVector)
 
 add_executable(ADCS main.cpp)
 
 target_link_libraries(ADCS PUBLIC IGRF12)
 target_link_libraries(ADCS PUBLIC Communications)
+target_link_libraries(ADCS PUBLIC SunVector)
 
 target_include_directories(ADCS PUBLIC
                             "${PROJECT_BINARY_DIR}"
                             "${PROJECT_SOURCE_DIR}/IGRF12"
                             "${PROJECT_SOURCE_DIR}/Communications"
+                            "${PROJECT_SOURCE_DIR}/sunVector"
                             )
