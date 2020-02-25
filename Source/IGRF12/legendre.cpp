@@ -5,7 +5,7 @@
 
 //factorial function
 int factorial(int n){
-	if (n==1){
+	if (n<=1){
 		return 1;
 	}
 	else{
@@ -24,7 +24,8 @@ legendre::legendre(int mDesired, int nDesired, double sinTheta, double cosTheta)
 	p.resize(nDesired,mDesired);
 	dp.resize(nDesired, mDesired);
 	//calculate values
-	//calcdPmnPmn(nDesired, mDesired, sinTheta, cosTheta);
+	calcdPmnPmn(nDesired, mDesired, sinTheta, cosTheta);
+	return;
 }
 
 void legendre::setDelta(int mDesired) {
@@ -37,7 +38,7 @@ void legendre::setDelta(int mDesired) {
 	return;
 }
 
-/*void legendre::calcdPmnPmn(int nDesired, int mDesired, double sinTheta, double cosTheta) {
+void legendre::calcdPmnPmn(int nDesired, int mDesired, double sinTheta, double cosTheta) {
 	//recursive formula based off of Schmidt semi/quasi-normalized Legendre polynomial function
 	//formulated by Anna Wailand
 	if (nDesired == 0 && mDesired == 0) {
@@ -84,4 +85,5 @@ void legendre::setDelta(int mDesired) {
 	pMNBar = sqrt((2-delta)*factorial(nDesired-mDesired)/factorial(nDesired+mDesired))*pMN;
 	//calculate dPMNBar by division to save recursion
 	dpMNBar = pMNBar*dpMN/pMN;
-}*/ 
+	return;
+}

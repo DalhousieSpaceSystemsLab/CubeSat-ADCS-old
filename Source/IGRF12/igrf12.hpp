@@ -8,7 +8,6 @@
 //This file contains the declarations for functions and variables used in the IGRF12 model
 //Authored By: James Smith
 using namespace Eigen;
-using namespace std;
 //legendre function variables
 //Inputs
 //desired degree to calculate

@@ -31,7 +31,7 @@ double norm1(Eigen::MatrixXd A) {
 
 	//Finds the largest sum out of all of the columns.
 	double currentTopNum = 0;
-	for (unsigned int j = 0; j < size(sumOfCol); j++) {
+	for (unsigned int j = 0; j < sumOfCol.size(); j++) {
 		if (sumOfCol[j] > currentTopNum) {
 			currentTopNum = sumOfCol[j];
 		}
