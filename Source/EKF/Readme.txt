@@ -1,0 +1,1 @@
+After running Extended_Kalman_Filter.cpp while test is #defined, x_hat_kk_cpp.txt will be generated. Move this file to the Testing folder and it will be used as an input to the MATLAB files EKF_with_gyro_drv_w_cpp_test.ml and EKF_cpp_ver_plot.ml to generate plots of the resulting x_hat data against desired data from desired.txt.
