@@ -5,12 +5,10 @@
  *  Date: 2020-02-13
  *
  *	Description: Contains the function "sun_vector_estimate" which takes the
- *  integer of sun sensors above threshold number "r", sun sensor intensity
- *  eigen matrix "y", eigen matrix of sun sensors above threshold number "sens",
- *  eigen matrix of sun sensor normals "H", and returns sun vector estimate as
- *	an eigen matrix from a body-fixed frame "s_hat_BF".
+ *	sun sensor intensity eigen matrix "y", eigen matrix of sun sensor normals
+ *	"H", and returns sun vector estimate as an eigen matrix from a body-fixed
+ *	frame "s_hat_BF".
  */
-
 #include "Sun_Vector_Estimate.h"
 
 double norm1(Eigen::MatrixXd A) {
@@ -55,16 +53,27 @@ double rcond(Eigen::MatrixXd A) {
 	return rcond;
 }
 
-Eigen::MatrixXd sun_vector_estimate(int r, Eigen::MatrixXd y, Eigen::MatrixXd sens, Eigen::MatrixXd H) {
+Eigen::MatrixXd sun_vector_estimate(Eigen::MatrixXd y, Eigen::MatrixXd H) {
 	/****************************************
-	Takes the integer of sun sensors above threshold number "r", sun sensor intensity
-	eigen matrix "y", eigen matrix of sun sensors above threshold number "sens",
-	eigen matrix of sun sensor normals "H", and returns sun vector estimate as
- 	an eigen matrix from a body-fixed frame "s_hat_BF".
+	Takes sun sensor intensity eigen matrix "y", eigen matrix of sun sensor normals "H",
+	and returns sun vector estimate as an eigen matrix from a body-fixed frame "s_hat_BF".
 	
-	input: r, y, sens, H
+	input: y, H
 	output: s_hat_BF
 	****************************************/
+	
+	// Calculates eigen matrix of sun sensors above threshold number "sens" and integer "r"
+	// of sun sensors above threshold number 0.5.
+	Eigen::MatrixXd sens(1, 1);
+	int inc = 0;
+	for (int j = 0; j < 18; j++) {
+		if (y(j, 0) > 0.5) {
+			sens.conservativeResize(inc + 1, 1);
+			sens(inc, 0) = j + 1;
+			inc++;
+		}
+	}
+	int r = sens.rows();
 
 	Eigen::MatrixXd s_hat_BF(3, 1);
 
