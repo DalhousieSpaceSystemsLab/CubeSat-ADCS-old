@@ -11,13 +11,11 @@
 #ifndef SUN_VECTOR_ESTIMATE_H_
 #define SUN_VECTOR_ESTIMATE_H_
 
-#include <eigen3/Eigen/Dense>
+#include <Eigen/Dense>
 #include <vector>
 
 extern Eigen::MatrixXd sun_vector_estimate(
-	int r,
 	Eigen::MatrixXd y,
-	Eigen::MatrixXd sens,
 	Eigen::MatrixXd H
 );
 
