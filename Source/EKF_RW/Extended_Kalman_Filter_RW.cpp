@@ -1,7 +1,8 @@
-// Extended_Kalman_Filter_RW.cpp : This file contains the 'main' function.Program execution begins and ends there.
-//
+// Extended_Kalman_Filter_RW.cpp : This file contains the 'main' function. Program execution begins and ends there.
+
 #include <iostream>
 #include <fstream>
+#include <iomanip>
 #include <math.h>
 #include "Eigen/Core"
 #include "Eigen/Dense"
@@ -12,24 +13,24 @@
 using namespace std;
 
 //#define EKF_structures_debug	// outputs constant initialization to screen
-#define test					// used to test EFK model individually, generates text file x_hat_kk_cpp.txt
+#define test					// used to test EFK model individually, generates text file x_hat_kk_cpp.txt and P_kk_cpp.txt to be used as input to MATLAB plotting inside testing folder
 
 /* initialize constant matrices as 0's */
-Eigen::Matrix3f J = Eigen::Matrix3f::Zero();	// define a 3x3 float matrix
-Eigen::Matrix3f Jw = Eigen::Matrix3f::Zero();	// define a 3x3 float matrix
-Eigen::Matrix<float, 13, 13> Q = Eigen::Matrix<float, 13, 13>::Zero(); // assumed process noise covariance matrix Q
-Eigen::Matrix<float, 10, 10> R = Eigen::Matrix<float, 10, 10>::Zero();	// assumed measurement noise covariance matrix R
+Eigen::Matrix3d J = Eigen::Matrix3d::Zero();	// define a 3x3 double matrix
+Eigen::Matrix3d Jw = Eigen::Matrix3d::Zero();	// define a 3x3 double matrix
+Eigen::Matrix<double, 13, 13> Q = Eigen::Matrix<double, 13, 13>::Zero(); // assumed process noise covariance matrix Q
+Eigen::Matrix<double, 10, 10> R = Eigen::Matrix<double, 10, 10>::Zero();	// assumed measurement noise covariance matrix R
 
-float y[y_size_xaxis][input_size_yaxis] = { 0 };
-float u[u_size_xaxis][input_size_yaxis] = { 0 };
-float desired[desired_size_xaxis][input_size_yaxis] = { 0 };
+double y[y_size_xaxis][input_size_yaxis] = { 0 };
+double u[u_size_xaxis][input_size_yaxis] = { 0 };
+double desired[desired_size_xaxis][input_size_yaxis] = { 0 };
 
 void EKF_Driver();
 void Initialize_EKF_structures();
-void EKF_with_RW(const Eigen::Matrix<float, 13, 1>& x_hat_new, const Eigen::Matrix<float, 13, 13>& P_new,
-	const Eigen::Matrix<float, 13, 1>& x_hat_prev, const Eigen::Matrix<float, 13, 13>& P_prev,
-	const Eigen::Matrix<float, 3, 1>& u_new, const Eigen::Matrix<float, 3, 1>& u_prev, const Eigen::Matrix<float, 10, 1>& y_new);
-Eigen::Matrix3f skew(const Eigen::Matrix<float, 3, 1>& x);
+void EKF_with_RW(const Eigen::Matrix<double, 13, 1>& x_hat_new, const Eigen::Matrix<double, 13, 13>& P_new,
+	const Eigen::Matrix<double, 13, 1>& x_hat_prev, const Eigen::Matrix<double, 13, 13>& P_prev,
+	const Eigen::Matrix<double, 3, 1>& u_new, const Eigen::Matrix<double, 3, 1>& u_prev, const Eigen::Matrix<double, 10, 1>& y_new);
+Eigen::Matrix3d skew(const Eigen::Matrix<double, 3, 1>& x);
 
 #ifdef test
 int main()
@@ -44,7 +45,7 @@ void Initialize_EKF_structures() {
 	supporting text files used by Matlab version.
 	Author: Mark, Cathy
 	input: none
-	output:
+	output: none
 	*************************************************************************/
 
 	/* DECLARE VARIABLES */
@@ -53,26 +54,26 @@ void Initialize_EKF_structures() {
 	/*	assume Reaction Wheels are cylinders concentrated at the COM of the
 		satellite
 	*/
-	float r = 0.02f; //m
-	float h = 0.01f; //m
-	float rho = 8730.0f; //kg/m^3
-	float mw = atan(1) * 4 * pow(r, 2) * h * rho; //kg
+	double r = 0.02; //m
+	double h = 0.01; //m
+	double rho = 8730.0; //kg/m^3
+	double mw = atan(1) * 4 * pow(r, 2) * h * rho; //kg
 	
 	ifstream input_y, input_u, input_desired, input_test;	// input text file streams
 
-	/* INITIALIZATIONS OF CONSTANT GLOBAL MATRICES */
+	/* INITIALIZATIONS OF CONSTANT GLOBAL MATRICCES */
 	
-	float Jwx = 0.5f * mw * pow(r, 2); //kgm^2, axial moment of inertia of RWs
-	float Jwy = Jwx;
-	float Jwz = Jwx;
+	double Jwx = 0.5 * mw * pow(r, 2); //kgm^2, axial moment of inertia of RWs
+	double Jwy = Jwx;
+	double Jwz = Jwx;
 	J.diagonal() << Ixx, Iyy, Izz;	// exact inertia matrix of rectangular prism
 	
 	//Add RW moments of inertia about non - spin axes to satellite inertia:
-	float Iwt = mw * (3.0f * pow(2 * r, 2) + 4.0f * pow(h, 2)) / 48.0f; //transverse moment of inertia of RWs
+	double Iwt = mw * (3.0f * pow(2 * r, 2) + 4.0 * pow(h, 2)) / 48.0; //transverse moment of inertia of RWs
 	
-	J.diagonal() << J(0,0) + 2.0f*Iwt, J(1,1) + 2.0f*Iwt, J(2,2) + 2.0f*Iwt; //add effect of Iwt for y and z, x and z, x and y RWs
+	J.diagonal() << J(0,0) + 2.0*Iwt, J(1,1) + 2.0*Iwt, J(2,2) + 2.0*Iwt; //add effect of Iwt for y and z, x and z, x and y RWs
 
-	Eigen::Matrix3f model_uncertainty = Eigen::Matrix3f::Zero();	//10 percent model uncertainty
+	Eigen::Matrix3d model_uncertainty = Eigen::Matrix3d::Zero();	//10 percent model uncertainty
 	model_uncertainty.diagonal() << 1.1, 1.1, 0.9;
 
 	J = J * model_uncertainty; /* since in practice we do not have an exact model
@@ -163,13 +164,13 @@ void EKF_Driver() {
 
 	int k = 0, j = 0;
 
-	ofstream x_hat_kk_results;
+	ofstream x_hat_kk_results, P_kk_results;
 
-	Eigen::Matrix<float, 13, 1> x_hat_kk[250] = { Eigen::Matrix<float, 13, 1>::Zero() };
-	Eigen::Matrix<float, 13, 13> P_kk[250] = { Eigen::Matrix<float, 13, 13>::Zero() };
-	Eigen::Matrix<float, 3, 1> u_k_1 = Eigen::Matrix<float, 3, 1>::Zero();
-	Eigen::Matrix<float, 3, 1> u_RW_k_1 = Eigen::Matrix<float, 3, 1>::Zero();
-	Eigen::Matrix<float, 10, 1> y_k_1 = Eigen::Matrix<float, 10, 1>::Zero();
+	Eigen::Matrix<double, 13, 1> x_hat_kk[250] = { Eigen::Matrix<double, 13, 1>::Zero() };
+	Eigen::Matrix<double, 13, 13> P_kk[250] = { Eigen::Matrix<double, 13, 13>::Zero() };
+	Eigen::Matrix<double, 3, 1> u_k_1 = Eigen::Matrix<double, 3, 1>::Zero();
+	Eigen::Matrix<double, 3, 1> u_RW_k_1 = Eigen::Matrix<double, 3, 1>::Zero();
+	Eigen::Matrix<double, 10, 1> y_k_1 = Eigen::Matrix<double, 10, 1>::Zero();
 	
 	Initialize_EKF_structures();	// initalize and load in constant data structures for testing
 	
@@ -185,20 +186,32 @@ void EKF_Driver() {
 #ifdef test
 	
 	x_hat_kk_results.open("x_hat_kk_cpp.txt");
-	
-	for (int i = 0; i < tmax; i++) {
-		for (int j = 0; j < n; j++) {
-			x_hat_kk_results << x_hat_kk[i](j,0) << "   ";
+	x_hat_kk_results << std::fixed << std::setprecision(15);
+	for (int i = 0; i < n; i++) {
+		for (int j = 0; j < tmax; j++) {
+			x_hat_kk_results << x_hat_kk[j](i,0) << "   ";
 		}
 		x_hat_kk_results << "\n";
 	}
 	cout << "x_hat_kk results printed in x_hat_kk_cpp.txt\n";
+
+	P_kk_results.open("P_kk_cpp.txt");
+	P_kk_results << std::fixed << std::setprecision(15);
+	for (int i = 0; i < n; i++) {
+		for (int j = 0; j < tmax; j++) {
+			for (int k = 0; k < n; k++) {
+				P_kk_results << P_kk[j](k, i) << " ";
+			}			
+		}
+		P_kk_results << "\n";
+	}
+	cout << "P_kk results printed in P_kk_cpp.txt\n";
 #endif
 }
 
-void EKF_with_RW(const Eigen::Matrix<float, 13, 1>& x_hat_new, const Eigen::Matrix<float, 13, 13>& P_new,	
-	const Eigen::Matrix<float, 13, 1>& x_hat_prev, const Eigen::Matrix<float, 13, 13>& P_prev,
-	const Eigen::Matrix<float, 3, 1>& u_new, const Eigen::Matrix<float, 3, 1>& u_RW_k_1, const Eigen::Matrix<float, 10, 1>& y_new) {
+void EKF_with_RW(const Eigen::Matrix<double, 13, 1>& x_hat_new, const Eigen::Matrix<double, 13, 13>& P_new,
+	const Eigen::Matrix<double, 13, 1>& x_hat_prev, const Eigen::Matrix<double, 13, 13>& P_prev,
+	const Eigen::Matrix<double, 3, 1>& u_new, const Eigen::Matrix<double, 3, 1>& u_RW_k_1, const Eigen::Matrix<double, 10, 1>& y_new) {
 	/************************************************************************
 	Description: This function is modeled after the EKF_with_RW.m and
 	executes the extended kalman filter calculations
@@ -210,108 +223,108 @@ void EKF_with_RW(const Eigen::Matrix<float, 13, 1>& x_hat_new, const Eigen::Matr
 	output: none
 	*************************************************************************/
 
-	Eigen::Matrix<float, 13, 1>& x_hat_new_mutable = const_cast<Eigen::Matrix<float, 13, 1>&> (x_hat_new);
-	Eigen::Matrix<float, 13, 13>& P_new_mutable = const_cast<Eigen::Matrix<float, 13, 13>&> (P_new);
+	Eigen::Matrix<double, 13, 1>& x_hat_new_mutable = const_cast<Eigen::Matrix<double, 13, 1>&> (x_hat_new);
+	Eigen::Matrix<double, 13, 13>& P_new_mutable = const_cast<Eigen::Matrix<double, 13, 13>&> (P_new);
 
-	Eigen::Matrix<float, 3, 1> OMEGA__k_1k_1 = x_hat_prev.block<3, 1>(0, 0);
-	Eigen::Matrix<float, 3, 1> w_k_1k_1 = x_hat_prev.block<3, 1>(3, 0);	//
-	Eigen::Matrix<float, 3, 1> q_k_1k_1 = x_hat_prev.block<3, 1>(6, 0);	// 
-	Eigen::Matrix<float, 1, 1> q0_k_1k_1 = x_hat_prev.block<1, 1>(9, 0);
+	Eigen::Matrix<double, 3, 1> OMEGA__k_1k_1 = x_hat_prev.block<3, 1>(0, 0);
+	Eigen::Matrix<double, 3, 1> w_k_1k_1 = x_hat_prev.block<3, 1>(3, 0);	//
+	Eigen::Matrix<double, 3, 1> q_k_1k_1 = x_hat_prev.block<3, 1>(6, 0);	// 
+	Eigen::Matrix<double, 1, 1> q0_k_1k_1 = x_hat_prev.block<1, 1>(9, 0);
 
 	// state prediction x_hat_kk_1(13x1)
-	Eigen::Matrix<float, 13, 1> x_hat_kk_1 = Eigen::Matrix<float, 13, 1>::Zero();		
+	Eigen::Matrix<double, 13, 1> x_hat_kk_1 = Eigen::Matrix<double, 13, 1>::Zero();
 	x_hat_kk_1.block<3, 1>(0, 0) = Jw.inverse()*u_RW_k_1;		
 	x_hat_kk_1.block<3, 1>(3, 0) = -J.inverse()*skew(w_k_1k_1)*(J*w_k_1k_1+Jw*OMEGA__k_1k_1) + J.inverse()*u_new - J.inverse()*u_RW_k_1;
 	x_hat_kk_1.block<3, 1>(6, 0) = -0.5*skew(w_k_1k_1)*q_k_1k_1 + (0.5*q0_k_1k_1*w_k_1k_1.transpose()).transpose();	
 	x_hat_kk_1.block<1, 1>(9, 0) = -0.5*w_k_1k_1.transpose()*q_k_1k_1;
-	x_hat_kk_1.block<3, 1>(10, 0) = Eigen::Matrix<float, 3, 1>::Zero();
+	x_hat_kk_1.block<3, 1>(10, 0) = Eigen::Matrix<double, 3, 1>::Zero();
 	x_hat_kk_1 = Ts * x_hat_kk_1 + x_hat_prev;
 
 	// covariance prediction Pkk_1 from previous prediction P_k_1k_1
 	// dF1_OMEGA(3x3)
-	Eigen::Matrix3f dF1_OMEGA = -J.inverse()*skew(w_k_1k_1)*Jw*Ts;
+	Eigen::Matrix3d dF1_OMEGA = -J.inverse()*skew(w_k_1k_1)*Jw*Ts;
 	// dF1_dw(3x3)
-	Eigen::Matrix3f dF1_dw = Eigen::Matrix3f::Identity() - J.inverse()*(skew(w_k_1k_1)*J - skew(J*w_k_1k_1+Jw*OMEGA__k_1k_1))*Ts;	
+	Eigen::Matrix3d dF1_dw = Eigen::Matrix3d::Identity() - J.inverse()*(skew(w_k_1k_1)*J - skew(J*w_k_1k_1+Jw*OMEGA__k_1k_1))*Ts;	
 	// dF2_dw(3x3)
-	Eigen::Matrix3f dF2_dw = 0.5*(skew(q_k_1k_1) + q0_k_1k_1(0, 0) * Eigen::Matrix3f::Identity())*Ts;
+	Eigen::Matrix3d dF2_dw = 0.5*(skew(q_k_1k_1) + q0_k_1k_1(0, 0) * Eigen::Matrix3d::Identity())*Ts;
 	// dF2_dq(3x1)
-	Eigen::Matrix3f dF2_dq = Eigen::Matrix3f::Identity() - 0.5*skew(w_k_1k_1)*Ts;
+	Eigen::Matrix3d dF2_dq = Eigen::Matrix3d::Identity() - 0.5*skew(w_k_1k_1)*Ts;
 	// dF2_dq0(3x1)
-	Eigen::Matrix<float, 3, 1> dF2_dq0 = 0.5*w_k_1k_1*Ts;		
+	Eigen::Matrix<double, 3, 1> dF2_dq0 = 0.5*w_k_1k_1*Ts;
 	// dF3_dw(1x3)
-	Eigen::Matrix<float, 1, 3> dF3_dw = -0.5*q_k_1k_1.transpose()*Ts;
+	Eigen::Matrix<double, 1, 3> dF3_dw = -0.5*q_k_1k_1.transpose()*Ts;
 	// dF3_dq(1x3)
-	Eigen::Matrix<float, 1, 3> dF3_dq = -0.5*w_k_1k_1.transpose()*Ts;
+	Eigen::Matrix<double, 1, 3> dF3_dq = -0.5*w_k_1k_1.transpose()*Ts;
 	// dF3_dq0(1x1)
-	Eigen::Matrix<float, 1, 1> dF3_dq0; dF3_dq0 << 1;
+	Eigen::Matrix<double, 1, 1> dF3_dq0; dF3_dq0 << 1;
 
-	//Initializing F_k_1
-	Eigen::Matrix<float, 13, 13> F_k_1 = Eigen::Matrix<float, 13, 13>::Zero();
-	F_k_1.block<3, 3>(0, 0) = Eigen::Matrix3f::Identity();
-	F_k_1.block<3, 3>(0, 3) = Eigen::Matrix<float, 3, 3>::Zero();
-	F_k_1.block<3, 3>(0, 6) = Eigen::Matrix<float, 3, 3>::Zero();
-	F_k_1.block<3, 1>(0, 7) = Eigen::Matrix<float, 3, 1>::Zero();
-	F_k_1.block<3, 3>(0, 8) = Eigen::Matrix<float, 3, 3>::Zero();
+	Eigen::Matrix<double, 13, 13> F_k_1 = Eigen::Matrix<double, 13, 13>::Zero();
+	F_k_1.block<3, 3>(0, 0) = Eigen::Matrix3d::Identity();
+	F_k_1.block<3, 3>(0, 3) = Eigen::Matrix<double, 3, 3>::Zero();
+	F_k_1.block<3, 3>(0, 6) = Eigen::Matrix<double, 3, 3>::Zero();
+	F_k_1.block<3, 1>(0, 7) = Eigen::Matrix<double, 3, 1>::Zero();
+	F_k_1.block<3, 3>(0, 8) = Eigen::Matrix<double, 3, 3>::Zero();
 	F_k_1.block<3, 3>(3, 0) = dF1_OMEGA;
 	F_k_1.block<3, 3>(3, 3) = dF1_dw;
-	F_k_1.block<3, 3>(3, 6) = Eigen::Matrix<float, 3, 3>::Zero();
-	F_k_1.block<3, 1>(3, 7) = Eigen::Matrix<float, 3, 1>::Zero();
-	F_k_1.block<3, 3>(3, 8) = Eigen::Matrix<float, 3, 3>::Zero();
-	F_k_1.block<3, 3>(6, 0) = Eigen::Matrix<float, 3, 3>::Zero();
+	F_k_1.block<3, 3>(3, 6) = Eigen::Matrix<double, 3, 3>::Zero();
+	F_k_1.block<3, 1>(3, 7) = Eigen::Matrix<double, 3, 1>::Zero();
+	F_k_1.block<3, 3>(3, 8) = Eigen::Matrix<double, 3, 3>::Zero();
+	F_k_1.block<3, 3>(6, 0) = Eigen::Matrix<double, 3, 3>::Zero();
 	F_k_1.block<3, 3>(6, 3) = dF2_dw;
 	F_k_1.block<3, 3>(6, 6) = dF2_dq;
 	F_k_1.block<3, 1>(6, 9) = dF2_dq0;
-	F_k_1.block<3, 3>(6, 10) = Eigen::Matrix<float, 3, 3>::Zero();
-	F_k_1.block<3, 1>(9, 0) = Eigen::Matrix<float, 3, 1>::Zero();
+	F_k_1.block<3, 3>(6, 10) = Eigen::Matrix<double, 3, 3>::Zero();
+	F_k_1.block<3, 1>(9, 0) = Eigen::Matrix<double, 3, 1>::Zero();
 	F_k_1.block<1, 3>(9, 3) = dF3_dw;
 	F_k_1.block<1, 3>(9, 6) = dF3_dq;
 	F_k_1.block<1, 1>(9, 9) = dF3_dq0;
-	F_k_1.block<1, 3>(9, 10) = Eigen::Matrix<float, 1, 3>::Zero();
-	F_k_1.block<3, 3>(10, 0) = Eigen::Matrix<float, 3, 3>::Zero();
-	F_k_1.block<3, 3>(10, 3) = Eigen::Matrix<float, 3, 3>::Zero();
-	F_k_1.block<3, 3>(10, 6) = Eigen::Matrix<float, 3, 3>::Zero();
-	F_k_1.block<3, 1>(10, 9) = Eigen::Matrix<float, 3, 1>::Zero();
-	F_k_1.block<3, 3>(10, 10) = Eigen::Matrix3f::Identity();
+	F_k_1.block<1, 3>(9, 10) = Eigen::Matrix<double, 1, 3>::Zero();
+	F_k_1.block<3, 3>(10, 0) = Eigen::Matrix<double, 3, 3>::Zero();
+	F_k_1.block<3, 3>(10, 3) = Eigen::Matrix<double, 3, 3>::Zero();
+	F_k_1.block<3, 3>(10, 6) = Eigen::Matrix<double, 3, 3>::Zero();
+	F_k_1.block<3, 1>(10, 9) = Eigen::Matrix<double, 3, 1>::Zero();
+	F_k_1.block<3, 3>(10, 10) = Eigen::Matrix3d::Identity();
 
-	Eigen::Matrix<float, 13, 13> L_k_1 = Eigen::Matrix<float, 13, 13>::Identity()*Ts;
+	Eigen::Matrix<double, 13, 13> L_k_1 = Eigen::Matrix<double, 13, 13>::Identity()*Ts;
 	
 	// Covariance Prediction P_kk_1 13x13
-	Eigen::Matrix<float, 13, 13> P_kk_1 = F_k_1 * P_prev*F_k_1.transpose() + L_k_1 * Q*L_k_1.transpose();
-	
-	Eigen::Matrix<float, 10, 13> H = Eigen::Matrix<float, 10, 13>::Zero();
-	H.block<3, 3>(0, 0) = Eigen::Matrix3f::Identity();
-	H.block<3, 3>(0, 3) = Eigen::Matrix<float, 3, 3 >::Zero();
-	H.block<3, 3>(0, 6) = Eigen::Matrix<float, 3, 3 >::Zero();
-	H.block<3, 1>(0, 9) = Eigen::Matrix<float, 3, 1 >::Zero();
-	H.block<3, 3>(0, 10) = Eigen::Matrix<float, 3, 3 >::Zero();
-	H.block<3, 3>(3, 0) = Eigen::Matrix<float, 3, 3 >::Zero();
-	H.block<3, 3>(3, 3) = Eigen::Matrix3f::Identity();
-	H.block<3, 3>(3, 6) = Eigen::Matrix<float, 3, 3 >::Zero();
-	H.block<3, 1>(3, 9) = Eigen::Matrix<float, 3, 1 >::Zero();
-	H.block<3, 3>(3, 10) = Eigen::Matrix3f::Identity();
-	H.block<3, 3>(6, 0) = Eigen::Matrix<float, 3, 3 >::Zero();
-	H.block<3, 3>(6, 3) = Eigen::Matrix<float, 3, 3 >::Zero();
-	H.block<3, 3>(6, 6) = Eigen::Matrix3f::Identity();
-	H.block<3, 1>(6, 9) = Eigen::Matrix<float, 3, 1 >::Zero();
-	H.block<3, 3>(6, 10) = Eigen::Matrix<float, 3, 3 >::Zero();
-	H.block<1, 3>(9, 0) = Eigen::Matrix<float, 1, 3 >::Zero();
-	H.block<1, 3>(9, 3) = Eigen::Matrix<float, 1, 3 >::Zero();
-	H.block<1, 3>(9, 6) = Eigen::Matrix<float, 1, 3 >::Zero();
-	H(9, 9) = 1.0f;
-	H.block<1, 3>(9, 10) = Eigen::Matrix<float, 1, 3 >::Zero();
-	
+	Eigen::Matrix<double, 13, 13> P_kk_1 = F_k_1 * P_prev*F_k_1.transpose() + L_k_1 * Q*L_k_1.transpose();
 	// Innovation (Measurement Residual) y_tilda_k(10x1)
-	Eigen::Matrix<float, 10, 1> y_tilda_k = y_new - H * x_hat_kk_1;
+	Eigen::Matrix<double, 10, 13> H = Eigen::Matrix<double, 10, 13>::Zero();
+	H.block<3, 3>(0, 0) = Eigen::Matrix3d::Identity();
+	H.block<3, 3>(0, 3) = Eigen::Matrix<double, 3, 3 >::Zero();
+	H.block<3, 3>(0, 6) = Eigen::Matrix<double, 3, 3 >::Zero();
+	H.block<3, 1>(0, 9) = Eigen::Matrix<double, 3, 1 >::Zero();
+	H.block<3, 3>(0, 10) = Eigen::Matrix<double, 3, 3 >::Zero();
+	H.block<3, 3>(3, 0) = Eigen::Matrix<double, 3, 3 >::Zero();
+	H.block<3, 3>(3, 3) = Eigen::Matrix3d::Identity();
+	H.block<3, 3>(3, 6) = Eigen::Matrix<double, 3, 3 >::Zero();
+	H.block<3, 1>(3, 9) = Eigen::Matrix<double, 3, 1 >::Zero();
+	H.block<3, 3>(3, 10) = Eigen::Matrix3d::Identity();
+	H.block<3, 3>(6, 0) = Eigen::Matrix<double, 3, 3 >::Zero();
+	H.block<3, 3>(6, 3) = Eigen::Matrix<double, 3, 3 >::Zero();
+	H.block<3, 3>(6, 6) = Eigen::Matrix3d::Identity();
+	H.block<3, 1>(6, 9) = Eigen::Matrix<double, 3, 1 >::Zero();
+	H.block<3, 3>(6, 10) = Eigen::Matrix<double, 3, 3 >::Zero();
+	H.block<1, 3>(9, 0) = Eigen::Matrix<double, 1, 3 >::Zero();
+	H.block<1, 3>(9, 3) = Eigen::Matrix<double, 1, 3 >::Zero();
+	H.block<1, 3>(9, 6) = Eigen::Matrix<double, 1, 3 >::Zero();
+	H(9, 9) = 1.0f;
+	H.block<1, 3>(9, 10) = Eigen::Matrix<double, 1, 3 >::Zero();
+	
+	Eigen::Matrix<double, 10, 1> y_tilda_k = y_new - H * x_hat_kk_1;
 	
 	// Innovation Covariance S_k 10x10
-	Eigen::Matrix<float, 10, 10> S_k = H * P_kk_1*H.transpose() + R;
+	Eigen::Matrix<double, 10, 10> S_k = H * P_kk_1*H.transpose() + R;
 	
 	// Kalman Gain K_k 13x10
-	Eigen::Matrix<float, 13, 10> K_k = Eigen::Matrix<float, 13, 10>::Zero();
+	Eigen::Matrix<double, 13, 10> K_k = Eigen::Matrix<double, 13, 10>::Zero();
 	
-	Eigen::JacobiSVD<Eigen::MatrixXf> svd(S_k);
+	// State Update x_hat_kk 13x1
+
+	Eigen::JacobiSVD<Eigen::MatrixXd> svd(S_k);
 	// calculate condition number (more deliable than determinant) to check invertibility of S_k
-	float cond = svd.singularValues()(0) / svd.singularValues()(svd.singularValues().size() - 1);
+	double cond = svd.singularValues()(0) / svd.singularValues()(svd.singularValues().size() - 1);
 	if (!isnan(cond)) {
 		K_k = P_kk_1 * H.transpose()*S_k.inverse();
 	}
@@ -319,22 +332,22 @@ void EKF_with_RW(const Eigen::Matrix<float, 13, 1>& x_hat_new, const Eigen::Matr
 	// State Update x_hat_new 13x1
 	x_hat_new_mutable = x_hat_kk_1 + K_k * y_tilda_k;
 	
-	Eigen::Matrix<float, 4, 1> q = x_hat_new_mutable.block<4, 1>(6, 0);	// isolate quaternion estimate
+	Eigen::Matrix<double, 4, 1> q = x_hat_new_mutable.block<4, 1>(6, 0);	// isolate quaternion estimate
 	q = q / q.norm();													// normalize quaterion estimate
 	x_hat_new_mutable.block<4, 1>(6, 0) = q;							// update x_hat_kk with normalized quaternion
 
 	// Covariance Update P_kk 13x13
-	P_new_mutable = (Eigen::Matrix<float, 13, 13>::Identity() - K_k * H)*P_kk_1;	
+	P_new_mutable = (Eigen::Matrix<double, 13, 13>::Identity() - K_k * H)*P_kk_1;
 }
 
-Eigen::Matrix3f skew(const Eigen::Matrix<float, 3, 1>& x) {
+Eigen::Matrix3d skew(const Eigen::Matrix<double, 3, 1>& x) {
 	/************************************************************************
 	Description: This function calculates skew-symmetric matrix of vector x
 	Author: Cathy
 	input: x (3x1 matrix desired to be skewed)
 	output: result (3x3 matrix skew result of x)
 	*************************************************************************/
-	Eigen::Matrix3f result = Eigen::Matrix3f::Zero();
+	Eigen::Matrix3d result = Eigen::Matrix3d::Zero();
 	result << 0, -x(2, 0), x(1, 0),
 		x(2, 0), 0, -x(0, 0),
 		-x(1, 0), x(0, 0), 0;
