@@ -16,10 +16,10 @@
 #include <Eigen/Dense>
 
 extern Eigen::MatrixXd nadir(
-	double omega,
-	double RAAN,
-	double i,
-	double tano
+    double omega,
+    double RAAN,
+    double i,
+    double tano
 );
 
 #endif /*NADIR_H_*/
