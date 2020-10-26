@@ -41,6 +41,8 @@ int main() {
 	// Print attitude quaternion q_NPI to .txt file.
 	out_q_NPI.open("q_NPI_cpp.txt");
 	out_q_NPI << std::fixed << std::setprecision(15);
-	out_q_NPI << q_NPI;
+	for (int i = 0; i < 4; i++) {
+		out_q_NPI << q_NPI(0, i) << " ";
+	}
 	std::cout << "q_NPI results printed in q_NPI_cpp.txt\n";
 }
