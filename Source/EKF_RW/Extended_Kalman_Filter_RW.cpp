@@ -13,7 +13,8 @@
 using namespace std;
 
 //#define EKF_structures_debug	// outputs constant initialization to screen
-#define test					// used to test EFK model individually, generates text file x_hat_kk_cpp.txt and P_kk_cpp.txt to be used as input to MATLAB plotting inside testing folder
+#define test					// used to test EFK model individually, generates text file x_hat_kk_cpp.txt and
+								// P_kk_cpp.txt to be used as input to MATLAB plotting inside testing folder
 
 /* initialize constant matrices as 0's */
 Eigen::Matrix3d J = Eigen::Matrix3d::Zero();	// define a 3x3 double matrix
@@ -184,12 +185,11 @@ void EKF_Driver() {
 	}
 
 #ifdef test
-	
 	x_hat_kk_results.open("x_hat_kk_cpp.txt");
 	x_hat_kk_results << std::fixed << std::setprecision(15);
 	for (int i = 0; i < n; i++) {
-		for (int j = 0; j < tmax; j++) {
-			x_hat_kk_results << x_hat_kk[j](i,0) << "   ";
+		for (int j = 0; j < tmax; j++) {			
+			x_hat_kk_results << x_hat_kk[j](i,0) << " ";
 		}
 		x_hat_kk_results << "\n";
 	}
@@ -198,7 +198,7 @@ void EKF_Driver() {
 	P_kk_results.open("P_kk_cpp.txt");
 	P_kk_results << std::fixed << std::setprecision(15);
 	for (int i = 0; i < n; i++) {
-		for (int j = 0; j < tmax; j++) {
+		for (int j = 0; j < tmax; j++) {			
 			for (int k = 0; k < n; k++) {
 				P_kk_results << P_kk[j](k, i) << " ";
 			}			
