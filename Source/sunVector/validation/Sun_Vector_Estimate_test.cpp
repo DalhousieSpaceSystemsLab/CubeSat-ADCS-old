@@ -49,7 +49,7 @@ int main() {
 		Eigen::MatrixXd yCol(18, 1);
 		yCol = y.col(i);			
 		for (int k = 0; k < 3; k++) {
-			out_s_hat_BF << sun_vector_estimate(yCol, H)(k,0) << " ";
+			out_s_hat_BF << sun_vector_estimate(yCol, H)(k, 0) << " ";
 		}
 		out_s_hat_BF << "\n";
 	}
