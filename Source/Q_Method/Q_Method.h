@@ -14,7 +14,6 @@
 	Eigen matrix r1 = components of Sun vector expressed in ECI frame
 	(from theory).
 	Eigen matrix r2 = components of magnetic field vector expressed in ECI frame (from theory).
-
 	Returns the estimated attitude quaternion as an eigen matrix.
  */
 
