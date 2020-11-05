@@ -59,7 +59,7 @@ int main() {
 	out_q_est << std::fixed << std::setprecision(15);
 	for (int i = 0; i < 4; i++) {
 		for (int j = 0; j < 11; j++) {
-			out_q_est << q_est(i, j);
+			out_q_est << q_est(i, j) << " ";
 		}
 		out_q_est << "\n";
 	}
