@@ -8,15 +8,15 @@
 #define y_size_xaxis	10
 	/* each row of y corresponds to:
 	1. OMEGAx RW angular velocity of x RW relative to BF expressed in
-    body-fixed (BF) axes
+	body-fixed (BF) axes
 	2. OMEGAy RW angular velocity of y RW relative to BF expressed in BF
 	3. OMEGAz RW angular velocity of z RW relative to BF expressed in BF
-	4. wx CubeSat angular velocity relative to Earth-Centered-Inertia (ECI) expressed in BF 
-       (x component) rad/s
-	5. wy CubeSat angular velocity relative to ECI expressed in BF 
-       (y component) rad/s
+	4. wx CubeSat angular velocity relative to Earth-Centered-Inertia (ECI) expressed in BF
+	   (x component) rad/s
+	5. wy CubeSat angular velocity relative to ECI expressed in BF
+	   (y component) rad/s
 	6. wz CubeSat angular velocity relative to ECI expressed in BF
-       (z component) rad/s
+	   (z component) rad/s
 	7. q1 element 1 of vector portion of quaternion representing rotation from ECI to BF
 	8. q2 element 2 of vector portion of quaternion representing rotation from ECI to BF
 	9. q3 element 3 of vector portion of quaternion representing rotation from ECI to BF
@@ -34,12 +34,12 @@
 	1. OMEGAx RW angular velocity of x RW relative to BF expressed in BF
 	2. OMEGAy RW angular velocity of y RW relative to BF expressed in BF
 	3. OMEGAz RW angular velocity of z RW relative to BF expressed in BF
-	4. wx CubeSat angular velocity relative to ECI expressed in BF 
-       (x component) rad/s
-	5. wy CubeSat angular velocity relative to ECI expressed in BF 
-      (y component) rad/s
+	4. wx CubeSat angular velocity relative to ECI expressed in BF
+	   (x component) rad/s
+	5. wy CubeSat angular velocity relative to ECI expressed in BF
+	  (y component) rad/s
 	6. wz CubeSat angular velocity relative to ECI expressed in BF
-       (z component) rad/s
+	   (z component) rad/s
 	7. q1 element 1 of vector portion of quaternion representing rotation from ECI to BF
 	8. q2 element 2 of vector portion of quaternion representing rotation from ECI to BF
 	9. q3 element 3 of vector portion of quaternion representing rotation from ECI to BF
@@ -56,9 +56,9 @@
 #define dim_z	.2	// m
 #define mass	2	// kg
 
-const float Ixx(1.0 / 12.0*mass*(pow(dim_y, 2) + pow(dim_z, 2)));	// kgm^2
-const float Iyy(1.0 / 12.0*mass*(pow(dim_x, 2) + pow(dim_z, 2)));	// kgm^2
-const float Izz(1.0 / 12.0*mass*(pow(dim_x, 2) + pow(dim_y, 2)));	// kgm^2
+const double Ixx(1.0 / 12.0 * mass * (pow(dim_y, 2) + pow(dim_z, 2)));	// kgm^2
+const double Iyy(1.0 / 12.0 * mass * (pow(dim_x, 2) + pow(dim_z, 2)));	// kgm^2
+const double Izz(1.0 / 12.0 * mass * (pow(dim_x, 2) + pow(dim_y, 2)));	// kgm^2
 
 #define tmax	250
 #define Ts	1
@@ -71,7 +71,7 @@ const float Izz(1.0 / 12.0*mass*(pow(dim_x, 2) + pow(dim_y, 2)));	// kgm^2
 	process noise added to equations of motion written in state space
 	x_dot = .... + process noise */
 
-// variance of process noise on OMEGA_dot used to generate test data
+	// variance of process noise on OMEGA_dot used to generate test data
 #define phi_0_variance  1.0e-1
 // variance of process noise on w_dot used to generate test data
 #define phi_1_variance	1.0e-6
