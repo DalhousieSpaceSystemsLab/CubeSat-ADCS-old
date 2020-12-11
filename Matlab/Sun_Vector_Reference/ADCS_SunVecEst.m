@@ -36,13 +36,15 @@ UT = 14.55365; % 14:33:13 UTC
 % Values for validation for **THIS SPECIFIC TIME ONLY** are:
 % JD 2458815.106250000, A.D. 2019-Nov-27 14:33:00.0000
 
-% |  -4.205842150074921E-01 |
-% |  -8.189826797145443E-01 |  [AU]
-% |  -3.550507800395332E-01 |
+% r_Earth->Sun (AU)
+% |   -0.41626905   |
+% |   -0.82085774   |  [AU]
+% |   -0.35584133   |
 
-% |  -6.291950792176233E+07 |
-% |  -1.225222218577094E+08 |  [km]
-% |  -5.311287628137542E+07 |
+% r_Earth->Sun (km)
+% |   -62272964.0803042    |
+% |   -122798570.6136345   |  [km]
+% |   -53233105.5879802    |
 
 % -------------------------------------------------------------------------
 % Greenwich sidereal time, as outlined in % Curtis' Orbital Mechanics for
@@ -80,10 +82,10 @@ S = ((UT - H)*60 - Min)*60;
 % Calculate accurate-to-time Julian date, with leap-seconds conceptually
 % ignored (Markley 2.68):
 J0 = 1721013.5 + 367*Y - fix(7/4*(Y + fix((M+9)/12))) + fix(275*M/9) + D + ((60*H+Min+(S/60))/1440);
-fprintf('%f\n', J0)
+
 % Time in Julian centuries, w/r/t above Julian date (Markley 11.49)
 T0 = (J0 - 2451545)/36525;
-fprintf('%f\n', T0)
+
 % From "Fundamentals of Astrodynamics and Applications" by D. Vallado, the
 % position of the sun relative to the Earth can be determined "imprecisely"
 % (versus measured ephemerides values from JPL etc.) via the following
@@ -101,7 +103,6 @@ M_s = 357.5277233 + 35999.05034*T0;
 % "Reduce both [...] to the range of 0 deg to 360 deg"
 S_lon_m = mod(S_lon_m,360); % deg
 M_s = mod(M_s,360); % deg
-fprintf('%f ----------- %f\n', M_s, cosd(M_s))
 
 % Ecliptic longitude via "equation of centre" (Vallado p. 81) where 0.016708617 is
 % the "mean eccentricity of Earth's orbit around the sun". Unlike the
