@@ -16,12 +16,18 @@ add_subdirectory(IGRF)
 add_subdirectory(Communications)
 #add_subdirectory(Test)
 add_subdirectory(sunVector)
+add_subdirectory(EKF)
+add_subdirectory(Nadir)
+add_subdirectory(Q_Method)
 
 add_executable(ADCS main.cpp)
 
 target_link_libraries(ADCS PUBLIC IGRF)
 target_link_libraries(ADCS PUBLIC Communications)
 target_link_libraries(ADCS PUBLIC SunVector)
+target_link_libraries(ADCS PUBLIC EKF)
+target_link_libraries(ADCS PUBLIC Nadir)
+target_link_libraries(ADCS PUBLIC Q_Method)
 
 target_include_directories(ADCS PUBLIC
 			    /usr/include/eigen3
@@ -29,4 +35,7 @@ target_include_directories(ADCS PUBLIC
                             "${PROJECT_SOURCE_DIR}/IGRF"
                             "${PROJECT_SOURCE_DIR}/Communications"
                             "${PROJECT_SOURCE_DIR}/sunVector"
+                            "${PROJECT_SOURCE_DIR}/EKF"
+                            "${PROJECT_SOURCE_DIR}/Nadir"
+                            "${PROJECT_SOURCE_DIR}/Q_Method"
                             )
