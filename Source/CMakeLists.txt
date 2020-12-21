@@ -17,14 +17,16 @@ add_subdirectory(Communications)
 #add_subdirectory(Test)
 add_subdirectory(sunVector)
 
+find_package(Eigen3 3.3 REQUIRED NO_MODULE)
+
 add_executable(ADCS main.cpp)
 
 target_link_libraries(ADCS PUBLIC IGRF)
 target_link_libraries(ADCS PUBLIC Communications)
 target_link_libraries(ADCS PUBLIC SunVector)
+target_link_libraries(ADCS PUBLIC Eigen3::Eigen)
 
 target_include_directories(ADCS PUBLIC
-			    /usr/include/eigen3
                             "${PROJECT_BINARY_DIR}"
                             "${PROJECT_SOURCE_DIR}/IGRF"
                             "${PROJECT_SOURCE_DIR}/Communications"
