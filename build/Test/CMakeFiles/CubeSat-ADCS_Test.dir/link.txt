@@ -1,1 +1,0 @@
-/usr/bin/g++-7  -g  -rdynamic CMakeFiles/CubeSat-ADCS_Test.dir/main.cpp.o CMakeFiles/CubeSat-ADCS_Test.dir/legendreTest.cpp.o  -o CubeSat-ADCS_Test ../IGRF12/libIGRF12.a -Wl,-Bstatic -lgtest -Wl,-Bdynamic -lpthread 

@@ -1,1 +1,0 @@
-/usr/bin/g++-7  -g  -rdynamic CMakeFiles/ADCS.dir/main.cpp.o  -o ADCS IGRF12/libIGRF12.a Communications/libCommunications.a sunVector/libSunVector.a 

@@ -1,2 +1,0 @@
-/usr/bin/ar qc libSunVector.a  CMakeFiles/SunVector.dir/Sun_Vector_Estimate.cpp.o
-/usr/bin/ranlib libSunVector.a

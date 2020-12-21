@@ -1,2 +1,0 @@
-/usr/bin/ar qc libIGRF12.a  CMakeFiles/IGRF12.dir/igrf_parse.cpp.o CMakeFiles/IGRF12.dir/igrf12.cpp.o CMakeFiles/IGRF12.dir/legendre.cpp.o
-/usr/bin/ranlib libIGRF12.a

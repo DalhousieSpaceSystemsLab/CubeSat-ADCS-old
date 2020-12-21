@@ -9,7 +9,7 @@
  *
  */
 
-#include "pch.h"
+//#include "pch.h"
 #include "igrf.h"
 #include <fstream>
 
