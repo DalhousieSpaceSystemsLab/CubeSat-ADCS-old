@@ -11,6 +11,8 @@ configure_file(CubeSat_ADCSConfig.h.in CubeSat_ADCSConfig.h)
 # specify the C++ standard
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
+set(CMAKE_CXX_COMPILER_ID GNU)
+set(CMAKE_CXX_COMPILER_VERSION 9.3.0)
 
 add_subdirectory(IGRF)
 add_subdirectory(Communications)
