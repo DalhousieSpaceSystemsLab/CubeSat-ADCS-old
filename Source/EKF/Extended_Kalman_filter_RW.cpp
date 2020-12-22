@@ -187,7 +187,7 @@ void EKF_Driver() {
 #ifdef test
 	x_hat_kk_results.open("x_hat_kk_cpp.txt");
 	x_hat_kk_results << std::fixed << std::setprecision(15);
-	for (int i = 0; i < n; i++) {
+	for (int i = 0; i < n_; i++) {
 		for (int j = 0; j < tmax; j++) {			
 			x_hat_kk_results << x_hat_kk[j](i,0) << " ";
 		}
@@ -197,9 +197,9 @@ void EKF_Driver() {
 
 	P_kk_results.open("P_kk_cpp.txt");
 	P_kk_results << std::fixed << std::setprecision(15);
-	for (int i = 0; i < n; i++) {
+	for (int i = 0; i < n_; i++) {
 		for (int j = 0; j < tmax; j++) {			
-			for (int k = 0; k < n; k++) {
+			for (int k = 0; k < n_; k++) {
 				P_kk_results << P_kk[j](k, i) << " ";
 			}			
 		}

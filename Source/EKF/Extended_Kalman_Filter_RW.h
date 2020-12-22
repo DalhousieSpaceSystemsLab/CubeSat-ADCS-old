@@ -62,7 +62,7 @@ const double Izz(1.0 / 12.0 * mass * (pow(dim_x, 2) + pow(dim_y, 2)));	// kgm^2
 
 #define tmax	250
 #define Ts	1
-#define n	13
+#define n_	13
 
 /* Band-Limited White Gaussian Noise
 	variance of noise signal
