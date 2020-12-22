@@ -3,7 +3,6 @@
 #include <iostream>
 #include <fstream>
 #include <iomanip>
-#include <math.h>
 #include "Eigen/Core"
 #include "Eigen/Dense"
 #include "Eigen/LU"	// needed to use .inverse function

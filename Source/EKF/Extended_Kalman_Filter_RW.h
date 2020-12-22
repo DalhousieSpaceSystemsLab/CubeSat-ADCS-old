@@ -1,3 +1,4 @@
+#include <math.h>
 #pragma once
 
 #ifndef EXTENDED_KALMAN_FILTER_RW_H
