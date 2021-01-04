@@ -19,6 +19,7 @@ add_subdirectory(sunVector)
 add_subdirectory(EKF)
 add_subdirectory(Nadir)
 add_subdirectory(Q_Method)
+add_subdirectory(Bdot)
 
 add_executable(ADCS main.cpp)
 
@@ -28,6 +29,7 @@ target_link_libraries(ADCS PUBLIC SunVector)
 target_link_libraries(ADCS PUBLIC EKF)
 target_link_libraries(ADCS PUBLIC Nadir)
 target_link_libraries(ADCS PUBLIC Q_Method)
+target_link_libraries(ADCS PUBLIC Bdot)
 
 target_include_directories(ADCS PUBLIC
 			    /usr/include/eigen3
@@ -38,4 +40,5 @@ target_include_directories(ADCS PUBLIC
                             "${PROJECT_SOURCE_DIR}/EKF"
                             "${PROJECT_SOURCE_DIR}/Nadir"
                             "${PROJECT_SOURCE_DIR}/Q_Method"
+			    "${PROJECT_SOURCE_DIR}/Bdot"
                             )
