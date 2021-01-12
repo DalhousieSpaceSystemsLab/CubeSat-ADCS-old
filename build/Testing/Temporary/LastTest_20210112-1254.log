@@ -1,0 +1,55 @@
+Start testing: Jan 12 08:54 AST
+----------------------------------------------------------
+2/2 Testing: Hello
+2/2 Test: Hello
+Command: "/home/oem/LORIS/CubeSat-ADCS/build/Tests/ADCS_test"
+Directory: /home/oem/LORIS/CubeSat-ADCS/build/Tests
+"Hello" start time: Jan 12 08:54 AST
+Output:
+----------------------------------------------------------
+Running main() from /home/oem/LORIS/CubeSat-ADCS/Source/googletest/googletest/src/gtest_main.cc
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from ADCS_test
+[ RUN      ] ADCS_test.DemonstrateGTestMacros
+[       OK ] ADCS_test.DemonstrateGTestMacros (0 ms)
+[----------] 1 test from ADCS_test (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (5 ms total)
+[  PASSED  ] 1 test.
+<end of output>
+Test time =   0.03 sec
+----------------------------------------------------------
+Test Passed.
+"Hello" end time: Jan 12 08:54 AST
+"Hello" time elapsed: 00:00:00
+----------------------------------------------------------
+
+1/2 Testing: ADCS_test
+1/2 Test: ADCS_test
+Command: "/home/oem/LORIS/CubeSat-ADCS/build/Tests/ADCS_test"
+Directory: /home/oem/LORIS/CubeSat-ADCS/build/Tests
+"ADCS_test" start time: Jan 12 08:54 AST
+Output:
+----------------------------------------------------------
+Running main() from /home/oem/LORIS/CubeSat-ADCS/Source/googletest/googletest/src/gtest_main.cc
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from ADCS_test
+[ RUN      ] ADCS_test.DemonstrateGTestMacros
+[       OK ] ADCS_test.DemonstrateGTestMacros (0 ms)
+[----------] 1 test from ADCS_test (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (4 ms total)
+[  PASSED  ] 1 test.
+<end of output>
+Test time =   0.02 sec
+----------------------------------------------------------
+Test Passed.
+"ADCS_test" end time: Jan 12 08:54 AST
+"ADCS_test" time elapsed: 00:00:00
+----------------------------------------------------------
+
+End testing: Jan 12 08:54 AST

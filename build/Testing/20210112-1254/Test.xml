@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Site BuildName="(empty)"
+	BuildStamp="20210112-1254-Experimental"
+	Name="(empty)"
+	Generator="ctest-3.16.3"
+	CompilerName=""
+	CompilerVersion=""
+	OSName="Linux"
+	Hostname="MintVM-LORIS"
+	OSRelease="5.4.0-26-generic"
+	OSVersion="#30-Ubuntu SMP Mon Apr 20 16:58:30 UTC 2020"
+	OSPlatform="x86_64"
+	Is64Bits="1"
+	VendorString="AuthenticAMD"
+	VendorID="Advanced Micro Devices"
+	FamilyID="23"
+	ModelID="96"
+	ProcessorCacheSize="512"
+	NumberOfLogicalCPU="2"
+	NumberOfPhysicalCPU="2"
+	TotalVirtualMemory="923"
+	TotalPhysicalMemory="3908"
+	LogicalProcessorsPerPhysical="1"
+	ProcessorClockFrequency="2370.55"
+	>
+	<Testing>
+		<StartDateTime>Jan 12 08:54 AST</StartDateTime>
+		<StartTestTime>1610456087</StartTestTime>
+		<TestList>
+			<Test>./Tests/Hello</Test>
+			<Test>./Tests/ADCS_test</Test>
+		</TestList>
+		<Test Status="passed">
+			<Name>Hello</Name>
+			<Path>./Tests</Path>
+			<FullName>./Tests/Hello</FullName>
+			<FullCommandLine>/home/oem/LORIS/CubeSat-ADCS/build/Tests/ADCS_test</FullCommandLine>
+			<Results>
+				<NamedMeasurement type="numeric/double" name="Execution Time">
+					<Value>0.0262367</Value>
+				</NamedMeasurement>
+				<NamedMeasurement type="numeric/double" name="Processors">
+					<Value>1</Value>
+				</NamedMeasurement>
+				<NamedMeasurement type="text/string" name="Completion Status">
+					<Value>Completed</Value>
+				</NamedMeasurement>
+				<NamedMeasurement type="text/string" name="Command Line">
+					<Value>/home/oem/LORIS/CubeSat-ADCS/build/Tests/ADCS_test</Value>
+				</NamedMeasurement>
+				<Measurement>
+					<Value encoding="base64" compression="gzip">eJyNkE9PwzAMxe/5FD62hyZw4MhhWtGEBgw1cKqqKcu8UqmJUf7A16ch0yhISH2nF+cn289NtHawPRg12KKEkyMD4o0MCkIjHnbNvRTreECpQrWq11JIik6j6In6EQP6MLfeadEnt0/9uNasvb2og+Y87BoSk4edvY9DQM7a6qIONiMd1Jj/0X4MjqxBO7EYqvj+B573TIvu05O10Lw+wbe6nzKv0ZD1wamAm5ep8Ki0Iz/RWbvtAhqKKzC+XLBFJiFQUGPJlmUMqFx1pE/7+4L/XQ6cshyKm9mcKczzSsq7OkXPLGdfkTqcUA==</Value>
+				</Measurement>
+			</Results>
+		</Test>
+		<Test Status="passed">
+			<Name>ADCS_test</Name>
+			<Path>./Tests</Path>
+			<FullName>./Tests/ADCS_test</FullName>
+			<FullCommandLine>/home/oem/LORIS/CubeSat-ADCS/build/Tests/ADCS_test</FullCommandLine>
+			<Results>
+				<NamedMeasurement type="numeric/double" name="Execution Time">
+					<Value>0.0176656</Value>
+				</NamedMeasurement>
+				<NamedMeasurement type="numeric/double" name="Processors">
+					<Value>1</Value>
+				</NamedMeasurement>
+				<NamedMeasurement type="text/string" name="Completion Status">
+					<Value>Completed</Value>
+				</NamedMeasurement>
+				<NamedMeasurement type="text/string" name="Command Line">
+					<Value>/home/oem/LORIS/CubeSat-ADCS/build/Tests/ADCS_test</Value>
+				</NamedMeasurement>
+				<Measurement>
+					<Value encoding="base64" compression="gzip">eJyNkE9PwzAMxe/5FD62hyYgceUwrWhCA4YaOFXVlGVeqdTEKH/g69OQaRQkpL7Ti/OT7ecmWjvYHowabFHCyZEB8UYGBaERD7vmXop1PKBUoVrVaykkRadR9ET9iAF9mFvvtOiT26d+XGvW3l7UQXMedg2JycPO3schIGdtdVEHm5EOasz/aD8GR9agnVgMVXz/A897pkX36claaF6f4FvdT5nXaMj64FTAzctUeFTakZ/orN12AQ3FFRhfLtgikxAoqLFkyzIGVK460qf9fcH/LgdOWQ7FzWzOFOZ5JeVdnaJnlrMvkRmcTw==</Value>
+				</Measurement>
+			</Results>
+		</Test>
+		<EndDateTime>Jan 12 08:54 AST</EndDateTime>
+		<EndTestTime>1610456087</EndTestTime>
+		<ElapsedMinutes>0</ElapsedMinutes>
+	</Testing>
+</Site>

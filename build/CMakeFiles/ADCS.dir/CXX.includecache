@@ -1,0 +1,14 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/oem/LORIS/CubeSat-ADCS/Source/main.cpp
+CubeSat_ADCSConfig.h
+/home/oem/LORIS/CubeSat-ADCS/Source/CubeSat_ADCSConfig.h
+
+CubeSat_ADCSConfig.h
+

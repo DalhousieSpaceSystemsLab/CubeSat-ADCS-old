@@ -26,5 +26,6 @@ const double e2 = 2*f-pow(f,2);       // eccentricity^2, Ref C, p6
 #define DegToRad(X)	X*PI/180
 #define RadToDeg(X)	X*180/PI
 
+uint8_t IGRF(double lat_geodetic, float phi, float H, uint16_t year, uint8_t month, uint8_t day);
 
 #endif

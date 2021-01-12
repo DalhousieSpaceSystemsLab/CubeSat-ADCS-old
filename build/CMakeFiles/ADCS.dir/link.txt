@@ -1,0 +1,1 @@
+/usr/bin/x86_64-linux-gnu-g++-9  -g  -rdynamic CMakeFiles/ADCS.dir/main.cpp.o  -o ADCS  IGRF/libIGRF.a Communications/libCommunications.a sunVector/libSunVector.a EKF/libEKF.a Nadir/libNadir.a Q_Method/libQ_Method.a Bdot/libBdot.a 

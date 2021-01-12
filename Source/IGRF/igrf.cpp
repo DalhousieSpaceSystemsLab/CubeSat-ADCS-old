@@ -33,51 +33,51 @@ double h_nominal[MAX_MN_VALUE][MAX_MN_VALUE];	// IGRF h coefficient nanoTesla (n
 double SV_g[MAX_MN_VALUE][MAX_MN_VALUE];		// secular variation of g (nT/year)
 double SV_h[MAX_MN_VALUE][MAX_MN_VALUE];		// secular variation of h (nT/year)
 
-int main()
-{	
-	int n = 0, m = 0;
+// int main()
+// {	
+// 	int n = 0, m = 0;
 	
-	/* date variables */
-	unsigned int year = 0;
-	unsigned int month = 0;
-	unsigned int day = 0;
-	unsigned int year_reference;
-	int leap_year;
-	int leap_year_incl;
-	int days_in_year;
-	float year_current;
+// 	/* date variables */
+// 	unsigned int year = 0;
+// 	unsigned int month = 0;
+// 	unsigned int day = 0;
+// 	unsigned int year_reference;
+// 	int leap_year;
+// 	int leap_year_incl;
+// 	int days_in_year;
+// 	float year_current;
 
-	/* RECIEVE DATE AS INPUT */
-#ifdef debugigrf
-	cout << "Input refrence year: ";
-	cin >> year_reference;
-	cout << "Input current time (between 2015 01 00 and 2020 12 31) as YYYY MM DD: ";
-	cin >> year >> month >> day;
-#endif
+// 	/* RECIEVE DATE AS INPUT */
+// #ifdef debugigrf
+// 	cout << "Input refrence year: ";
+// 	cin >> year_reference;
+// 	cout << "Input current time (between 2015 01 00 and 2020 12 31) as YYYY MM DD: ";
+// 	cin >> year >> month >> day;
+// #endif
 
-	/* DETERMINE CURRENT TIME USED FOR CALCULATIONS */
+// 	/* DETERMINE CURRENT TIME USED FOR CALCULATIONS */
 
-	/* the year can be evenly divided by 4 AND cannot be evenly divided by 100 */
-	leap_year = ((year % 400 == 0) || (year % 4 == 0) && (year % 100));
-	/* need to include the leap_year in the calculation only if the current date is into March */
-	leap_year_incl = (month > 2) ? leap_year : 0;
+// 	/* the year can be evenly divided by 4 AND cannot be evenly divided by 100 */
+// 	leap_year = ((year % 400 == 0) || (year % 4 == 0) && (year % 100));
+// 	/* need to include the leap_year in the calculation only if the current date is into March */
+// 	leap_year_incl = (month > 2) ? leap_year : 0;
 
-	/* calculate number of days so far in the current year */
-	days_in_year = (MonthDayIndex[month-1] - 1) + day + leap_year_incl;
-	year_current = year + (float(days_in_year) / (365 + leap_year));
-	delta_t = year_current - year_reference;
-
-
-	/* parse IGRF data file */
-	if (!Parse_IGRF()) {
-#ifdef debugigrf
-		cout << "unable to open the IGRF file\n";	// diagnostic
-#endif
-	}
+// 	/* calculate number of days so far in the current year */
+// 	days_in_year = (MonthDayIndex[month-1] - 1) + day + leap_year_incl;
+// 	year_current = year + (float(days_in_year) / (365 + leap_year));
+// 	delta_t = year_current - year_reference;
 
 
-	IGRF(30.166923849507349, 23, 300, year, month, day);
-}
+// 	/* parse IGRF data file */
+// 	if (!Parse_IGRF()) {
+// #ifdef debugigrf
+// 		cout << "unable to open the IGRF file\n";	// diagnostic
+// #endif
+// 	}
+
+
+// 	IGRF(30.166923849507349, 23, 300, year, month, day);
+// }
 
 uint8_t IGRF(double lat_geodetic, float phi, float H, uint16_t year, uint8_t month, uint8_t day) {
 	/************************************************************************

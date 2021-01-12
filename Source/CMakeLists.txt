@@ -14,14 +14,17 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 set(CMAKE_CXX_COMPILER_ID GNU)
 set(CMAKE_CXX_COMPILER_VERSION 9.3.0)
 
+enable_testing()
+
 add_subdirectory(IGRF)
 add_subdirectory(Communications)
-#add_subdirectory(Test)
+add_subdirectory(Tests)
 add_subdirectory(sunVector)
 add_subdirectory(EKF)
 add_subdirectory(Nadir)
 add_subdirectory(Q_Method)
 add_subdirectory(Bdot)
+add_subdirectory(googletest)
 
 find_package(Eigen3 3.3 REQUIRED NO_MODULE)
 
@@ -44,5 +47,5 @@ target_include_directories(ADCS PUBLIC
                             "${PROJECT_SOURCE_DIR}/EKF"
                             "${PROJECT_SOURCE_DIR}/Nadir"
                             "${PROJECT_SOURCE_DIR}/Q_Method"
-			    "${PROJECT_SOURCE_DIR}/Bdot"
+			                "${PROJECT_SOURCE_DIR}/Bdot"
                             )

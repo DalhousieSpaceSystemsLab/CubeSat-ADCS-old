@@ -1,0 +1,2 @@
+/usr/bin/ar qc libEKF.a  CMakeFiles/EKF.dir/Extended_Kalman_Filter_RW.cpp.o
+/usr/bin/ranlib libEKF.a
