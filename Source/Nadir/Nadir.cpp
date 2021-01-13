@@ -1,5 +1,5 @@
 #define _USE_MATH_DEFINES
-#include "nadir.h"
+#include "Nadir.h"
 Eigen::MatrixXd C1(double x) {
 	/****************************************
 	Places scalar angle x(rad) into standard
