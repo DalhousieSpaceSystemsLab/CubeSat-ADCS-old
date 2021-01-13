@@ -1,1 +1,0 @@
-/usr/bin/x86_64-linux-gnu-g++-9  -g  -rdynamic CMakeFiles/ADCS_test.dir/Tests.cpp.o  -o ADCS_test  ../lib/libgtest_maind.a ../IGRF/libIGRF.a ../lib/libgtestd.a -lpthread 

@@ -1,2 +1,0 @@
-/usr/bin/ar qc libQ_Method.a  CMakeFiles/Q_Method.dir/Q_Method.cpp.o
-/usr/bin/ranlib libQ_Method.a

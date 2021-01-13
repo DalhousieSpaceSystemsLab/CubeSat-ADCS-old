@@ -1,2 +1,0 @@
-/usr/bin/ar qc libBdot.a  CMakeFiles/Bdot.dir/Bdot.cpp.o
-/usr/bin/ranlib libBdot.a
