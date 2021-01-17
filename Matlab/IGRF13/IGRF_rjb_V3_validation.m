@@ -9,14 +9,14 @@ phi=23; %longitude (deg)
 H=300;%altitude above Earth's surface (km)
 
 % import input values from the text file: 
-input = importdata('../Inputs/IGRF_validation_input_V2.txt');
+input = importdata('./Inputs/IGRF_validation_input_V2.txt');
 [rows_in, cols_in] = size(input);
 
 % import cpp output values from the text file: 
-cpp_out = importdata('../Outputs/IGRF_validation_cpp.txt');
+cpp_out = importdata('./Outputs/IGRF_validation_cpp.txt');
 [rows_cpp, cols_cpp] = size(cpp_out);
 
-output_file = fopen('../Outputs/IGRF_validation_matlab.txt','w');
+output_file = fopen('./Outputs/IGRF_validation_matlab.txt','w');
 fprintf(output_file,'lat_geodetic\tphi\tH\tYYYY\tMM\tDD\tbx\tby\tbz\terr_bx\terr_by\terr_bz\terr_bx_pr\terr_by_pr\terr_bz_pr\n');
 
 for i = 1:rows_in
