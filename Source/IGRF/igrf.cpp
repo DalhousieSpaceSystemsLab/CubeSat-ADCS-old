@@ -9,13 +9,11 @@
  * 
  * Edited by Rutwij Makwana on 16 Jan 2021
  * 1. Removed main()
- * 2. Replaced IGRF12 with IGRF13
- * 3. Changed the function prototype
+ * 2. Replaced IGRF12 with IGRF13, added coefficients to source code
+ * 3. Changed IGRF function prototype
  *
  */
 
-#include <fstream>
-//#include "pch.h"
 #include "igrf.h"
 #include "IGRF13_COEFF.h"
 
