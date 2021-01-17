@@ -6,18 +6,23 @@
  * References: MATLAB code by Dr. Bauer
 
  * Description: This file is part of the IGRF algorithm used in CubeSat ADCS team.
+ * 
+ * Edited by Rutwij Makwana on 16 Jan 2021
+ * 1. Removed main()
+ * 2. Replaced IGRF12 with IGRF13
  *
  */
 
+#include <fstream>
 //#include "pch.h"
 #include "igrf.h"
 #include "IGRF13_COEFF.h"
-#include <fstream>
+
 
 using namespace std;
 
 /* FUNCTION DECLARATIONS */
-int Parse_IGRF(void);
+void parse_IGRF(void);
 uint8_t IGRF(double lat_geodetic, double phi, double H, uint16_t year, uint8_t month, uint8_t day);
 double calc_factorial(int x);
 void calc_sum_legendre(double P[][MAX_MN_VALUE], double dP[][MAX_MN_VALUE], double costheta, double sintheta);
@@ -25,7 +30,7 @@ double calc_delta_t(double ref_year, unsigned int curr_year, unsigned int curr_m
 
 /* GLOBALS */
 /* holds the day index for each first day of the month */
-uint16_t MonthDayIndex[12] = { 0,31,59,90,120,151,181,212,243,273,304,334 };
+uint16_t MonthDayIndex[12] = {0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334};
 /* change in time with respeect to refrence year (based on IGRF txt file) */
 double delta_t = 0;
 
@@ -36,12 +41,12 @@ double SV_g[MAX_MN_VALUE][MAX_MN_VALUE];		// secular variation of g (nT/year)
 double SV_h[MAX_MN_VALUE][MAX_MN_VALUE];		// secular variation of h (nT/year)
 
 
-uint8_t IGRF(double lat_geodetic, double phi, double H, uint16_t year, uint8_t month, uint8_t day) {
+ret_val MagReference(double lat_geodetic, double phi, double H, uint16_t year, uint8_t month, uint8_t day, Eigen::MatrixXd  &mag_reference) {
 	/************************************************************************
 	Description: This function calculates the IGRF algorithm, producing
 	B(X, Y, Z)
 
-	Author: written by Cathy, originally developed by Dr.Bauer in MATLAB
+	Author: written by Cathy, edited by Rutwij, originally developed by Dr.Bauer in MATLAB
 
 	Original can be found at the Dal Cubesat Sharepoint:
 		10.ADCS > 08.Testing > IGRF12
@@ -62,6 +67,8 @@ uint8_t IGRF(double lat_geodetic, double phi, double H, uint16_t year, uint8_t m
 		- year, month, day: must be between the valid dates corresponding to
 		  the IGRF constants being used. For example: using IGRF12 dates must
 		  be between 2015 01 01 and 2019 12 31
+
+		- mag_reference: Output matrix reference
 
 	output: SUCCESS|FAIL diagnostic
 
@@ -106,11 +113,9 @@ uint8_t IGRF(double lat_geodetic, double phi, double H, uint16_t year, uint8_t m
 	/* B vector variables (north, east, down) */
 	double cd = 0, sd = 0;
 	double Bphi_geodetic = 0, Btheta_geodetic = 0, Br_geodetic = 0;
-	double Bx = 0, By = 0, Bz = 0;
 
-	if (!Parse_IGRF()) {
-		return FAIL;
-	}
+	parse_IGRF();
+
 	delta_t = calc_delta_t(REF_YEAR, year, month, day);
 
 	/* FROM ELLIPSOIDAL TO CARTESIAN */
@@ -142,7 +147,6 @@ uint8_t IGRF(double lat_geodetic, double phi, double H, uint16_t year, uint8_t m
 
 	/* loop to calculate nested sum */
 	for (n = 1; n < MAX_MN_VALUE; n++) {
-		cout << "n = " << n << '\n';
 		Btheta_sum = 0, Bphi_sum = 0, Br_sum = 0;
 		for (m = 0; m <= n; m++) {
 			// does m_des == 0? if it does delta = 1, if not delta = 0
@@ -174,118 +178,14 @@ uint8_t IGRF(double lat_geodetic, double phi, double H, uint16_t year, uint8_t m
 	Br_geodetic = Br * cd - Btheta * sd;
 
 	/* Convert to NED: (North, East, Down) (Bx,By,Bz) */
-	Bx = -Btheta_geodetic;	// North is opposite direction to co - latitude theta
-	By = Bphi_geodetic;		// phi_geodetic is already East
-	Bz = -Br_geodetic;		// Down is opposite direction to radial direction r
+	mag_reference(0, 0) = -Btheta_geodetic;	// North is opposite direction to co - latitude theta
+	mag_reference(1, 0) = Bphi_geodetic;		// phi_geodetic is already East
+	mag_reference(2, 0) = -Br_geodetic;		// Down is opposite direction to radial direction r
 
-#ifdef debugigrf	// print results
-	cout << '\n' << "B (North, East, Down):" << '\n';
- 	cout << "Bx = " << Bx << '\n';
-	cout << "By = " << By << '\n';
-	cout << "Bz = " << Bz << '\n';
-#endif
-
-    ofstream val_output;
-    val_output.open("../Outputs/IGRF_validation_cpp.txt", ofstream::app);
-    if(!val_output) {
-        cout << "Validation output file open failed";
-        return 2;
-    }
-    val_output.precision(20);
-    val_output << lat_geodetic << "\t" << phi << "\t" << H << "\t" << year << "\t" << (int)month << "\t" << (int)day << "\t" << Bx << "\t" << By << "\t" << Bz << "\n";
-    val_output.close();
-
-	return 0;
+	return SUCCESS;
 }
 
-
-// int Parse_IGRF(void) {
-// 	/************************************************************************
-// 	Description: This function parses the IGRF.txt file which contains the
-// 	gmn, hmn, and SVgmn, SVhmn values required for the IGRF algorithm.
-
-// 	Author: Cathy
-
-// 	input: none
-// 	output: SUCCESS|FAIL diagnostic
-// 	*************************************************************************/
-// 	ifstream IGRFconstants;
-// 	IGRFconstants.open(IGRF_COEFF_FILE, ifstream::in);
-
-// 	/* parsing variables */
-// 	int m = 0, n = 0, i = 0;
-// 	string tempdata;	// used to read and toss unneccesary values in the IGRF12 file
-// #ifdef debugparse
-// 	string userinput;	// used to receive user input to keep terminal open
-// #endif
-
-// 	if (!IGRFconstants) {
-// #ifdef debugparse
-// 		cout << '\n' << "failed to open the file" << '\n';
-// #endif
-// 		IGRFconstants.close();		// close the file if opening failed
-// 		return FAIL;
-// 	}
-// 	else {
-// #ifdef debugparse
-// 		cout << "opened the IGRF file\n\n";	// file opening was successful
-// 		cout << "n" << "\t" << "m" << '\t' << "g_nom" << '\t' <<
-// 			"h_nom" << '\t' << "SV_g" << '\t' << "SV_h" << '\n';
-// #endif
-// 		while (IGRFconstants) {				// read in values
-// 			IGRFconstants >> n >> m;
-// 			IGRFconstants >> g_nominal[n][m];
-// 			IGRFconstants >> h_nominal[n][m];
-// 			IGRFconstants >> SV_g[n][m];
-// 			IGRFconstants >> SV_h[n][m];
-// 			IGRFconstants >> tempdata >> i;
-// #ifdef debugparse
-// 			cout << n << "\t" << m << "\t" << g_nominal[n][m] << "\t" << h_nominal[n][m] << "\t" << SV_g[n][m] << "\t" << SV_h[n][m] << '\n';
-// #endif
-// 		}
-
-
-// #ifdef debugparse
-// 		/* print the g values with respect to m and n*/
-// 		cout << "n (x axis), m (y axis):\n";
-// 		cout << "g values(m,n): \n";
-// 		for (n = 0; n < MAX_MN_VALUE; n++) {
-// 			for (m = 0; m < MAX_MN_VALUE; m++) {
-// 				cout << g_nominal[n][m] << "\t";
-// 			}
-// 			cout << "\n";
-// 		}
-// 		/* print the h values with respect to m and n*/
-// 		cout << "\nh values(m,n): \n";
-// 		for (n = 0; n < MAX_MN_VALUE; n++) {
-// 			for (m = 0; m < MAX_MN_VALUE; m++) {
-// 				cout << h_nominal[n][m] << "\t";
-// 			}
-// 			cout << "\n";
-// 		}
-// 		/* print the SVg values with respect to m and n*/
-// 		cout << "SVg values(m,n): \n";
-// 		for (n = 0; n < MAX_MN_VALUE; n++) {
-// 			for (m = 0; m < MAX_MN_VALUE; m++) {
-// 				cout << SV_g[n][m] << "\t";
-// 			}
-// 			cout << "\n";
-// 		}
-// 		/* print the SVh values with respect to m and n*/
-// 		cout << "SVh values(m,n): \n";
-// 		for (n = 0; n < MAX_MN_VALUE; n++) {
-// 			for (m = 0; m < MAX_MN_VALUE; m++) {
-// 				cout << SV_h[n][m] << "\t";
-// 			}
-// 			cout << "\n";
-// 		}
-// #endif
-// 	}
-// 	IGRFconstants.close();	// close the file
-// 	return SUCCESS;
-// }
-
-int Parse_IGRF(void) {
+void parse_IGRF(void) {
 	/************************************************************************
 	Description: This function populates the internal coeff structures which
 	contains the gmn, hmn, and SVgmn, SVhmn values required for the IGRF 
@@ -300,8 +200,6 @@ int Parse_IGRF(void) {
 	/* parsing variables */
 	int m = 0, n = 0, i = 0;
 
-	cout << sizeof(IGRF13_COEFF)/sizeof(IGRF13_COEFF[0]) << '\n';
-
 	for(i = 0; i < sizeof(IGRF13_COEFF)/sizeof(IGRF13_COEFF[0]); i++){
 			n = IGRF13_COEFF[i][0];
 			m = IGRF13_COEFF[i][1];
@@ -310,7 +208,6 @@ int Parse_IGRF(void) {
 			SV_g[n][m] = IGRF13_COEFF[i][4];
 			SV_h[n][m] = IGRF13_COEFF[i][5];
 	}
-	return SUCCESS;
 }
 
 void calc_sum_legendre(double P[][MAX_MN_VALUE], double dP[][MAX_MN_VALUE], double costheta, double sintheta) {
@@ -413,15 +310,7 @@ double calc_delta_t(double ref_year, unsigned int curr_year, unsigned int curr_m
 	/* calculate number of days so far in the curr_year */
 	days_in_year = (MonthDayIndex[curr_month-1] - 1) + curr_day + leap_year_incl;
 	year_current = curr_year + (double(days_in_year) / (365 + leap_year));
-	cout << ref_year << " " << leap_year << " " << leap_year_incl << " " << days_in_year << " " << year_current << " " << year_current - ref_year << "\n";
 
 	return year_current - ref_year;
 }
 
-// uint8_t IGRF_with_ref(double lat_geodetic, double phi, double H, uint16_t year, uint8_t month, uint8_t day, uint16_t ref_year) {
-//     if (!Parse_IGRF()) {
-//         return FAIL;
-//     }
-//     delta_t = calc_delta_t(ref_year, year, month, day);
-//     return IGRF(lat_geodetic, phi, H, year, month, day);
-// }

@@ -5,3 +5,4 @@ set(SOURCES
     IGRF13_COEFF.h)
 #this adds the module to the project
 add_library(IGRF ${SOURCES})
+target_include_directories(IGRF PUBLIC /usr/include/eigen3)

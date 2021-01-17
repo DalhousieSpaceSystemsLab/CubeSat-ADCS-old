@@ -10,6 +10,9 @@ target_link_libraries(${This} PUBLIC
     gtest_main
     IGRF)
 
+target_include_directories(${This} PUBLIC 
+    /usr/include/eigen3)
+
 add_test(
     NAME ${This}
     COMMAND ${This}
