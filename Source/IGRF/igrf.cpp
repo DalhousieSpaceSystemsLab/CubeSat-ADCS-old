@@ -10,6 +10,7 @@
  * Edited by Rutwij Makwana on 16 Jan 2021
  * 1. Removed main()
  * 2. Replaced IGRF12 with IGRF13
+ * 3. Changed the function prototype
  *
  */
 
@@ -85,6 +86,33 @@ ret_val MagReference(double lat_geodetic, double phi, double H, uint16_t year, u
 
 	*************************************************************************/
 
+	/* Check input */
+	if(lat_geodetic <= -90 || lat_geodetic >= 90 || phi < -180 || phi > 180 ||
+	H <= -1 || H >= 600 || year <= 1900 || year >= 2025 || month < 1 || 
+	month > 12) {
+		return ERR_INVALID_ARG;
+	}
+
+	// If leap year
+	if(month == 2 && (year % 400 == 0 || (year % 4 == 0 && year % 100 != 0))){
+		if(day < 1 || day > 29)
+			return ERR_INVALID_ARG;
+	}
+	else if(month == 2) {
+		if(day < 1 || day > 28)
+			return ERR_INVALID_ARG;
+	}
+	else if(month==1 || month==3 || month==5 || month==7 || month==8 || 
+		month==10 || month==12) {
+		if(day < 1 || day > 31)
+			return ERR_INVALID_ARG;
+	}
+	else {
+		if(day < 1 || day > 30)
+			return ERR_INVALID_ARG;
+	}
+		
+
 	/* INITALIZE VAIRABLES*/
 
 	/* loop variables */
@@ -114,8 +142,8 @@ ret_val MagReference(double lat_geodetic, double phi, double H, uint16_t year, u
 	double cd = 0, sd = 0;
 	double Bphi_geodetic = 0, Btheta_geodetic = 0, Br_geodetic = 0;
 
+	/* Populate internal data structure and delta_t */
 	parse_IGRF();
-
 	delta_t = calc_delta_t(REF_YEAR, year, month, day);
 
 	/* FROM ELLIPSOIDAL TO CARTESIAN */
@@ -295,7 +323,16 @@ double calc_factorial(int x) {
 }
 
 double calc_delta_t(double ref_year, unsigned int curr_year, unsigned int curr_month, unsigned int curr_day) {
-    /* DETERMINE CURRENT TIME USED FOR CALCULATIONS */
+	/************************************************************************
+	Description: Calculate time delta from the epoch
+
+	Author: Rutwij
+
+	Input:	ref_year = epoch
+			curr_year, curr_month, curr_day = current date
+	Output: calculated delta
+
+	*************************************************************************/
 
     int leap_year;
 	int leap_year_incl;
