@@ -11,6 +11,7 @@
 
 //#include "pch.h"
 #include "igrf.h"
+#include "IGRF13_COEFF.h"
 #include <fstream>
 
 using namespace std;
@@ -198,89 +199,117 @@ uint8_t IGRF(double lat_geodetic, double phi, double H, uint16_t year, uint8_t m
 }
 
 
+// int Parse_IGRF(void) {
+// 	/************************************************************************
+// 	Description: This function parses the IGRF.txt file which contains the
+// 	gmn, hmn, and SVgmn, SVhmn values required for the IGRF algorithm.
+
+// 	Author: Cathy
+
+// 	input: none
+// 	output: SUCCESS|FAIL diagnostic
+// 	*************************************************************************/
+// 	ifstream IGRFconstants;
+// 	IGRFconstants.open(IGRF_COEFF_FILE, ifstream::in);
+
+// 	/* parsing variables */
+// 	int m = 0, n = 0, i = 0;
+// 	string tempdata;	// used to read and toss unneccesary values in the IGRF12 file
+// #ifdef debugparse
+// 	string userinput;	// used to receive user input to keep terminal open
+// #endif
+
+// 	if (!IGRFconstants) {
+// #ifdef debugparse
+// 		cout << '\n' << "failed to open the file" << '\n';
+// #endif
+// 		IGRFconstants.close();		// close the file if opening failed
+// 		return FAIL;
+// 	}
+// 	else {
+// #ifdef debugparse
+// 		cout << "opened the IGRF file\n\n";	// file opening was successful
+// 		cout << "n" << "\t" << "m" << '\t' << "g_nom" << '\t' <<
+// 			"h_nom" << '\t' << "SV_g" << '\t' << "SV_h" << '\n';
+// #endif
+// 		while (IGRFconstants) {				// read in values
+// 			IGRFconstants >> n >> m;
+// 			IGRFconstants >> g_nominal[n][m];
+// 			IGRFconstants >> h_nominal[n][m];
+// 			IGRFconstants >> SV_g[n][m];
+// 			IGRFconstants >> SV_h[n][m];
+// 			IGRFconstants >> tempdata >> i;
+// #ifdef debugparse
+// 			cout << n << "\t" << m << "\t" << g_nominal[n][m] << "\t" << h_nominal[n][m] << "\t" << SV_g[n][m] << "\t" << SV_h[n][m] << '\n';
+// #endif
+// 		}
+
+
+// #ifdef debugparse
+// 		/* print the g values with respect to m and n*/
+// 		cout << "n (x axis), m (y axis):\n";
+// 		cout << "g values(m,n): \n";
+// 		for (n = 0; n < MAX_MN_VALUE; n++) {
+// 			for (m = 0; m < MAX_MN_VALUE; m++) {
+// 				cout << g_nominal[n][m] << "\t";
+// 			}
+// 			cout << "\n";
+// 		}
+// 		/* print the h values with respect to m and n*/
+// 		cout << "\nh values(m,n): \n";
+// 		for (n = 0; n < MAX_MN_VALUE; n++) {
+// 			for (m = 0; m < MAX_MN_VALUE; m++) {
+// 				cout << h_nominal[n][m] << "\t";
+// 			}
+// 			cout << "\n";
+// 		}
+// 		/* print the SVg values with respect to m and n*/
+// 		cout << "SVg values(m,n): \n";
+// 		for (n = 0; n < MAX_MN_VALUE; n++) {
+// 			for (m = 0; m < MAX_MN_VALUE; m++) {
+// 				cout << SV_g[n][m] << "\t";
+// 			}
+// 			cout << "\n";
+// 		}
+// 		/* print the SVh values with respect to m and n*/
+// 		cout << "SVh values(m,n): \n";
+// 		for (n = 0; n < MAX_MN_VALUE; n++) {
+// 			for (m = 0; m < MAX_MN_VALUE; m++) {
+// 				cout << SV_h[n][m] << "\t";
+// 			}
+// 			cout << "\n";
+// 		}
+// #endif
+// 	}
+// 	IGRFconstants.close();	// close the file
+// 	return SUCCESS;
+// }
+
 int Parse_IGRF(void) {
 	/************************************************************************
-	Description: This function parses the IGRF.txt file which contains the
-	gmn, hmn, and SVgmn, SVhmn values required for the IGRF algorithm.
+	Description: This function populates the internal coeff structures which
+	contains the gmn, hmn, and SVgmn, SVhmn values required for the IGRF 
+	algorithm.
 
-	Author: Cathy
+	Author: Rutwij
 
 	input: none
 	output: SUCCESS|FAIL diagnostic
 	*************************************************************************/
-	ifstream IGRFconstants;
-	IGRFconstants.open(IGRF_COEFF_FILE, ifstream::in);
 
 	/* parsing variables */
 	int m = 0, n = 0, i = 0;
-	string tempdata;	// used to read and toss unneccesary values in the IGRF12 file
-#ifdef debugparse
-	string userinput;	// used to receive user input to keep terminal open
-#endif
 
-	if (!IGRFconstants) {
-#ifdef debugparse
-		cout << '\n' << "failed to open the file" << '\n';
-#endif
-		IGRFconstants.close();		// close the file if opening failed
-		return FAIL;
+	cout << sizeof(IGRF13_COEFF)/sizeof(IGRF13_COEFF[0]) << '\n';
+
+	for(i = 0; i < sizeof(IGRF13_COEFF)/sizeof(IGRF13_COEFF[0]); i++){
+			n = IGRF13_COEFF[i][0];
+			m = IGRF13_COEFF[i][1];
+			g_nominal[n][m] = IGRF13_COEFF[i][2];
+			h_nominal[n][m] = IGRF13_COEFF[i][3];
+			SV_g[n][m] = IGRF13_COEFF[i][4];
+			SV_h[n][m] = IGRF13_COEFF[i][5];
 	}
-	else {
-#ifdef debugparse
-		cout << "opened the IGRF file\n\n";	// file opening was successful
-		cout << "n" << "\t" << "m" << '\t' << "g_nom" << '\t' <<
-			"h_nom" << '\t' << "SV_g" << '\t' << "SV_h" << '\n';
-#endif
-		while (IGRFconstants) {				// read in values
-			IGRFconstants >> n >> m;
-			IGRFconstants >> g_nominal[n][m];
-			IGRFconstants >> h_nominal[n][m];
-			IGRFconstants >> SV_g[n][m];
-			IGRFconstants >> SV_h[n][m];
-			IGRFconstants >> tempdata >> i;
-#ifdef debugparse
-			cout << n << "\t" << m << "\t" << g_nominal[n][m] << "\t" << h_nominal[n][m] << "\t" << SV_g[n][m] << "\t" << SV_h[n][m] << '\n';
-#endif
-		}
-
-
-#ifdef debugparse
-		/* print the g values with respect to m and n*/
-		cout << "n (x axis), m (y axis):\n";
-		cout << "g values(m,n): \n";
-		for (n = 0; n < MAX_MN_VALUE; n++) {
-			for (m = 0; m < MAX_MN_VALUE; m++) {
-				cout << g_nominal[n][m] << "\t";
-			}
-			cout << "\n";
-		}
-		/* print the h values with respect to m and n*/
-		cout << "\nh values(m,n): \n";
-		for (n = 0; n < MAX_MN_VALUE; n++) {
-			for (m = 0; m < MAX_MN_VALUE; m++) {
-				cout << h_nominal[n][m] << "\t";
-			}
-			cout << "\n";
-		}
-		/* print the SVg values with respect to m and n*/
-		cout << "SVg values(m,n): \n";
-		for (n = 0; n < MAX_MN_VALUE; n++) {
-			for (m = 0; m < MAX_MN_VALUE; m++) {
-				cout << SV_g[n][m] << "\t";
-			}
-			cout << "\n";
-		}
-		/* print the SVh values with respect to m and n*/
-		cout << "SVh values(m,n): \n";
-		for (n = 0; n < MAX_MN_VALUE; n++) {
-			for (m = 0; m < MAX_MN_VALUE; m++) {
-				cout << SV_h[n][m] << "\t";
-			}
-			cout << "\n";
-		}
-#endif
-	}
-	IGRFconstants.close();	// close the file
 	return SUCCESS;
 }
 
