@@ -26,6 +26,6 @@ const double REF_YEAR = 2020;       // reference year for IGRF model
 #define DegToRad(X)	X*PI/180
 #define RadToDeg(X)	X*180/PI
 
-ret_val MagReference(double lat_geodetic, double phi, double H, uint16_t year, uint8_t month, uint8_t day, Eigen::MatrixXd  &mag_reference);
+ret_val MagReference(double lat_geodetic, double phi, double H, uint16_t year, uint8_t month, uint8_t day, Eigen::Vector3d  &mag_reference);
 
 #endif

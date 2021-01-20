@@ -9,9 +9,9 @@ using namespace std;
 
 //  Test for IGRF function prototype and inputs
 TEST(ADCS_test, ADCS_002_001) {
-    Eigen::MatrixXd mag_reference(3, 1);
+    Eigen::Vector3d mag_reference(3);
     mag_reference << 0, 0, 0;       //  Initialize matrix
-    Eigen::MatrixXd& mag = mag_reference;
+    Eigen::Vector3d& mag = mag_reference;
 
     //  This should succeed
     uint8_t i = MagReference(-30.56120405, -9.857491524, 577, 2020, 11, 17, mag);
@@ -47,9 +47,9 @@ TEST(ADCS_test, ADCS_002_001) {
 //  Test for IGRF accuracy
 TEST(ADCS_test, ADCS_002_002) {
     const double ACCURACY = 0.0000000001;   //  1e-10
-    Eigen::MatrixXd mag_reference(3, 1);
+    Eigen::Vector3d mag_reference(3);
     mag_reference << 0, 0, 0;       //  Initialize matrix
-    Eigen::MatrixXd& mag = mag_reference;
+    Eigen::Vector3d& mag = mag_reference;
     double geo, phi, h, y, m, d, bx, by, bz;
 
     ifstream IGRFvalues;

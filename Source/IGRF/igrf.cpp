@@ -40,7 +40,7 @@ double SV_g[MAX_MN_VALUE][MAX_MN_VALUE];		// secular variation of g (nT/year)
 double SV_h[MAX_MN_VALUE][MAX_MN_VALUE];		// secular variation of h (nT/year)
 
 
-ret_val MagReference(double lat_geodetic, double phi, double H, uint16_t year, uint8_t month, uint8_t day, Eigen::MatrixXd  &mag_reference) {
+ret_val MagReference(double lat_geodetic, double phi, double H, uint16_t year, uint8_t month, uint8_t day, Eigen::Vector3d  &mag_reference) {
 	/************************************************************************
 	Description: This function calculates the IGRF algorithm, producing
 	B(X, Y, Z)
@@ -67,7 +67,7 @@ ret_val MagReference(double lat_geodetic, double phi, double H, uint16_t year, u
 		  the IGRF constants being used. For example: using IGRF12 dates must
 		  be between 2015 01 01 and 2019 12 31
 
-		- mag_reference: Output matrix reference
+		- mag_reference: Output reference vector
 
 	output: SUCCESS|FAIL diagnostic
 
@@ -204,9 +204,9 @@ ret_val MagReference(double lat_geodetic, double phi, double H, uint16_t year, u
 	Br_geodetic = Br * cd - Btheta * sd;
 
 	/* Convert to NED: (North, East, Down) (Bx,By,Bz) */
-	mag_reference(0, 0) = -Btheta_geodetic;	// North is opposite direction to co - latitude theta
-	mag_reference(1, 0) = Bphi_geodetic;		// phi_geodetic is already East
-	mag_reference(2, 0) = -Br_geodetic;		// Down is opposite direction to radial direction r
+	mag_reference(0) = -Btheta_geodetic;	// North is opposite direction to co - latitude theta
+	mag_reference(1) = Bphi_geodetic;		// phi_geodetic is already East
+	mag_reference(2) = -Br_geodetic;		// Down is opposite direction to radial direction r
 
 	return SUCCESS;
 }
