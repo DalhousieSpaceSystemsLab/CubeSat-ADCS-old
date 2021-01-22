@@ -6,26 +6,32 @@
  * References: MATLAB code by Dr. Bauer
 
  * Description: This file is part of the IGRF algorithm used in CubeSat ADCS team.
+ * 
+ * Edited by Rutwij Makwana on 16 Jan 2021
+ * 1. Removed main()
+ * 2. Replaced IGRF12 with IGRF13, added coefficients to source code
+ * 3. Changed IGRF function prototype
  *
  */
 
-//#include "pch.h"
 #include "igrf.h"
-#include <fstream>
+#include "IGRF13_COEFF.h"
+
 
 using namespace std;
 
 /* FUNCTION DECLARATIONS */
-int Parse_IGRF(void);
-uint8_t IGRF(double lat_geodetic, float phi, float H, uint16_t year, uint8_t month, uint8_t day);
+void parse_IGRF(void);
+uint8_t IGRF(double lat_geodetic, double phi, double H, uint16_t year, uint8_t month, uint8_t day);
 double calc_factorial(int x);
-void calc_sum_legendre(double P[][MAX_MN_VALUE], double dP[][MAX_MN_VALUE], float costheta, float sintheta);
+void calc_sum_legendre(double P[][MAX_MN_VALUE], double dP[][MAX_MN_VALUE], double costheta, double sintheta);
+double calc_delta_t(double ref_year, unsigned int curr_year, unsigned int curr_month, unsigned int curr_day);
 
 /* GLOBALS */
 /* holds the day index for each first day of the month */
-uint16_t MonthDayIndex[12] = { 0,31,59,90,120,151,181,212,243,273,304,334 };
+uint16_t MonthDayIndex[12] = {0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334};
 /* change in time with respeect to refrence year (based on IGRF txt file) */
-float delta_t = 0;
+double delta_t = 0;
 
 /* storage arrays for IGRF.txt parsing */
 double g_nominal[MAX_MN_VALUE][MAX_MN_VALUE];	// IGRF g coefficient nanoTesla (nT)
@@ -33,78 +39,35 @@ double h_nominal[MAX_MN_VALUE][MAX_MN_VALUE];	// IGRF h coefficient nanoTesla (n
 double SV_g[MAX_MN_VALUE][MAX_MN_VALUE];		// secular variation of g (nT/year)
 double SV_h[MAX_MN_VALUE][MAX_MN_VALUE];		// secular variation of h (nT/year)
 
-int main()
-{	
-	int n = 0, m = 0;
-	
-	/* date variables */
-	unsigned int year = 0;
-	unsigned int month = 0;
-	unsigned int day = 0;
-	unsigned int year_reference;
-	int leap_year;
-	int leap_year_incl;
-	int days_in_year;
-	float year_current;
 
-	/* RECIEVE DATE AS INPUT */
-#ifdef debugigrf
-	cout << "Input refrence year: ";
-	cin >> year_reference;
-	cout << "Input current time (between 2015 01 00 and 2020 12 31) as YYYY MM DD: ";
-	cin >> year >> month >> day;
-#endif
-
-	/* DETERMINE CURRENT TIME USED FOR CALCULATIONS */
-
-	/* the year can be evenly divided by 4 AND cannot be evenly divided by 100 */
-	leap_year = ((year % 400 == 0) || (year % 4 == 0) && (year % 100));
-	/* need to include the leap_year in the calculation only if the current date is into March */
-	leap_year_incl = (month > 2) ? leap_year : 0;
-
-	/* calculate number of days so far in the current year */
-	days_in_year = (MonthDayIndex[month-1] - 1) + day + leap_year_incl;
-	year_current = year + (float(days_in_year) / (365 + leap_year));
-	delta_t = year_current - year_reference;
-
-
-	/* parse IGRF data file */
-	if (!Parse_IGRF()) {
-#ifdef debugigrf
-		cout << "unable to open the IGRF file\n";	// diagnostic
-#endif
-	}
-
-
-	IGRF(30.166923849507349, 23, 300, year, month, day);
-}
-
-uint8_t IGRF(double lat_geodetic, float phi, float H, uint16_t year, uint8_t month, uint8_t day) {
+ret_val MagReference(double lat_geodetic, double phi, double H, uint16_t year, uint8_t month, uint8_t day, Eigen::Vector3d  &mag_reference) {
 	/************************************************************************
 	Description: This function calculates the IGRF algorithm, producing
 	B(X, Y, Z)
-	
-	Author: written by Cathy, originally developed by Dr.Bauer in MATLAB
 
-	Original can be found at the Dal Cubesat Sharepoint: 
+	Author: written by Cathy, edited by Rutwij, originally developed by Dr.Bauer in MATLAB
+
+	Original can be found at the Dal Cubesat Sharepoint:
 		10.ADCS > 08.Testing > IGRF12
 
 	Inputs:
-		- lat_geodetic: geodetic latitude (deg) of desired location 
-		  (geodetic coordinate) values range between -90 and +90 deg 
+		- lat_geodetic: geodetic latitude (deg) of desired location
+		  (geodetic coordinate) values range between -90 and +90 deg
 		  (but not -90 or +90), phi, year, month, day
 
-		- phi: longitude (deg) of desired location Note: longitude is the 
-		  same for both geodetic and geocentric spherical coordinates values 
+		- phi: longitude (deg) of desired location Note: longitude is the
+		  same for both geodetic and geocentric spherical coordinates values
 		  range between -180 and +180 deg
 
-		- H: altitude above Earth's surface (km), which is perpendicular to 
-		  the surface of Earth (geodetic coordinate) values range between 
+		- H: altitude above Earth's surface (km), which is perpendicular to
+		  the surface of Earth (geodetic coordinate) values range between
 		  -1km to 600km
 
-		- year, month, day: must be between the valid dates corresponding to 
-		  the IGRF constants being used. For example: using IGRF12 dates must 
+		- year, month, day: must be between the valid dates corresponding to
+		  the IGRF constants being used. For example: using IGRF12 dates must
 		  be between 2015 01 01 and 2019 12 31
+
+		- mag_reference: Output reference vector
 
 	output: SUCCESS|FAIL diagnostic
 
@@ -120,7 +83,34 @@ uint8_t IGRF(double lat_geodetic, float phi, float H, uint16_t year, uint8_t mon
 	  of calculations
 
 	*************************************************************************/
-	
+
+	/* Check input */
+	if(lat_geodetic <= -90 || lat_geodetic >= 90 || phi < -180 || phi > 180 ||
+	H <= -1 || H >= 600 || year <= 1900 || year >= 2025 || month < 1 || 
+	month > 12) {
+		return ERR_INVALID_ARG;
+	}
+
+	// If leap year
+	if(month == 2 && (year % 400 == 0 || (year % 4 == 0 && year % 100 != 0))){
+		if(day < 1 || day > 29)
+			return ERR_INVALID_ARG;
+	}
+	else if(month == 2) {
+		if(day < 1 || day > 28)
+			return ERR_INVALID_ARG;
+	}
+	else if(month==1 || month==3 || month==5 || month==7 || month==8 || 
+		month==10 || month==12) {
+		if(day < 1 || day > 31)
+			return ERR_INVALID_ARG;
+	}
+	else {
+		if(day < 1 || day > 30)
+			return ERR_INVALID_ARG;
+	}
+		
+
 	/* INITALIZE VAIRABLES*/
 
 	/* loop variables */
@@ -139,7 +129,7 @@ uint8_t IGRF(double lat_geodetic, float phi, float H, uint16_t year, uint8_t mon
 	double r = 0, lat_geocentric = 0;
 
 	/* geocentric co-lattitude variables */
-	float theta_geocentric = 0, costheta = 0, sintheta = 0;
+	double theta_geocentric = 0, costheta = 0, sintheta = 0;
 
 	/* variables for legendre calculation */
 	double P[MAX_MN_VALUE][MAX_MN_VALUE] = { 0 };	// initial Legendre functions used in recursive formulation
@@ -149,11 +139,12 @@ uint8_t IGRF(double lat_geodetic, float phi, float H, uint16_t year, uint8_t mon
 	/* B vector variables (north, east, down) */
 	double cd = 0, sd = 0;
 	double Bphi_geodetic = 0, Btheta_geodetic = 0, Br_geodetic = 0;
-	double Bx = 0, By = 0, Bz = 0;
 
+	/* Populate internal data structure and delta_t */
+	parse_IGRF();
+	delta_t = calc_delta_t(REF_YEAR, year, month, day);
 
 	/* FROM ELLIPSOIDAL TO CARTESIAN */
-
 	N = a_ref/sqrt(1 - e2 * pow(sin(DegToRad(lat_geodetic)), 2));
 	X = (N + H)*(cos(DegToRad(lat_geodetic))*cos(DegToRad(phi)));
 	Y = (N + H)*(cos(DegToRad(lat_geodetic))*sin(DegToRad(phi)));
@@ -169,7 +160,7 @@ uint8_t IGRF(double lat_geodetic, float phi, float H, uint16_t year, uint8_t mon
 	/* FROM GEOCENTRIC LATITUDE TO GEOCENTRIC CO-LATITUDE */
 
 	theta_geocentric = 90 - lat_geocentric; // geocentric co-latitude
-	/* need sin and cos of geocentric co-latitude for calculating Schmidt 
+	/* need sin and cos of geocentric co-latitude for calculating Schmidt
 	   semi/quasi-normalized Legendre polynomial function later */
 	costheta = cos(DegToRad(theta_geocentric));
 	sintheta = sin(DegToRad(theta_geocentric));
@@ -177,12 +168,11 @@ uint8_t IGRF(double lat_geodetic, float phi, float H, uint16_t year, uint8_t mon
 	/* calculate all sums for P and dP */
 	calc_sum_legendre(P, dP, costheta, sintheta);
 
-	/* CALCULATE MAGNETIC FIELD STRENGTH VECTOR B EXPRESSED IN 
+	/* CALCULATE MAGNETIC FIELD STRENGTH VECTOR B EXPRESSED IN
 	GEOCENTRIC SPHERICAL COORDINATES*/
-	
+
 	/* loop to calculate nested sum */
 	for (n = 1; n < MAX_MN_VALUE; n++) {
-		cout << "n = " << n << '\n';
 		Btheta_sum = 0, Bphi_sum = 0, Br_sum = 0;
 		for (m = 0; m <= n; m++) {
 			// does m_des == 0? if it does delta = 1, if not delta = 0
@@ -204,7 +194,7 @@ uint8_t IGRF(double lat_geodetic, float phi, float H, uint16_t year, uint8_t mon
 
 	/* Convert back to geodetic coordinates based on Ref D p782 Eq H-13:
 		lat_geocentric = 90-theta_geocentric where lat_geocentric is delta
-		and theta_geocentric is the geocentric co-latitude which is 'theta' 
+		and theta_geocentric is the geocentric co-latitude which is 'theta'
 		in Ref D p782 */
 	cd = cos(DegToRad((lat_geodetic - lat_geocentric)));
 	sd = sin(DegToRad((lat_geodetic - lat_geocentric)));
@@ -214,112 +204,43 @@ uint8_t IGRF(double lat_geodetic, float phi, float H, uint16_t year, uint8_t mon
 	Br_geodetic = Br * cd - Btheta * sd;
 
 	/* Convert to NED: (North, East, Down) (Bx,By,Bz) */
-	Bx = -Btheta_geodetic;	// North is opposite direction to co - latitude theta
-	By = Bphi_geodetic;		// phi_geodetic is already East
-	Bz = -Br_geodetic;		// Down is opposite direction to radial direction r
-	
-#ifdef debugigrf	// print results
-	cout << '\n' << "B (North, East, Down):" << '\n';
- 	cout << "Bx = " << Bx << '\n';
-	cout << "By = " << By << '\n';
-	cout << "Bz = " << Bz << '\n';
-#endif
+	mag_reference(0) = -Btheta_geodetic;	// North is opposite direction to co - latitude theta
+	mag_reference(1) = Bphi_geodetic;		// phi_geodetic is already East
+	mag_reference(2) = -Br_geodetic;		// Down is opposite direction to radial direction r
 
-	return 0;
+	return SUCCESS;
 }
 
-
-int Parse_IGRF(void) {
+void parse_IGRF(void) {
 	/************************************************************************
-	Description: This function parses the IGRF.txt file which contains the
-	gmn, hmn, and SVgmn, SVhmn values required for the IGRF algorithm.
+	Description: This function populates the internal coeff structures which
+	contains the gmn, hmn, and SVgmn, SVhmn values required for the IGRF 
+	algorithm.
 
-	Author: Cathy
+	Author: Rutwij
 
 	input: none
 	output: SUCCESS|FAIL diagnostic
 	*************************************************************************/
-	ifstream IGRFconstants;
-	IGRFconstants.open("IGRF12.txt", ifstream::in);
 
 	/* parsing variables */
 	int m = 0, n = 0, i = 0;
-	string tempdata;	// used to read and toss unneccesary values in the IGRF12 file
-#ifdef debugparse
-	string userinput;	// used to receive user input to keep terminal open
-#endif
 
-	if (!IGRFconstants) {
-#ifdef debugparse
-		cout << '\n' << "failed to open the file" << '\n';
-#endif
-		IGRFconstants.close();		// close the file if opening failed
-		return FAIL;
+	for(i = 0; i < sizeof(IGRF13_COEFF)/sizeof(IGRF13_COEFF[0]); i++){
+			n = IGRF13_COEFF[i][0];
+			m = IGRF13_COEFF[i][1];
+			g_nominal[n][m] = IGRF13_COEFF[i][2];
+			h_nominal[n][m] = IGRF13_COEFF[i][3];
+			SV_g[n][m] = IGRF13_COEFF[i][4];
+			SV_h[n][m] = IGRF13_COEFF[i][5];
 	}
-	else {
-#ifdef debugparse
-		cout << "opened the IGRF file\n\n";	// file opening was successful
-		cout << "n" << "\t" << "m" << '\t' << "g_nom" << '\t' <<
-			"h_nom" << '\t' << "SV_g" << '\t' << "SV_h" << '\n';
-#endif
-		while (IGRFconstants) {				// read in values
-			IGRFconstants >> n >> m;
-			IGRFconstants >> g_nominal[n][m];
-			IGRFconstants >> h_nominal[n][m];
-			IGRFconstants >> SV_g[n][m];
-			IGRFconstants >> SV_h[n][m];
-			IGRFconstants >> tempdata >> i;
-#ifdef debugparse
-			cout << n << "\t" << m << "\t" << g_nominal[n][m] << "\t" << h_nominal[n][m] << "\t" << SV_g[n][m] << "\t" << SV_h[n][m] << '\n';
-#endif
-		}
-
-
-#ifdef debugparse
-		/* print the g values with respect to m and n*/
-		cout << "n (x axis), m (y axis):\n";
-		cout << "g values(m,n): \n";
-		for (n = 0; n < MAX_MN_VALUE; n++) {
-			for (m = 0; m < MAX_MN_VALUE; m++) {
-				cout << g_nominal[n][m] << "\t";
-			}
-			cout << "\n";
-		}
-		/* print the h values with respect to m and n*/
-		cout << "\nh values(m,n): \n";
-		for (n = 0; n < MAX_MN_VALUE; n++) {
-			for (m = 0; m < MAX_MN_VALUE; m++) {
-				cout << h_nominal[n][m] << "\t";
-			}
-			cout << "\n";
-		}
-		/* print the SVg values with respect to m and n*/
-		cout << "SVg values(m,n): \n";
-		for (n = 0; n < MAX_MN_VALUE; n++) {
-			for (m = 0; m < MAX_MN_VALUE; m++) {
-				cout << SV_g[n][m] << "\t";
-			}
-			cout << "\n";
-		}
-		/* print the SVh values with respect to m and n*/
-		cout << "SVh values(m,n): \n";
-		for (n = 0; n < MAX_MN_VALUE; n++) {
-			for (m = 0; m < MAX_MN_VALUE; m++) {
-				cout << SV_h[n][m] << "\t";
-			}
-			cout << "\n";
-		}
-#endif
-	}
-	IGRFconstants.close();	// close the file
-	return SUCCESS;
 }
 
-void calc_sum_legendre(double P[][MAX_MN_VALUE], double dP[][MAX_MN_VALUE], float costheta, float sintheta) {
+void calc_sum_legendre(double P[][MAX_MN_VALUE], double dP[][MAX_MN_VALUE], double costheta, double sintheta) {
 	/************************************************************************
 	Description: This function calculates the sums for Schmidt semi/quasi-
-	normalized Legendre polynomial function of degree n and order m: 
-	Pm_n(costheta)along with its partial derivative with respect to costheta: 
+	normalized Legendre polynomial function of degree n and order m:
+	Pm_n(costheta)along with its partial derivative with respect to costheta:
 	dPm_n(costheta)
 
 	Author: written by Cathy, originally developed by Dr.Bauer in MATLAB
@@ -330,7 +251,7 @@ void calc_sum_legendre(double P[][MAX_MN_VALUE], double dP[][MAX_MN_VALUE], floa
 	Inputs:
 		- empty array for P[][] and dP[][]
 		- n: desired degree to calculate
-		- m: desired order to calculate 
+		- m: desired order to calculate
 		- costheta: cosine of ceocentric latitude
 		- sintheta: sine of geocentric latitude
 	Outputs:
@@ -340,7 +261,7 @@ void calc_sum_legendre(double P[][MAX_MN_VALUE], double dP[][MAX_MN_VALUE], floa
 
 	long double Pm_n = 0, dPm_n = 0;	// temp values for looping calculation
 	int n = 0, m = 0;					// temp values for looping calculation
-	float delta = 0;					// temp value
+	double delta = 0;					// temp value
 
 	/* define initial Legendre functions used in recursive formulation */
 	P[0][0] = 1;
@@ -356,9 +277,9 @@ void calc_sum_legendre(double P[][MAX_MN_VALUE], double dP[][MAX_MN_VALUE], floa
 		for (m = 0; m<MAX_MN_VALUE; m++){
 			if(m==0){
 				// Eq 10.93a
-				P[n][m] = (1/float(n)) * ( (2*n - 1)*costheta*P[n-1][m] - (n-1)*P[n-2][m] );
+				P[n][m] = (1/double(n)) * ( (2*n - 1)*costheta*P[n-1][m] - (n-1)*P[n-2][m] );
 				// Eq RJB 1
-				dP[n][m] = (1/float(n)) * ( (2*n - 1)*(costheta*dP[n-1][m] - sintheta*P[n-1][m]) - (n-1)*dP[n-2][m] );
+				dP[n][m] = (1/double(n)) * ( (2*n - 1)*(costheta*dP[n-1][m] - sintheta*P[n-1][m]) - (n-1)*dP[n-2][m] );
 			}
 			else if (m == n) {
 				// Eq 10.93c
@@ -374,7 +295,7 @@ void calc_sum_legendre(double P[][MAX_MN_VALUE], double dP[][MAX_MN_VALUE], floa
 			}
 		}
 	}
-	
+
 }
 
 double calc_factorial(int x) {
@@ -398,3 +319,33 @@ double calc_factorial(int x) {
 	}
 	return result;
 }
+
+double calc_delta_t(double ref_year, unsigned int curr_year, unsigned int curr_month, unsigned int curr_day) {
+	/************************************************************************
+	Description: Calculate time delta from the epoch
+
+	Author: Rutwij
+
+	Input:	ref_year = epoch
+			curr_year, curr_month, curr_day = current date
+	Output: calculated delta
+
+	*************************************************************************/
+
+    int leap_year;
+	int leap_year_incl;
+	int days_in_year;
+	double year_current;
+
+	/* the curr_year can be evenly divided by 4 AND cannot be evenly divided by 100 */
+	leap_year = ((curr_year % 400 == 0) || ((curr_year % 4 == 0) && (curr_year % 100)));
+	/* need to include the leap_year in the calculation only if the current date is into March */
+	leap_year_incl = (curr_month > 2) ? leap_year : 0;
+
+	/* calculate number of days so far in the curr_year */
+	days_in_year = (MonthDayIndex[curr_month-1] - 1) + curr_day + leap_year_incl;
+	year_current = curr_year + (double(days_in_year) / (365 + leap_year));
+
+	return year_current - ref_year;
+}
+
