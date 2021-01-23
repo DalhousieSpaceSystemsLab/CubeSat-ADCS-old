@@ -137,12 +137,12 @@ Eigen::MatrixXd quaternion_estimate(Eigen::MatrixXd K) {
 	return q_est;
 }
 
-Eigen::MatrixXd q_method(
-	Eigen::MatrixXd b1,
-	Eigen::MatrixXd b2,
-	Eigen::MatrixXd b3,
-	Eigen::MatrixXd r1,
-	Eigen::MatrixXd r2) {
+Eigen::Vector4d q_method(
+	Eigen::Vector3d b1,
+	Eigen::Vector3d b2,
+	Eigen::Vector3d b3,
+	Eigen::Vector3d r1,
+	Eigen::Vector3d r2) {
 	/****************************************
 	Takes components of sun vectors and magnetic field vectors
 	and returns quaternion estimate matrix.
@@ -150,7 +150,8 @@ Eigen::MatrixXd q_method(
 	output: q_est
 	****************************************/
 
-	Eigen::MatrixXd K, q_est;
+	Eigen::MatrixXd K;
+	Eigen::Vector4d q_est;
 	K = K_solve(b1, b2, b3, r1, r2);
 	q_est = quaternion_estimate(K);
 	return q_est;

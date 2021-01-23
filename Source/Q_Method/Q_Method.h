@@ -22,12 +22,12 @@
 
 #include <Eigen/Dense>
 
-extern Eigen::MatrixXd q_method(
-	Eigen::MatrixXd b1,
-	Eigen::MatrixXd b2,
-	Eigen::MatrixXd b3,
-	Eigen::MatrixXd r1,
-	Eigen::MatrixXd r2
+extern Eigen::Vector4d q_method(
+	Eigen::Vector3d b1,
+	Eigen::Vector3d b2,
+	Eigen::Vector3d b3,
+	Eigen::Vector3d r1,
+	Eigen::Vector3d r2
 );
 
 #endif /*Q_METHOD_H_*/
