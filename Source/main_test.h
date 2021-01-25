@@ -1,7 +1,7 @@
 #pragma once
 #ifndef MAIN_TEST_H_
 #define MAIN_TEST_H_
-
+#include "data.h"
 #include <Eigen/Dense>
 
 //Allows creation of test structures for main.cpp

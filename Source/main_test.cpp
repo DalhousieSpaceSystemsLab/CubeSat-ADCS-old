@@ -27,7 +27,7 @@ struct gpsData g = { 2020, 2020, 7, 18, 51.6413, 231.7821, 257.8729, 30.0};
 		-0.589342852417518,
 		-0.121231849956297).finished();
 	
-
+	
 	static Eigen::Matrix<double, 18, 3> H = (Eigen::Matrix<double, 18, 3>() <<
 
 		0.353553390593274, 0.353553390593274, 0.866025403784439,
@@ -69,7 +69,7 @@ struct gpsData g = { 2020, 2020, 7, 18, 51.6413, 231.7821, 257.8729, 30.0};
 		0.123,
 		0.123).finished();
 
-
+	
 	double ws1 = 59.6951780433913;
 	double ws2 = -29.6490103428103;
 	double ws3 = 89.5490774125823;
@@ -82,10 +82,11 @@ struct gpsData g = { 2020, 2020, 7, 18, 51.6413, 231.7821, 257.8729, 30.0};
 	double ga1 = 0.000150000000000000;
 	double ga2 = -7.50000000000000e-05;
 	double ga3 = 0.000225000000000000;
-
+	
 	static Eigen::Matrix<double, 12, 1> rar = (Eigen::Matrix<double, 12, 1>() <<
 	ws1, ws2, ws3, wx, wy, wz, gx, gy, gz, ga1, ga2, ga3).finished();
-
+	
 	rawSunSensorData rssd = { y, H };
-
+	
 	sensorData s = { rssd, rmfvA, rmfvB, rar };
+	

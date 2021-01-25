@@ -15,8 +15,8 @@ struct gpsData{
 	double tano;
 };
 struct rawSunSensorData{
-		Eigen::Matrix<double, 18, 3> H;
-		Eigen::Matrix<double, 18, 1> y;
+	Eigen::Matrix<double, 18, 1> y;
+	Eigen::Matrix<double, 18, 3> H;
 	};
 struct sensorData{
         rawSunSensorData rssd;
