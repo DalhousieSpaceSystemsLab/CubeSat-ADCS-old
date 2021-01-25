@@ -70,12 +70,13 @@ int main()
 
     Eigen::MatrixXd r2(3, 1);
     
-    /*
-    reference_magnetic_field_vector refMagVec = igrf(g.reference_year, g.year, g.month, g.day);
 
-    r2(0, 0) = refMagVec.Bx;
-    r2(1, 0) = refMagVec.By;
-    r2(2, 0) = refMagVec.Bz;
+Eigen::Vector3d refMagVec;
+    MagReference(g.lat_geodetic, g.phi, g.H, g.year, g.month, g.day, refMagVec);
+std::cout << refMagVec;
+    r2(0, 0) = refMagVec(0);
+    r2(1, 0) = refMagVec(1);
+    r2(2, 0) = refMagVec(2);
 
     Eigen::MatrixXd q(4, 1); 
     q = q_method(b1, b2, b3, r1, r2);
@@ -105,6 +106,6 @@ int main()
     u[5] = s.rawAngRate(11, 0);
     
     ekf.update(u, y1);
-    std::cout << ekf.get_x_hat_kk();
-    */
+    //std::cout << ekf.get_x_hat_kk();
+    
 }

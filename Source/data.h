@@ -6,13 +6,17 @@
 
 struct gpsData{
 	double reference_year;
-	double year;
-	double month;
-	double day;
+	uint16_t year;
+	uint8_t month;
+	uint8_t day;
 	double omega;
 	double RAAN;
 	double i;
 	double tano;
+	
+	double lat_geodetic;
+	double phi;
+	double H;
 };
 struct rawSunSensorData{
 	Eigen::Matrix<double, 18, 1> y;
