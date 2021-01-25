@@ -1,7 +1,9 @@
-#include "ADCS_test.h"
+#include "main_test.h"
 #include "Eigen/Dense"
+#include "data.h"
 
-struct gpsData g = { 2020, 2020, 7, 18, 51.6413, 231.7821, 257.8729, 30.0 };
+
+struct gpsData g = { 2020, 2020, 7, 18, 51.6413, 231.7821, 257.8729, 30.0};
 
 
 

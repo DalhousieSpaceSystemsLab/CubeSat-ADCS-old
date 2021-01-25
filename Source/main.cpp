@@ -9,7 +9,9 @@
 #include "Sun_Vector_Estimate.h"
 #include <iostream>
 #include "Eigen/Dense"
-#include "ADCS_test.h"
+#include "main_test.h"
+#include "main_test.cpp"
+#include "data.h"
 
 int main()
 {   
@@ -17,9 +19,35 @@ int main()
     Eigen::Matrix<double, 13, 1> x_hat_kk_initial = Eigen::Matrix<double, 13, 1>::Zero();
     x_hat_kk_initial << -.02, .04, .01, -.01, .01, .002, .5, -.25, .3, .8, .1, -.1, .15;
     EKF ekf(x_hat_kk_initial);
+    //struct gpsData g = { 2020, 2020, 7, 18, 51.6413, 231.7821, 257.8729, 30.0 };
+    std::cout << g.day;
     
-    
-    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
    
     
     Eigen::MatrixXd nadirQuat = nadir(g.omega, g.RAAN, g.i, g.tano);
@@ -42,7 +70,7 @@ int main()
 
     Eigen::MatrixXd r2(3, 1);
     
-
+    /*
     reference_magnetic_field_vector refMagVec = igrf(g.reference_year, g.year, g.month, g.day);
 
     r2(0, 0) = refMagVec.Bx;
@@ -78,4 +106,5 @@ int main()
     
     ekf.update(u, y1);
     std::cout << ekf.get_x_hat_kk();
+    */
 }
