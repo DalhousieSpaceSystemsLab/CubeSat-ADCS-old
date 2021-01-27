@@ -20,10 +20,10 @@
 #include <Eigen/Dense>
 using namespace Eigen;
 
-extern VectorXd Bdot(
-	VectorXd B,
-	VectorXd B_1,
-	VectorXd fbdot_1
+extern Vector3d Bdot(
+	Vector3d B,
+	Vector3d B_1,
+	Vector3d fbdot_1
 );
 
 #endif /*Bdot_H_*/

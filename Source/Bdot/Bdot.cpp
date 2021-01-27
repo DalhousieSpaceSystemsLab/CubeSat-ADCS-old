@@ -1,9 +1,9 @@
 #include "Bdot.h"
 
-VectorXd Bdot(
-	VectorXd B,
-	VectorXd B_1,
-	VectorXd fBdot_1
+Vector3d Bdot(
+	Vector3d B,
+	Vector3d B_1,
+	Vector3d fBdot_1
 	) {
 
 	/********************************
