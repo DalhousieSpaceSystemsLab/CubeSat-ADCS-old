@@ -28,19 +28,21 @@ using namespace Eigen;
 
 int main(void) {
 	
-	RowVectorXd B(3);
-	B << 0.000008456, -0.0000009043, 0.00004029;
-	RowVectorXd B_1(3);
-	B_1 << 0.00001135, 0.000001993, 0.00004319;
-	RowVectorXd fBdot_1(3);
-	fBdot_1 << 0.0000003343, 0.00000006190, 0.000001261;
+	Vector3d B(0.000008456, -0.0000009043, 0.00004029);
+	
+	Vector3d B_1(0.00001135, 0.000001993, 0.00004319);
+	
+	Vector3d fBdot_1(0.0000003343, 0.00000006190, 0.000001261);
+	
+	
 
-	RowVectorXd m(3);
+	VectorXd m(3);
 	m = Bdot(B, B_1, fBdot_1);
 
-	std::cout << "m = "<< m;
-	std::cout << "\n\nThe magnetic moment (m) calculated from the simulink model at t = 2 seconds is: \nm = (-1.661e-02,1.881e-03,-7.951e-02)\n ";
+    std::cout << "m = "<< m;
+	std::cout << "\n\nThe magnetic moment (m) calculated from the simulink model at t = 2 seconds is: \nm = -1.661e-02 \n     1.881e-03\n    -7.951e-02\n ";
 
+	
 	return 0;
 }
 
