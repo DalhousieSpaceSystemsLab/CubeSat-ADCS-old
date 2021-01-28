@@ -1,32 +1,20 @@
 #include "main_test.h"
-#include "Eigen/Dense"
 #include "data.h"
 
+//This file provides an example instance of GPS data "g" parsed rom the GPS server and an example of sensor data "s" parsed from the MSP430.
 
 struct gpsData g = { 2020, 2020, 7, 18, 51.6413, 231.7821, 257.8729, 30.0, 1, 2, 3};
-
-
-
-	//Eigen::MatrixXd y(18, 1);
-	//Eigen::MatrixXd H(18, 3);
-	//Eigen::MatrixXd rmfvA(3, 1);
-	//Eigen::MatrixXd rmfvB(3, 1);
 
 
 	static Eigen::Matrix<double, 3, 1> rmfvA = (Eigen::Matrix<double, 3, 1>() <<
 		-0.798735150635402,
 		-0.589342852417518,
 		-0.121231849956297).finished();
-	/*
-	rmfvA << -0.798735150635402,
-		-0.589342852417518,
-		-0.121231849956297;
-		*/
+
 	static Eigen::Matrix<double, 3, 1> rmfvB = (Eigen::Matrix<double, 3, 1>() <<
 		-0.798735150635402,
 		-0.589342852417518,
 		-0.121231849956297).finished();
-	
 	
 	static Eigen::Matrix<double, 18, 3> H = (Eigen::Matrix<double, 18, 3>() <<
 

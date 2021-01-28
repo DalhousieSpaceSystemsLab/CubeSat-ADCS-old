@@ -3,7 +3,7 @@
 #ifndef DATA_H_
 #define DATA_H_
 
-
+//Structs represent data being sent to ADCS core software.
 struct gpsData{
 	double reference_year;
 	uint16_t year;
