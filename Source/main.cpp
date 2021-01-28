@@ -23,6 +23,17 @@ The code currently doesn't support any of the other modes of operation. Its curr
 reaction wheels based on sensor data provided by the MSP430 and GPS data provided by the GPS server. Because there is no UART or IPC functionality at the moment,
 example GPS and sensor data provided by "main_test.h" are used to demonstrate how the core architecture works.
 */
+
+void leop();
+void safehold();
+void standby();
+void faultDetection();
+void detumbleAndDesaturate();
+void updateEkf();
+void useEkfPredictedState();
+void useReactionWheels();
+void zeroEkfState();
+
 int main()
 {   
     //Initializing the EKF with the initial values provided by Dr. Bauer's Matlab code.
