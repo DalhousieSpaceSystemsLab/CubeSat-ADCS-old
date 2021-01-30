@@ -26,6 +26,7 @@ add_subdirectory(Q_Method)
 add_subdirectory(Bdot)
 add_subdirectory(PDcontroller)
 add_subdirectory(googletest)
+add_subdirectory(Sun_Vector_Reference)
 
 find_package(Eigen3 3.3 REQUIRED NO_MODULE)
 
@@ -40,6 +41,8 @@ target_link_libraries(ADCS PUBLIC Nadir)
 target_link_libraries(ADCS PUBLIC Q_Method)
 target_link_libraries(ADCS PUBLIC Bdot)
 target_link_libraries(ADCS PUBLIC PDcontroller)
+target_link_libraries(ADCS PUBLIC Sun_Vector_Reference)
+
 
 target_include_directories(ADCS PUBLIC
                             "${PROJECT_BINARY_DIR}"
@@ -49,6 +52,7 @@ target_include_directories(ADCS PUBLIC
                             "${PROJECT_SOURCE_DIR}/EKF"
                             "${PROJECT_SOURCE_DIR}/Nadir"
                             "${PROJECT_SOURCE_DIR}/Q_Method"
-			    "${PROJECT_SOURCE_DIR}/Bdot"
-			    "${PROJECT_SOURCE_DIR}/PDcontroller"
+                            "${PROJECT_SOURCE_DIR}/Bdot"
+			                "${PROJECT_SOURCE_DIR}/PDcontroller"
+		       	            "${PROJECT_SOURCE_DIR}/Sun_Vector_Reference"
                             )
