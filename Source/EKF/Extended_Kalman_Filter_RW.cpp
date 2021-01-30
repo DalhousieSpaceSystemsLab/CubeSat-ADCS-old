@@ -327,7 +327,7 @@ output: none
 	Eigen::Matrix<double, 13, 13> F_k_1 = Eigen::Matrix<double, 13, 13>::Zero();
 
 	 F_k_1.block<3, 3>(0, 0) = Eigen::Matrix3d::Identity();
-	 F_k_1.block<1, 1>(9, 0) << 1.0;
+	 F_k_1.block<1, 1>(9, 0) << 0;
 	 F_k_1.block<3, 3>(3, 3) = dF1_dw;
 	 F_k_1.block<3, 3>(6, 3) = dF2_dw;
 	 F_k_1.block<1, 3>(9, 3) = dF3_dw;
