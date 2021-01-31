@@ -1,34 +1,10 @@
 #include <stdio.h>
 #include <math.h>
+#include "../Errors.h"
 #include "sun_vector_reference.h"
-
-/*This script combines two MATLAB functions from within my Main simulation
-to output a single estimated sun vector (in units of AU and km) between
-the Earth and the Sun's body centres in the ECI frame. The ECI frame is
-aligned with respect to Earth's EQUATORIAL PLANE (X and Y lie within it,
-with X in the vernal equinox direction) and not it's heliocentric
-ecliptic plane. This is an important distinction to make in regards to
-validation: if using JPL ephemeris data specify the reference frame as
-"frame" in regards to J2000. Equations are referenced by equation number
-
-User-defined (and, eventually, GPS/RTC-defined) inputs are:
-	   Y - Year, four digits
-	   M - Month, 0-12
-	   D - Day, 0-31
-	   UT - Universal time (UTC), decimal hours
-Outputs will be printed to the command line as formatted text:
-	   r_S_I in AU - distance from Earth to Sun in ECI frame, units of AU
-	   r_S_I in km - distance from Earth to Sun in ECI frame, units of km
-
-n.b. AU stands for Astronomical Unit and is equivalent to the average
-distance between the Earth and Sun.
-
-Irrelevant equations are commented out but retained for consistency.*/
 
 int H, Min, S;
 double J0, T0, S_lon_m, M_s, Y, lon_S_ec, epsilon, r_S, r_S_I[3][1], r_S_Ikm[3][1], e_ES[3][1];
-
-#define M_PI 3.14159265358979323846
 
 double sind(double x) {
 	return sin(x * M_PI / 180);
@@ -38,60 +14,31 @@ double cosd(double x) {
 	return cos(x * M_PI / 180);
 }
 
-Eigen::Vector3d sun_vector_reference(int Y, int M, int D, double UT) {
+ret_val SunReference(uint16_t year, uint16_t month, uint16_t day, double UT, Eigen::Vector3d &sun_reference_km, Eigen::Vector3d &sun_reference_au) {
 
 	/*-------------------------------------------------------------------------
-	Date has been hardcoded, but set it how you want!
-	Separate date (as is done manually in my program):*/
+	Description: This function calculates reference sun vector in ECI frame
+	based on Matlab code found in 
+	DalhousieSpaceSystemsLab/CubeSat-ADCS/Matlab/Sun_Vector_Reference
 
-	//Y = 2019;
-	//M = 11;
-	//D = 27;
+	Author: written by Mark MacGillivray, edited by Rutwij Makwana, originally 
+	developed by Dr.Bauer in MATLAB
 
-	//Current universal time in hours, chosen arbitarily
-	//UT = 14.55365; // 14:33:13 UTC
+	Inputs:
+		- year: Current year
 
-   /*  Values for validation for** THIS SPECIFIC TIME ONLY** are:
-	 JD 2458815.106250000, A.D. 2019 - Nov - 27 14 : 33 : 00.0000
+		- month: Current month
 
-		 r_Earth->Sun(AU)
-		 | -0.41626905 |
-		 | -0.82085774 | [AU]
-		 | -0.35584133 |
+		- day: Current day
 
-		 r_Earth->Sun(km)
-		 | -62272964.0803042 |
-		 | -122798570.6136345 | [km]
-		 | -53233105.5879802 |
+		- UT: Universal time (UTC), decimal hours
 
+		- sun_reference_km: Output reference vector in km
 
-	-------------------------------------------------------------------------
-	Greenwich sidereal time, as outlined in Curtis' Orbital Mechanics for
-	Engineering Students Ch. 5 p. 259. This procedure for determining the
-	Julian day number and century is useful for coarser estimation, but is
-	currently irrelevant.
+		- sun_reference_au: Output reference vector in au
 
-	Manually calculate Julian day number since January 1st, 4163 BC (Curtis 5.48)
-	J0 = 367*Y - fix(7*(Y + fix((M + 9)/12))/4) + fix(275*M/9) + D + 1721013.5;
-
-	Time in Julian centuries, w/r/t J2000 (Curtis 5.49)
-	T0 = (J0 - 2451545)/36525;
-
-	Greenwich sidereal time at 0 h universal time in degrees (Curtis 5.50)
-	THETA_G0 = 100.4606184 + 36000.77004*T0 + 0.000387933*T0^2 - 2.583e-8*T0^3;
-	Maintain range of 0 to 360 degrees
-	mod(THETA_G0,360);
-
-	Greenwich sidereal time with respect to the current universal time
-	THETA_G = THETA_G0 + 360.98564724*UT/24;
-	Maintain range of 0 to 360 degrees
-	THETA_G = mod(THETA_G,360);
-
-	Markley demonstrates a more precise Julian Date (including time) in
-	Fundamentals of Spacecraft Attitude Determination and Control pp. 33-34
-	This is used to calculate the ACCURATE time in Julian centuries input needed for
-	the sun vector estimation algorithm to maintain ephemeridial accuracy
-	with values from JPL.*/
+	output: SUCCESS|FAIL diagnostic
+	-------------------------------------------------------------------------*/
 
 	//Separate time into hours, minutes, and seconds:
 	H = (int)UT; // 0 to 24
@@ -100,7 +47,7 @@ Eigen::Vector3d sun_vector_reference(int Y, int M, int D, double UT) {
 
 	//Calculate accurate-to-time Julian date, with leap-seconds conceptually
 	//ignored (Markley 2.68):
-	J0 = 1721013.5 + (367 * Y) - (int)((7.0 / 4.0) * (Y + (int)((M + 9) / 12))) + (int)(275 * M / 9) + D + (((60.0 * H) + Min + (S / 60.0)) / 1440.0);
+	J0 = 1721013.5 + (367 * year) - (int)((7.0 / 4.0) * (year + (int)((month + 9) / 12))) + (int)(275 * month / 9) + day + (((60.0 * H) + Min + (S / 60.0)) / 1440.0);
 
 	//Time in Julian centuries, w/r/t above Julian date (Markley 11.49)
 	T0 = (J0 - 2451545.0) / 36525.0;
@@ -147,26 +94,19 @@ Eigen::Vector3d sun_vector_reference(int Y, int M, int D, double UT) {
 	r_S_I[1][0] = r_S * cosd(epsilon) * sind(lon_S_ec); // AU
 	r_S_I[2][0] = r_S * sind(epsilon) * sind(lon_S_ec); // AU
 
-	Eigen::Vector3d r_S_I_matrix;
+	sun_reference_au << r_S_I[0][0], r_S_I[1][0], r_S_I[2][0];
 
-	r_S_I_matrix << r_S_I[0][0], r_S_I[1][0], r_S_I[2][0];
-
-	/*
 	// Convert from AU to kilometres 
 	for (int i = 0; i < 3; i++) {
 		r_S_Ikm[i][0] = r_S_I[i][0] * (149597870700.0) * 1e-3; // 149597870700 metres = 1 AU
 	}
 
-	// Obtain unit vector:
-	for (int i = 0; i < 3; i++) {
-		e_ES[i][0] = r_S_I[i][0] / r_S; // m
-	}
+	sun_reference_km << r_S_Ikm[0][0], r_S_Ikm[1][0], r_S_Ikm[2][0];
 
-	// Output
-	printf("\n     r_Earth->Sun (AU)             r_Earth->Sun (km)\n\n");
-	for (int i = 0; i < 3; i++) {
-		printf(" |   %9.8e   |       |   %9.7e    |\n", r_S_I[i][0], r_S_Ikm[i][0]);
-	}
-	*/
-	return r_S_I_matrix;
+	// // Obtain unit vector:
+	// for (int i = 0; i < 3; i++) {
+	// 	e_ES[i][0] = r_S_I[i][0] / r_S; // m
+	// }
+
+	return SUCCESS;
 }
