@@ -53,13 +53,18 @@ double rcond(Eigen::MatrixXd A) {
 	return rcond;
 }
 
-Eigen::MatrixXd sun_vector_estimate(Eigen::MatrixXd y, Eigen::MatrixXd H) {
+ret_val SunEstimate(Eigen::MatrixXd intensity_matrix, Eigen::MatrixXd normals_matrix, Eigen::Vector3d  &sun_estimate) {
 	/****************************************
-	Takes sun sensor intensity eigen matrix "y", eigen matrix of sun sensor normals "H",
-	and returns sun vector estimate as an eigen matrix from a body-fixed frame "s_hat_BF".
+	Description: Takes sun sensor intensity eigen matrix, eigen matrix of sun sensor normals,
+	and returns sun vector estimate as an eigen matrix from a body-fixed frame.
 	
-	input: y, H
-	output: s_hat_BF
+	input: 
+		- intensity_matrix
+
+		- normals_matrix
+
+	output: 
+		- sun_estimate
 	****************************************/
 	
 	// Calculates eigen matrix of sun sensors above threshold number "sens" and integer "r"
@@ -67,7 +72,7 @@ Eigen::MatrixXd sun_vector_estimate(Eigen::MatrixXd y, Eigen::MatrixXd H) {
 	Eigen::MatrixXd sens(1, 1);
 	int inc = 0;
 	for (int j = 0; j < 18; j++) {
-		if (y(j, 0) > 0.5) {
+		if (intensity_matrix(j, 0) > 0.5) {
 			sens.conservativeResize(inc + 1, 1);
 			sens(inc, 0) = j + 1;
 			inc++;
@@ -75,22 +80,20 @@ Eigen::MatrixXd sun_vector_estimate(Eigen::MatrixXd y, Eigen::MatrixXd H) {
 	}
 	int r = sens.rows();
 
-	Eigen::MatrixXd s_hat_BF(3, 1);
-
 	//If there are less than 3 sensors that can see the Sun, the estimate cannot be determined.
 	if (r < 3) {
-		s_hat_BF << 0,
-					0,
-					0;
+		sun_estimate << 0,
+						0,
+						0;
 	}
 	else {
 
 		//Remaps sun sensor intensity vector "y" to keep only values above intensity threshold.
 		Eigen::MatrixXd tempY(sens.rows(), 1);
 		for (int i = 0; i < sens.rows(); i++) {
-			tempY(i, 0) = y(sens(i, 0) - 1, 0);
+			tempY(i, 0) = intensity_matrix(sens(i, 0) - 1, 0);
 		}
-		y = tempY;
+		intensity_matrix = tempY;
 
 		/*
 		Remaps sun sensor normals vector "H" to keep only normals with sun sensor values
@@ -99,27 +102,26 @@ Eigen::MatrixXd sun_vector_estimate(Eigen::MatrixXd y, Eigen::MatrixXd H) {
 		Eigen::MatrixXd tempH(sens.rows(), 3);
 		for (int i = 0; i < sens.rows(); i++) {
 			for (int j = 0; j < 3; j++) {
-				tempH(i, j) = H(sens(i, 0) - 1, j);
+				tempH(i, j) = normals_matrix(sens(i, 0) - 1, j);
 			}
 		}
-		H = tempH;
+		normals_matrix = tempH;
 
 		/*
 		Checks if reciprical condition of "H"'s conjugate transpose * "H" is well conditioned.
 		If it's poorly conditioned, the sun vector estimate cannot be determined.
 		*/
-		if (rcond(H.conjugate().transpose()*H) > 1E-6) {
+		if (rcond(normals_matrix.conjugate().transpose()*normals_matrix) > 1E-6) {
 			//Determines sun vector estimate. 
-			s_hat_BF = (H.conjugate().transpose()*H)
-			.inverse()*H.conjugate().transpose()*y;
+			sun_estimate = (normals_matrix.conjugate().transpose()*normals_matrix)
+			.inverse()*normals_matrix.conjugate().transpose()*intensity_matrix;
 		}
 		else {
-			s_hat_BF << 0,
-						0,
-						0;
+			sun_estimate << 0,
+							0,
+							0;
 		}
 	}
-
-	//Returns sun vector estimate from body-fixed frame.
-	return s_hat_BF;
+	
+	return SUCCESS;
 }
