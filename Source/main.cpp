@@ -25,39 +25,93 @@ reaction wheels based on sensor data provided by the MSP430 and GPS data provide
 example GPS and sensor data provided by "main_test.h" are used to demonstrate how the core architecture works.
 */
 
-void leop();
+void leop(std::string &modeOfOperation, int &leopSecondsOfDetumbling, Eigen::Vector4d &q_est);
 void safehold();
-void standby();
+void standby(Eigen::Vector4d &q_est);
 void faultDetection();
 void detumbleAndDesaturate();
 void updateEkf(Eigen::Vector4d attitudeEstimate, EKF &ekf);
 void bodyRateCheck(const Eigen::Matrix<double, 12, 1>& rawAngRate, double &bodyRateNorm, double &rwRateNormRPM);
 void sunVecAvailabilityCheck(const Eigen::Matrix<double, 18, 1>& y, bool &sunVecAvailable, int &secondsWithoutSun);
 void useEkfPredictedState();
-void useReactionWheels(Eigen::Vector3d w_est, Eigen::Vector4d q_est, Eigen::Vector4d q_NPI, EKF ekf, Eigen::Vector3d &reactionWheelVoltages);
+void useReactionWheels(Eigen::Vector3d w_est, Eigen::Vector4d &q_est, Eigen::Vector4d q_NPI, EKF ekf, Eigen::Vector3d &reactionWheelVoltages);
 void zeroEkfState(EKF &ekf);
+int statusCheck(std::string modeOfOperation);
 Eigen::Vector3d getAngVelFromEkf(EKF ekf);
 Eigen::Vector4d getQuatFromEkf(EKF ekf);
 
 int main()
 {  
+    //Initializing variables.
+    int leopSecondsOfDetumbling = 0;
     std::string modeOfOperation = "standby";
+    int status = 0;
+    Eigen::Vector4d q_est = Eigen::Vector4d::Zero();
     
+    //main loop starts here*************
     
+    std::string cmd = "sb";//checking for commands.
     
-    if(modeOfOperation == "standby"){
-        standby();  
+
+    if(cmd == "sh"){//No matter what the current mode of operation is, switch to safehold mode.
+        modeOfOperation = "safehold";
+    }else if(cmd == "sb"){// If the
+        if(modeOfOperation == "safehold"){
+            modeOfOperation = "standby";
+        }else{
+            std::cout << "must be in safehold to use cmd to go to standby."; 
+        }  
+    }else if(cmd == "status"){
+            status = statusCheck(modeOfOperation);
+    }else if(cmd == "dir_ok"){
+        if(modeOfOperation == "standby"){
+            //get quaternion error in BF/NP from PD controller and if it's within a certain threshold, return true or false.
+        }else{
+            std::cout << "Must be in standby mode.";
+        }
+    }else if(cmd == "cur_ori"){
+        //get quaternion error in BF/NP from PD controller.
+    }else{
+        std::cout << "not a command.";
+    }
+
+
+
+
+    //Modes of operation (slide 3)
+    if(modeOfOperation == "leop"){
+        leop(modeOfOperation, leopSecondsOfDetumbling, q_est);
+    }else if(modeOfOperation == "standby"){
+        standby(q_est);  
     }else if(modeOfOperation == "safehold"){
         safehold();
+    }else if(modeOfOperation == "faultDetection"){
+        faultDetection();
+    }
+    //main loop ends here*************
+
+}
+
+
+
+void leop(std::string &modeOfOperation, int &leopSecondsOfDetumbling, Eigen::Vector4d &q_est){
+    double bodyRateNorm, rwRateNormRPM;
+    bodyRateCheck(s.rawAngRate, bodyRateNorm, rwRateNormRPM);
+    
+    if(bodyRateNorm > 0.04 || rwRateNormRPM > 5000.0){
+    //detumble
+        if (leopSecondsOfDetumbling > 172800){
+            modeOfOperation = "faultDetection";
+        }
+        leopSecondsOfDetumbling++;
+    }else{
+        modeOfOperation = "standby";
+        standby(q_est);
     }
 }
 
-//Modes of operation (slide 3)
-
-void leop(){
-}
-
 void safehold(){
+    //ADCS is off.
 }
 
 void faultDetection(){
@@ -143,7 +197,7 @@ void sunVecAvailabilityCheck(const Eigen::Matrix<double, 18, 1>& y, bool &sunVec
     }
 }
 
-void useReactionWheels(Eigen::Vector3d w_est, Eigen::Vector4d q_est, Eigen::Vector4d q_NPI, EKF ekf, Eigen::Vector3d &reactionWheelVoltages){
+void useReactionWheels(Eigen::Vector3d w_est, Eigen::Vector4d &q_est, Eigen::Vector4d q_NPI, EKF ekf, Eigen::Vector3d &reactionWheelVoltages){
             w_est = getAngVelFromEkf(ekf);
             q_est = getQuatFromEkf(ekf);
             reactionWheelVoltages = pd(w_est, q_est, q_NPI);
@@ -154,7 +208,7 @@ void zeroEkfState(EKF &ekf){
     ekf.set_P_kk(Eigen::Matrix<double, 13, 13>::Zero());
 
 }
-void standby(){
+void standby(Eigen::Vector4d &q_est){
 bool sunVecAvailable = false;
     bool desaturate = false;
     int secondsWithoutSun;
@@ -198,7 +252,7 @@ bool sunVecAvailable = false;
     Eigen::Vector4d q_NPI_transpose = q_NPI.transpose();// Nadir algorithm needs to return 4x1 instead of 1x4.
     Eigen::Vector3d reactionWheelVoltages;
     Eigen::Vector3d w_est;
-    Eigen::Vector4d q_est;
+    //Eigen::Vector4d q_est;
 
     bodyRateCheck(s.rawAngRate, bodyRateNorm, rwRateNormRPM);
     sunVecAvailabilityCheck(s.rssd.y, sunVecAvailable, secondsWithoutSun);
@@ -224,4 +278,19 @@ if(bodyRateNorm > 0.04 || rwRateNormRPM > 5000.0){
     }  
 }
     std::cout << reactionWheelVoltages; //Printing the voltages in BF to go to MSP430.
+}
+int statusCheck(std::string modeOfOperation){
+    int status = 0;
+    if(modeOfOperation == "leop"){
+        status = 1;
+    }else if(modeOfOperation == "standby"){
+        status = 2;
+    }else if(modeOfOperation == "safehold"){
+        status = 3;
+    }else if(modeOfOperation == "faultDetection"){
+        status = 4;
+    }else{
+        status = 0; //status undetermined.
+    }
+    return status;
 }
