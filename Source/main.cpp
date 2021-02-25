@@ -227,7 +227,10 @@ bool sunVecAvailable = false;
     the GPS and sensors.
     */
     Eigen::MatrixXd q_NPI = nadir(g.omega, g.RAAN, g.i, g.tano);
-    Eigen::MatrixXd estSunVec = sun_vector_estimate(s.rssd.y, s.rssd.H);
+    Eigen::Vector3d estSunVec(3);
+    estSunVec << 0, 0, 0;
+    Eigen::Vector3d& sest = estSunVec;
+    ret_val x = SunEstimate(s.rssd.y, s.rssd.H, sest);
     
     //Magnetic and sun vector values are found in order to be passed to the q method.
     Eigen::Vector3d b1 = estSunVec;
