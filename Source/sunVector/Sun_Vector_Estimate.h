@@ -13,10 +13,8 @@
 
 #include <Eigen/Dense>
 #include <vector>
+#include "../Errors.h"
 
-extern Eigen::MatrixXd sun_vector_estimate(
-	Eigen::MatrixXd y,
-	Eigen::MatrixXd H
-);
+ret_val SunEstimate(Eigen::MatrixXd intensity_matrix, Eigen::MatrixXd normals_matrix, Eigen::Vector3d  &sun_estimate);
 
 #endif /*SUN_VECTOR_ESTIMATE_H_*/

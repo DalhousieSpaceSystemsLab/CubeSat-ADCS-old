@@ -9,7 +9,8 @@ add_executable(${This} ${Sources})
 target_link_libraries(${This} PUBLIC
     gtest_main
     IGRF
-    Sun_Vector_Reference)
+    Sun_Vector_Reference
+    SunVector)
 
 target_include_directories(${This} PUBLIC 
     /usr/include/eigen3)
