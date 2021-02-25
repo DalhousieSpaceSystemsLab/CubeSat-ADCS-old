@@ -3,6 +3,7 @@
 #include <fstream>
 #include "Eigen/Core"
 #include "../IGRF/igrf.h"
+#include "../Sun_Vector_Reference/sun_vector_reference.h"
 #include "../Errors.h"
 
 using namespace std;
@@ -87,4 +88,19 @@ TEST(ADCS_test, ADCS_002_002) {
 
     IGRFvalues.close();
     IGRFout.close();
+}
+
+//  Temp test to test prototypes - TODO: Delete this in final release
+TEST(ADCS_test, ADCS_temp_1) {
+    ret_val x;
+    Eigen::Vector3d sun_reference_km(3);
+    sun_reference_km << 0, 0, 0;
+    Eigen::Vector3d sun_reference_au(3);
+    sun_reference_au << 0, 0, 0;
+    Eigen::Vector3d& sr_km = sun_reference_km;
+    Eigen::Vector3d& sr_au = sun_reference_au;
+    x = SunReference(2021, 2, 25, 16.0, sr_km, sr_au);
+    cout << "Sun ref return code: " << x << endl;
+    cout << "Sun ref km: " << sun_reference_km(0) << '\t' << sun_reference_km(1) << '\t' << sun_reference_km(2) << endl;
+    cout << "Sun ref au: " << sun_reference_au(0) << '\t' << sun_reference_au(1) << '\t' << sun_reference_au(2) << endl;
 }
