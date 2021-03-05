@@ -42,7 +42,9 @@ target_link_libraries(ADCS PUBLIC Q_Method)
 target_link_libraries(ADCS PUBLIC Bdot)
 target_link_libraries(ADCS PUBLIC PDcontroller)
 target_link_libraries(ADCS PUBLIC Sun_Vector_Reference)
+target_link_libraries(ADCS PUBLIC cpptimer)
 
+target_sources(ADCS PUBLIC "${PROJECT_SOURCE_DIR}/Timer.cpp")
 
 target_include_directories(ADCS PUBLIC
                             "${PROJECT_BINARY_DIR}"
@@ -54,5 +56,6 @@ target_include_directories(ADCS PUBLIC
                             "${PROJECT_SOURCE_DIR}/Q_Method"
                             "${PROJECT_SOURCE_DIR}/Bdot"
 			                "${PROJECT_SOURCE_DIR}/PDcontroller"
-		       	            "${PROJECT_SOURCE_DIR}/Sun_Vector_Reference"
+                            "${PROJECT_SOURCE_DIR}/Sun_Vector_Reference"
+                            "${PROJECT_SOURCE_DIR}/cppTimer"
                             )
