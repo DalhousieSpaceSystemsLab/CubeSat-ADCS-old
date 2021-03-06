@@ -13,14 +13,23 @@ void print_time();
 class Timer_callback : public CppTimerCallback::Runnable{
     public:
         void run() {
-            print_time();
+            if(debug) {
+                print_time();
+            }
             cb();
+            loop_count++;
         }
-        void set_callback(void (*callback_function)(void)) {
+        void set_callback(void (*callback_function)(void), bool debug_print = false) {
             cb = callback_function;
+            debug = debug_print;
+        }
+        uint32_t get_count() {
+            return loop_count;
         }
     private:
         void (*cb)(void);
+        bool debug;
+        uint32_t loop_count = 0;
 };
 
 class Timer : public CppTimerCallback{
@@ -31,20 +40,22 @@ class Timer : public CppTimerCallback{
             callback_function: pointer to the callback function
             interval: timer interval in seconds (default = 1s)
         */
-        Timer(void (*callback_function)(void), uint32_t interval = 1) {
+        Timer(void (*callback_function)(void), uint32_t interval = 1, bool debug_print = false) {
             loop_time = interval;
             callback = callback_function;
-            tcb.set_callback(callback_function);
+            tcb.set_callback(callback_function, debug_print);
         }
         ret_val start_timer();
         ret_val stop_timer();
         uint32_t get_interval();
         ret_val set_interval(uint32_t interval);
+        uint32_t get_loop_count();
     private:
         void (*callback)(void);
         uint32_t loop_time;
         CppTimerCallback cpptimer;
         Timer_callback tcb;
+
 };
 
 

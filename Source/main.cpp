@@ -49,17 +49,19 @@ std::string modeOfOperation = "standby";
 int status = 0;
 Eigen::Vector4d q_est = Eigen::Vector4d::Zero();
 uint32_t loop_interval = 1;
+Timer *timer;
 
 //Temp variable
 const uint32_t main_loop_time = 10;     // For how many seconds the main loop should run
 
 int main()
 {  
-    Timer timer(main_loop, loop_interval);
+    // initiate timer object with callback function, interval and debug on
+    timer = new Timer(main_loop, loop_interval, true);
     
-    timer.start_timer();
+    timer->start_timer();
     std::this_thread::sleep_for(std::chrono::seconds(main_loop_time));
-    timer.stop_timer();
+    timer->stop_timer();
 
     return 0;
 }
@@ -67,6 +69,8 @@ int main()
 void main_loop() {
     //main loop starts here*************
     
+    std::cout << "Loop count = " << timer->get_loop_count() << std::endl;
+
     std::string cmd = "sb";//checking for commands.
     
 

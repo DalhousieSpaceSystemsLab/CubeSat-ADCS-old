@@ -12,7 +12,7 @@ void print_time() {
     std::chrono::duration<double, std::milli> elapsed = now-then;
     then = now;
     average_time += elapsed.count();
-    std::cout << elapsed.count() << std::endl;
+    std::cout << std::endl << "Elapsed ms: " << elapsed.count() << std::endl;
 }
 
 ret_val Timer::set_interval(uint32_t interval) {
@@ -22,6 +22,10 @@ ret_val Timer::set_interval(uint32_t interval) {
 
 uint32_t Timer::get_interval() {
     return this->loop_time;
+}
+
+uint32_t Timer::get_loop_count() {
+    return this->tcb.get_count();
 }
 
 ret_val Timer::start_timer() {
