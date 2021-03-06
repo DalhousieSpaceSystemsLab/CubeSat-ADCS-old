@@ -10,6 +10,7 @@
 #include "Eigen/Dense"
 #include "PDcontroller.h"
 #include "Bdot.h"
+#include "Timer.h"
 
 //Temporary files used for testing.
 #include "main_test.h"
@@ -17,6 +18,7 @@
 #include "data.h"
 #include <iostream>
 #include <string>
+#include <thread>
 
 /*
 To get a better understanding of this code, you can take a look at slides 3, 9, and 10 in the ADCS CDR presentation as well as see the high level system diagram.
@@ -39,15 +41,30 @@ void zeroEkfState(EKF &ekf);
 int statusCheck(std::string modeOfOperation);
 Eigen::Vector3d getAngVelFromEkf(EKF ekf);
 Eigen::Vector4d getQuatFromEkf(EKF ekf);
+void main_loop();
+
+//Initializing variables.
+int leopSecondsOfDetumbling = 0;
+std::string modeOfOperation = "standby";
+int status = 0;
+Eigen::Vector4d q_est = Eigen::Vector4d::Zero();
+uint32_t loop_interval = 1;
+
+//Temp variable
+const uint32_t main_loop_time = 10;     // For how many seconds the main loop should run
 
 int main()
 {  
-    //Initializing variables.
-    int leopSecondsOfDetumbling = 0;
-    std::string modeOfOperation = "standby";
-    int status = 0;
-    Eigen::Vector4d q_est = Eigen::Vector4d::Zero();
+    Timer timer(main_loop, loop_interval);
     
+    timer.start_timer();
+    std::this_thread::sleep_for(std::chrono::seconds(main_loop_time));
+    timer.stop_timer();
+
+    return 0;
+}
+
+void main_loop() {
     //main loop starts here*************
     
     std::string cmd = "sb";//checking for commands.
@@ -75,9 +92,6 @@ int main()
         std::cout << "not a command.";
     }
 
-
-
-
     //Modes of operation (slide 3)
     if(modeOfOperation == "leop"){
         leop(modeOfOperation, leopSecondsOfDetumbling, q_est);
@@ -89,10 +103,7 @@ int main()
         faultDetection();
     }
     //main loop ends here*************
-
 }
-
-
 
 void leop(std::string &modeOfOperation, int &leopSecondsOfDetumbling, Eigen::Vector4d &q_est){
     double bodyRateNorm, rwRateNormRPM;
