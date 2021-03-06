@@ -336,7 +336,7 @@ output: none
 	 F_k_1.block<3, 1>(6, 9) = dF2_dq0;
 	 F_k_1.block<1, 1>(9, 9) = dF3_dq0;
 	 F_k_1.block<3, 3>(10, 10) = Eigen::Matrix3d::Identity();
-	
+
 	Eigen::Matrix<double, 13, 13> L_k_1 = Eigen::Matrix<double, 13, 13>::Identity() * Ts; 
 	
 	Eigen::Matrix<double, 13, 13> P_k_k_1 = (F_k_1) * P_k_1 * (F_k_1).transpose() + L_k_1*Q*L_k_1.transpose();

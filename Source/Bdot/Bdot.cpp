@@ -1,9 +1,9 @@
 #include "Bdot.h"
 
-RowVectorXd Bdot(
-	RowVectorXd B,
-	RowVectorXd B_1,
-	RowVectorXd fBdot_1
+Vector3d Bdot(
+	Vector3d B,
+	Vector3d B_1,
+	Vector3d fBdot_1
 	) {
 
 	/********************************
@@ -19,7 +19,7 @@ RowVectorXd Bdot(
      OUTPUTS: Bdot - current derivative of field
 
     **********************************/
-    RowVector3d Bdot = (B - B_1);
+    Vector3d Bdot = (B - B_1);
 
     /**********************************
     
@@ -31,7 +31,7 @@ RowVectorXd Bdot(
 
     ***********************************/
     double alpha = 0.03;
-    RowVector3d fBdot = alpha*Bdot + (1-alpha)*fBdot_1;
+    Vector3d fBdot = alpha*Bdot + (1-alpha)*fBdot_1;
 
     /*********************************
     
@@ -46,8 +46,8 @@ RowVectorXd Bdot(
 
      ********************************/
     double K = 70000;
-    RowVector3d m = -K*fBdot;
-    // m is subject to hardware constraints (±1.4 Am^2) which are not hardcoded
+    Vector3d m = -K*fBdot;
+    // m is subject to hardware constraints (ï¿½1.4 Am^2) which are not hardcoded
     // into the function
 	
     return m;
