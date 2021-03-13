@@ -57,6 +57,8 @@ const uint32_t main_loop_time = 10;     // For how many seconds the main loop sh
 int main()
 {  
     // initiate timer object with callback function, interval and debug on
+
+    std::cout << std::this_thread::get_id() << std::endl;
     timer = new Timer(main_loop, loop_interval, true);
     
     timer->start_timer();
@@ -68,7 +70,7 @@ int main()
 
 void main_loop() {
     //main loop starts here*************
-    
+    std::cout << std::this_thread::get_id() << std::endl;
     std::cout << "Loop count = " << timer->get_loop_count() << std::endl;
 
     std::string cmd = "sb";//checking for commands.
