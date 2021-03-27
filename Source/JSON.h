@@ -7,6 +7,9 @@
 */
 
 #include <iostream>
+#include <cstdarg>
+#include <queue>
+#include <string.h>
 
 #include "Errors.h"
 #include "jtok.h"
@@ -26,6 +29,25 @@ class JSON
     public:
     JSON(std::string input);
     
+    // get functions for nesting upto 5 levels, function overloading is used instead 
+    // of operator overloading or variadic for simplicity
+    ret_val get_string(const char *, std::string &, unsigned int = 1);
+    ret_val get_string(const char *, const char *, std::string &, unsigned int = 1);
+    ret_val get_string(const char *, const char *, const char *, std::string &, unsigned int = 1);
+    ret_val get_string(const char *, const char *, const char *, const char *, std::string &, unsigned int = 1);
+
+    double get_number(const char *);
+    double get_number(const char *, const char *);
+    double get_number(const char *, const char *, const char *);
+    double get_number(const char *, const char *, const char *, const char *);
+    double get_number(const char *, const char *, const char *, const char *, const char *);
+
+    bool get_bool(const char *);
+    bool get_bool(const char *, const char *);
+    bool get_bool(const char *, const char *, const char *);
+    bool get_bool(const char *, const char *, const char *, const char *);
+    bool get_bool(const char *, const char *, const char *, const char *, const char *);
+
     unsigned int get_no_of_tokens();
     template<typename A, typename B>
     ret_val get_token(A x, B& y);
@@ -37,6 +59,9 @@ class JSON
     unsigned int size = 0;
     unsigned int no_of_tokens = -1;
     jtok_tkn_t tokens[MAX_TOKENS];
+
+    unsigned int find_key(const char *, unsigned int);
+    
 };
 
 
