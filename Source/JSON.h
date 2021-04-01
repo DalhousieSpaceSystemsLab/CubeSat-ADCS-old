@@ -31,26 +31,16 @@ class JSON
     
     // get functions for nesting upto 5 levels, function overloading is used instead 
     // of operator overloading or variadic for simplicity
-    ret_val get_string(const char *, std::string &, unsigned int = 1);
-    ret_val get_string(const char *, const char *, std::string &, unsigned int = 1);
-    ret_val get_string(const char *, const char *, const char *, std::string &, unsigned int = 1);
-    ret_val get_string(const char *, const char *, const char *, const char *, std::string &, unsigned int = 1);
+    ret_val get_token(const char *, uint &, unsigned int = 1);
+    ret_val get_token(const char *, const char *, uint &, unsigned int = 1);
+    ret_val get_token(const char *, const char *, const char *, uint &, unsigned int = 1);
+    ret_val get_token(const char *, const char *, const char *, const char *, uint &);
 
-    double get_number(const char *);
-    double get_number(const char *, const char *);
-    double get_number(const char *, const char *, const char *);
-    double get_number(const char *, const char *, const char *, const char *);
-    double get_number(const char *, const char *, const char *, const char *, const char *);
-
-    bool get_bool(const char *);
-    bool get_bool(const char *, const char *);
-    bool get_bool(const char *, const char *, const char *);
-    bool get_bool(const char *, const char *, const char *, const char *);
-    bool get_bool(const char *, const char *, const char *, const char *, const char *);
+    ret_val get_value_str(uint index, std::string &);
+    ret_val get_value_num(uint index, double &);
+    ret_val get_value_bool(uint index, bool &);
 
     unsigned int get_no_of_tokens();
-    template<typename A, typename B>
-    ret_val get_token(A x, B& y);
     ret_val serialize();
     ret_val deserialize();
 

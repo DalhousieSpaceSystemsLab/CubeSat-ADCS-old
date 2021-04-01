@@ -8,7 +8,7 @@ std::string json_test = "{\"name\" : \"Jack\", \"age\" : 27, \"age\" : 27, \"age
 
 std::string json_test2 = "{\"menu\": { \"id\": \"file\", \"value\": \"File\", \"popup\": {\"menuitem\": [{\"value\": \"New\", \"onclick\": \"CreateNewDoc()\"}, {\"value2\": \"Open\", \"onclick\": \"OpenDoc()\"}, {\"value3\": \"Close\", \"onclick\": \"CloseDoc()\"}]}}}";
 
-std::string json_test3 = "{\"menu\": {\"id\": \"file\", \"value\": \"File\", \"popup\": {\"menuitem\": {\"key1\": \"value1\", \"key2\": {\"key3\": \"value3\"}}}}}";
+std::string json_test3 = "{\"menu\": {\"id\": -123.2345, \"value\": false, \"popup\": {\"menuitem\": {\"key1\": \"value1\", \"key2\": {\"key3\": \"value3\"}}}}}";
 
 int main(){
     JSON j = JSON(json_test3);
@@ -32,9 +32,28 @@ int main(){
     // ret_val z = j.get_string("popup", "menuitem", "value2", sr2);
     // std::cout << z << "  " << sr2 << std::endl << std::flush;
 
-    std::string s3;
-    std::string &sr3 = s3;
-    ret_val a = j.get_string("menu", "popup", "menuitem", "key1", sr3);
-    std::cout << a << "  " << sr3 << std::endl << std::flush;
+    // std::string s3;
+    // std::string &sr3 = s3;
+    uint k = 0;
+    uint &kr = k;
+    ret_val a = j.get_token("menu", "id", kr);
+
+    double r;
+    double &rr = r;
+    
+
+    std::cout << "Output " << a << "  " << k << "   " << j.get_value_num(k, rr) << r <<  std::endl << std::flush;
+
+
+    uint i = 0;
+    uint &ir = i;
+    ret_val e = j.get_token("menu", "value", ir);
+
+    bool b;
+    bool &br = b;
+    
+
+    std::cout << "Output " << e << "  " << i << "   " << j.get_value_bool(i, br) << (int)b <<  std::endl << std::flush;
+
     return 0;
 }

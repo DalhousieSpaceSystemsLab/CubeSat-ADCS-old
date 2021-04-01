@@ -13,7 +13,7 @@ ret_val JSON::deserialize() {
     
     if (status != JTOK_PARSE_STATUS_OK)
     {
-        return ERR_INVALID_ARG;
+        return FAIL;
     }
 
     return SUCCESS;
@@ -76,7 +76,7 @@ unsigned int JSON::find_key(const char *key, unsigned int root = 1) {
     return -1;
 }
 
-ret_val JSON::get_string(const char *key, std::string &value, unsigned int root /* default = 1*/) {
+ret_val JSON::get_token(const char *key, uint &value, unsigned int root /* default = 1*/) {
     
     if(strlen(key) == 0) {
         return ERR_INVALID_ARG;
@@ -93,19 +93,21 @@ ret_val JSON::get_string(const char *key, std::string &value, unsigned int root 
     for(int i = 0; i < size; i++) {
         if(tokens[i].parent == answer) {
             child = i;
+            break;
         }
     }
 
-    // if child is not a string, abort
-    if(tokens[child].type != JTOK_STRING) {
+    // if child is not a string or a number, abort
+    if(!(tokens[child].type == JTOK_STRING || tokens[child].type == JTOK_PRIMITIVE)) {
         return FAIL;
     }
 
-    value.append(&data[tokens[child].start], jtok_toklen(&tokens[child]));
+    // value.append(&data[tokens[child].start], jtok_toklen(&tokens[child]));
+    value = child;
     return SUCCESS;
 }
 
-ret_val JSON::get_string(const char *key, const char *key2, std::string &value, unsigned int root /* default = 1*/) {
+ret_val JSON::get_token(const char *key, const char *key2, uint &value, unsigned int root /* default = 1*/) {
 
     if(strlen(key) == 0 || strlen(key2) == 0) {
         return ERR_INVALID_ARG;
@@ -121,10 +123,10 @@ ret_val JSON::get_string(const char *key, const char *key2, std::string &value, 
         return FAIL;
     }
 
-    return get_string(key2, value, answer);
+    return get_token(key2, value, answer);
 }
 
-ret_val JSON::get_string(const char *key, const char *key2, const char *key3,std::string &value, unsigned int root /* default = 1*/) {
+ret_val JSON::get_token(const char *key, const char *key2, const char *key3, uint &value, unsigned int root /* default = 1*/) {
 
     if(strlen(key) == 0 || strlen(key2) == 0 || strlen(key3) == 0) {
         return ERR_INVALID_ARG;
@@ -147,10 +149,10 @@ ret_val JSON::get_string(const char *key, const char *key2, const char *key3,std
         return FAIL;
     }
 
-    return get_string(key3, value, answer);
+    return get_token(key3, value, answer);
 }
 
-ret_val JSON::get_string(const char *key, const char *key2, const char *key3, const char *key4, std::string &value, unsigned int root /* default = 1*/) {
+ret_val JSON::get_token(const char *key, const char *key2, const char *key3, const char *key4, uint &value) {
 
     if(strlen(key) == 0 || strlen(key2) == 0 || strlen(key3) == 0 || strlen(key4) == 0) {
         return ERR_INVALID_ARG;
@@ -181,5 +183,48 @@ ret_val JSON::get_string(const char *key, const char *key2, const char *key3, co
         return FAIL;
     }
 
-    return get_string(key4, value, answer);
+    return get_token(key4, value, answer);
+}
+
+ret_val JSON::get_value_str(uint index, std::string &value){
+    if(index == 0 || index >= size || tokens[index].type != JTOK_STRING) {
+        return ERR_INVALID_ARG;
+    }
+    else {
+        value = std::string(&data[tokens[index].start], jtok_toklen(&tokens[index]));
+        return SUCCESS;
+    }
+}
+
+ret_val JSON::get_value_num(uint index, double &value) {
+    if(index == 0 || index >= size || tokens[index].type != JTOK_PRIMITIVE) {
+        return ERR_INVALID_ARG;
+    }
+    else {
+        int len = jtok_toklen(&tokens[index]) + 1;
+        char c[len];
+        c[jtok_toklen(&tokens[index])] = '\0';
+        int start = tokens[index].start;
+        strncpy(c, &data[start], len-1);
+        value = strtod(c, NULL);
+        return SUCCESS;
+    }
+}
+
+ret_val JSON::get_value_bool(uint index, bool &value) {
+    if(index == 0 || index >= size || tokens[index].type != JTOK_PRIMITIVE) {
+        return ERR_INVALID_ARG;
+    }
+    else {
+        int start = tokens[index].start;
+        if(memcmp(&data[start], "true", 4) == 0) {
+            value = true;
+            return SUCCESS;
+        }
+        if(memcmp(&data[start], "false", 5) == 0) {
+            value = false;
+            return SUCCESS;
+        }
+        return FAIL;
+    }
 }
