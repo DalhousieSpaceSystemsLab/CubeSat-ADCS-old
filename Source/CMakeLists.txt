@@ -28,6 +28,7 @@ add_subdirectory(PDcontroller)
 add_subdirectory(googletest)
 add_subdirectory(Sun_Vector_Reference)
 add_subdirectory(../JTOK build)
+add_subdirectory(UART)
 
 find_package(Eigen3 3.3 REQUIRED NO_MODULE)
 
@@ -44,6 +45,7 @@ target_link_libraries(ADCS PUBLIC Bdot)
 target_link_libraries(ADCS PUBLIC PDcontroller)
 target_link_libraries(ADCS PUBLIC Sun_Vector_Reference)
 target_link_libraries(ADCS PUBLIC JTOK)
+target_link_libraries(ADCS PUBLIC UART)
 
 target_sources(ADCS PUBLIC ./JSON.cpp)
 
@@ -59,4 +61,5 @@ target_include_directories(ADCS PUBLIC
 			                "${PROJECT_SOURCE_DIR}/PDcontroller"
                             "${PROJECT_SOURCE_DIR}/Sun_Vector_Reference"
                             "${PROJECT_SOURCE_DIR}/../JTOK"
+                            "${PROJECT_SOURCE_DIR}/UART"
                             )
