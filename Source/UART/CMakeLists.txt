@@ -1,4 +1,3 @@
 set(SOURCES UART.cpp
-            UART.h
-            UART_core.c)
+            UART.h)
 add_library(UART ${SOURCES})

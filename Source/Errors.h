@@ -5,7 +5,9 @@ enum ret_val {
     SUCCESS,
     FAIL,
     ERR_INVALID_ARG,
-    ERR_FILE
+    ERR_FILE,
+    ERR_UART_IO,
+    ERR_UART_DEV_NOT_FOUND,
 };
 
 

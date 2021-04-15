@@ -1,6 +1,16 @@
+/*
+ * Author: Rutwij Makwana
+ * Project: Dalhousie CubeSat
+ * SubSystem: ADCS
+ * Date: 3 April 2021
+
+ * Description: UART driver source file for Cubesat-ADCS subsytem
+ *
+ */
+
 #include "UART.h"
 
-UART::UART(const char* device_name) {
+UART::UART(const char *device_name) {
     dev_name = device_name;
 }
 
@@ -43,25 +53,43 @@ ret_val UART::begin(uint speed) {
         return ERR_INVALID_ARG;
     }
     
-    // std::cout << dev_name << std::endl;
-    fd = open(dev_name, flags);
-    // std::cout << fd << std::endl;
-    f = fdopen(fd, "r+");
+    fd = open(dev_name, flags);     // C-style file descriptor
+    if(fd == -1) {
+        std::cout << "UART: ERR_UART_DEV_NOT_FOUND" << std::endl;
+        return ERR_UART_DEV_NOT_FOUND;
+    }
+    f = fdopen(fd, "r+");           // get C++ FILE object
 
 	tcgetattr(fd, &tty);
 
 	tty.c_cflag = (tty.c_cflag & ~CSIZE) | CS8;
 	tty.c_cflag |= baudrate;  
 
-	if (tcsetattr (fd, TCSANOW, &tty) != 0)
+	if (tcsetattr(fd, TCSANOW, &tty) != 0)
 	{
 	    std::cout << "UART: error " << errno << " from tcsetattr" << std::endl;
+        std::cout << fd;
         close(fd);
         fclose(f);
 	    return FAIL;
 	}
 
     state = UART_OPEN;
+    return SUCCESS;
+}
+
+ret_val UART::flush() {
+    // TCIOFLUSH = flush both data received but not read and data written but not transmitted
+    if(tcflush(fd, TCIOFLUSH) != 0) {
+        return ERR_UART_IO;
+    }
+    return SUCCESS;
+}
+
+ret_val UART::drain() {
+    if(tcdrain(fd) != 0) {
+        return ERR_UART_IO;
+    }
     return SUCCESS;
 }
 

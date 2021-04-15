@@ -15,30 +15,22 @@ std::string json_test3 = "{\"menu\": {\"id\": -123.2345, \"value\": false, \"pop
 
 int main() {
     
-    UART ser = UART("/dev/ttyUSB0");
+    // UART ser = UART("/dev/ttyUSB0");
+    UART ser = UART("/home/oem/com1");
     cout << ser.getDeviceName() << endl;
     ret_val r = ser.begin(57600);
     cout << r << endl;
-    // if(r == SUCCESS) {
-    //     char c;
-    //     char &cr = c;
-    //     for(;;) {
-    //         // sleep(1);
-    //         ret_val s = ser.readChar(cr);
-    //         if(s == SUCCESS) {
-    //             cout << c << endl;
-    //         }
-    //     }
-    // }
+
     if(r == SUCCESS) {
         while(1) {
+            ret_val ret = ser.write(std::string("Hi there\n"));
+            cout << "Write returns " << ret << endl;
             std::string s;
             std::string &sr = s;
-            ret_val ret = ser.readString(s);
-            cout << ret << " " << s << endl;
+            ret = ser.readString(s);
+            cout << "Read returns " << ret << " Value = " << s << endl;
 
-            ret = ser.write(std::string("Hi there"));
-            cout << ret << endl;
+            sleep(1);
         }
     }
     return 0;
