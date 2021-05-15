@@ -6,8 +6,8 @@
  *
  *  Description: Contains the function "Bdot" which takes (according to Anna):
 
-	Eigen vector B = current noisy magentic field reading from IGRF -12 model in coordinates (X,Y,Z).
-	Eigen vector B_1 = previous (1 second time step assumption) noisy magentic field reading from IGRF -12 model.
+	Eigen vector B = current noisy magnetic field reading from the magnetometer in coordinates (X,Y,Z).
+	Eigen vector B_1 = previous (1 second time step assumption) noisy magnetic field reading from magnetometer.
 	Eigen vector fBdot_1 = previous filtered derivative of field (from feedback).
 	Returns the required current magnetic moment as an Eigen vector.
 

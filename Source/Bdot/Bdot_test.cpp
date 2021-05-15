@@ -7,11 +7,11 @@
  * Description: Tests the Bdot algorithm by using defined inputs identical to the ones used
  *		in the simulink model (i.e. manually found from the simulink model using scope blocks). The inputs
  *		are listed as follows:
- *		B - current noisy magentic field reading from IGRF -12 model
- *		B_1 - previous (1 second time step assumption) noisy magentic field reading from IGRF -12 model
+ *		B - current noisy magnetic field reading from magnetometer.
+ *		B_1 - previous (1 second time step assumption) noisy magnetic field reading from magnetometer.
  *		fBdot_1 - previous filtered derivative of field (from feedback).
  * 
- *		The current magnatic moment (m) is calculated and can be compared with the simulink model calculation.
+ *		The current magnetic moment (m) is calculated and can be compared with the simulink model calculation.
  *		I provided the simulink model values in the code for comparison (manually found). 
  *		It is assumed the time step is 1 second and the current test time is at 2 seonds while the previous data time is 1 second.
  * 
