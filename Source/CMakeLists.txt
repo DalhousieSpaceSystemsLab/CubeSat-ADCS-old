@@ -32,6 +32,7 @@ add_subdirectory(UART)
 
 find_package(Eigen3 3.3 REQUIRED NO_MODULE)
 
+SET(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -pthread")
 add_executable(ADCS main.cpp)
 
 target_link_libraries(ADCS PUBLIC IGRF)
