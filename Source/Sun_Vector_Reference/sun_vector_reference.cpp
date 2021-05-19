@@ -4,7 +4,8 @@
 #include "sun_vector_reference.h"
 
 int H, Min, S;
-double J0, T0, S_lon_m, M_s, Y, lon_S_ec, epsilon, r_S, r_S_I[3][1], r_S_Ikm[3][1], e_ES[3][1];
+double J0, T0, S_lon_m, M_s, Y, lon_S_ec, epsilon, r_S, r_S_I[3][1], e_ES[3][1];
+
 
 double sind(double x) {
 	return sin(x * M_PI / 180);
@@ -14,7 +15,7 @@ double cosd(double x) {
 	return cos(x * M_PI / 180);
 }
 
-ret_val SunReference(uint16_t year, uint16_t month, uint16_t day, double UT, Eigen::Vector3d &sun_reference_km, Eigen::Vector3d &sun_reference_au) {
+ret_val SunReference(uint16_t year, uint16_t month, uint16_t day, double UT, Eigen::Vector3d& sun_reference_unit_vector) {
 
 	/*-------------------------------------------------------------------------
 	Description: This function calculates reference sun vector in ECI frame
@@ -33,9 +34,7 @@ ret_val SunReference(uint16_t year, uint16_t month, uint16_t day, double UT, Eig
 
 		- UT: Universal time (UTC), decimal hours
 
-		- sun_reference_km: Output reference vector in km
-
-		- sun_reference_au: Output reference vector in au
+		- sun_reference_unit_vector: Output reference vector
 
 	output: SUCCESS|FAIL diagnostic
 	-------------------------------------------------------------------------*/
@@ -94,19 +93,13 @@ ret_val SunReference(uint16_t year, uint16_t month, uint16_t day, double UT, Eig
 	r_S_I[1][0] = r_S * cosd(epsilon) * sind(lon_S_ec); // AU
 	r_S_I[2][0] = r_S * sind(epsilon) * sind(lon_S_ec); // AU
 
-	sun_reference_au << r_S_I[0][0], r_S_I[1][0], r_S_I[2][0];
 
-	// Convert from AU to kilometres 
-	for (int i = 0; i < 3; i++) {
-		r_S_Ikm[i][0] = r_S_I[i][0] * (149597870700.0) * 1e-3; // 149597870700 metres = 1 AU
-	}
+	 // Obtain unit vector:
+	 for (int i = 0; i < 3; i++) {
+	 	e_ES[i][0] = r_S_I[i][0] / r_S; 
+	 }
 
-	sun_reference_km << r_S_Ikm[0][0], r_S_Ikm[1][0], r_S_Ikm[2][0];
-
-	// // Obtain unit vector:
-	// for (int i = 0; i < 3; i++) {
-	// 	e_ES[i][0] = r_S_I[i][0] / r_S; // m
-	// }
+	 sun_reference_unit_vector << e_ES[0][0], e_ES[1][0], e_ES[2][0];
 
 	return SUCCESS;
 }
